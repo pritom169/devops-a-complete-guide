@@ -5,3 +5,11 @@ When a user logs into a Linux system and opens the **Files** application, they a
 Within the `/home` directory, you will find individual subdirectories corresponding to each user on the system.
 
 The **root user** is an exception. Instead of a home directory under `/home`, the root user has a separate home directory located at `/root`.
+
+## Bin Directory
+
+The `bin` directory contains essential user-level executable programs and commands. These binaries are required for basic system operation and are available for all users.
+
+## Sbin Directory
+
+The `sbin` directory contains system administration binaries. These commands are primarily intended for performing system-level tasks and typically require superuser (root) privileges to execute.
