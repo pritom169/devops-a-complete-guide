@@ -1,1 +1,0 @@
-# devops-a-complete-guide
