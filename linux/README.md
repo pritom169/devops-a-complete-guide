@@ -74,3 +74,7 @@ The /tmp directory is used for storing temporary files created by applications, 
 - Holds short-lived, temporary data
 - Used by programs during installation, updates, caching, or when storing intermediate data
 - Safe to delete (the system can recreate needed files)
+
+## /media
+
+The /media directory is used for automatically mounted removable devices, such as USB drives, external hard disks, SD cards, and DVDs. When you plug in a removable device, modern Linux systems automatically create a subdirectory under /media/<username>/ and mount the device there. This provides a clean, predictable location for users to access external storage without needing manual mount commands.
