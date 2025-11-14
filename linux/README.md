@@ -62,3 +62,7 @@ The /dev directory contains device files, which act as interfaces to hardware de
 
 - It exposes hardware (like disks, USB drives, keyboards) as files so Linux can interact with them using standard file operations.
 - Programs can read from or write to these device files as if they were normal files.
+
+## /var
+
+The /var directory contains variable data — files that change frequently as the system runs.
