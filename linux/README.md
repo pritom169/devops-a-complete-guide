@@ -20,3 +20,11 @@ The `sbin` directory contains system administration binaries. These commands are
 
 - Stores essential shared libraries needed during system boot.
 - Required even before the /usr partition is mounted, which is why critical libraries must live here.
+
+## usr
+
+If we look carefully usr and root has a similar directory structure. The reason / (root) and /usr have a similar directory structure (e.g., both have bin, sbin, lib) is historical and tied to how Unix systems originally booted and used storage.
+
+When storage was limited, some of the binary files were stored /bin, /sbin and some of them were store in '/usr' folder.
+
+One major difference is when we write the commands from terminal window, they are loaded from the `/usr` folder.
