@@ -44,3 +44,7 @@ The `/opt` directory is primarily used for installing **add-on or third-party ap
 This structure helps keep these applications isolated from system-managed directories such as `/usr/bin` or `/usr/lib`, reducing the risk of conflicts during system updates or package installations.
 
 Some software vendors prefer not to divide their files across multiple system paths. Instead, they package everything into one unified directory. For such applications—common examples include IDEs and large commercial tools—`/opt` provides a clean and predictable location.
+
+## /boot
+
+The `/boot` directory contains all the files needed for the system to start (boot) before the main operating system loads.
