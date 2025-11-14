@@ -48,3 +48,10 @@ Some software vendors prefer not to divide their files across multiple system pa
 ## /boot
 
 The `/boot` directory contains all the files needed for the system to start (boot) before the main operating system loads.
+
+> All the folders we have seen until now are read only folders
+
+## /etc
+
+The /etc directory contains system-wide configuration files for Linux.
+If a program, service, or part of the operating system needs configuration, it almost always reads it from /etc.
