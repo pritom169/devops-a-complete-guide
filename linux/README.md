@@ -6,10 +6,17 @@ Within the `/home` directory, you will find individual subdirectories correspond
 
 The **root user** is an exception. Instead of a home directory under `/home`, the root user has a separate home directory located at `/root`.
 
-## Bin Directory
+## bin
 
 The `bin` directory contains essential user-level executable programs and commands. These binaries are required for basic system operation and are available for all users.
 
-## Sbin Directory
+## sbin
 
 The `sbin` directory contains system administration binaries. These commands are primarily intended for performing system-level tasks and typically require superuser (root) privileges to execute.
+
+## lib
+
+/lib contains shared libraries that are required for the system’s fundamental programs to run — especially those in /bin and /sbin.
+
+- Stores essential shared libraries needed during system boot.
+- Required even before the /usr partition is mounted, which is why critical libraries must live here.
