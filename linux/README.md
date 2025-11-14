@@ -55,3 +55,10 @@ The `/boot` directory contains all the files needed for the system to start (boo
 
 The /etc directory contains system-wide configuration files for Linux.
 If a program, service, or part of the operating system needs configuration, it almost always reads it from /etc.
+
+## /dev
+
+The /dev directory contains device files, which act as interfaces to hardware devices or virtual devices on the system.
+
+- It exposes hardware (like disks, USB drives, keyboards) as files so Linux can interact with them using standard file operations.
+- Programs can read from or write to these device files as if they were normal files.
