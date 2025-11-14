@@ -66,3 +66,11 @@ The /dev directory contains device files, which act as interfaces to hardware de
 ## /var
 
 The /var directory contains variable data — files that change frequently as the system runs.
+
+## /tmp
+
+The /tmp directory is used for storing temporary files created by applications, scripts, and the operating system.
+
+- Holds short-lived, temporary data
+- Used by programs during installation, updates, caching, or when storing intermediate data
+- Safe to delete (the system can recreate needed files)
