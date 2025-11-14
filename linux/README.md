@@ -78,3 +78,7 @@ The /tmp directory is used for storing temporary files created by applications, 
 ## /media
 
 The /media directory is used for automatically mounted removable devices, such as USB drives, external hard disks, SD cards, and DVDs. When you plug in a removable device, modern Linux systems automatically create a subdirectory under /media/<username>/ and mount the device there. This provides a clean, predictable location for users to access external storage without needing manual mount commands.
+
+## /mnt
+
+The /mnt directory is intended for temporary, manual mounts performed by system administrators. It serves as a generic mount point for tasks such as mounting additional disks, network file systems, ISO images, or partitions during system maintenance or troubleshooting. Unlike /media, nothing is auto-mounted here—administrators explicitly use /mnt when they need a simple, temporary place to mount a filesystem.
