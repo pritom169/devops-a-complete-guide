@@ -28,3 +28,11 @@ If we look carefully usr and root has a similar directory structure. The reason 
 When storage was limited, some of the binary files were stored /bin, /sbin and some of them were store in '/usr' folder.
 
 One major difference is when we write the commands from terminal window, they are loaded from the `/usr` folder.
+
+## usr/local
+
+/usr/local is a directory used for software installed manually by the system administrator, rather than by the operating system’s package manager. It mirrors the structure of /usr (with bin, sbin, lib, share, etc.) so that custom-installed programs can coexist cleanly with system-installed ones.
+
+- It is designed this way so locally installed software follows the same layout as system software but stays separate.
+- Easy upgrades of the OS (local files remain untouched)
+- Simple removal or backup of custom tools
