@@ -82,3 +82,12 @@ The /media directory is used for automatically mounted removable devices, such a
 ## /mnt
 
 The /mnt directory is intended for temporary, manual mounts performed by system administrators. It serves as a generic mount point for tasks such as mounting additional disks, network file systems, ISO images, or partitions during system maintenance or troubleshooting. Unlike /media, nothing is auto-mounted here—administrators explicitly use /mnt when they need a simple, temporary place to mount a filesystem.
+
+#### Key Points
+
+Many of these directories operate automatically behind the scenes during regular system use. The user does not necessarily interact with
+
+- Removable devices, such as USB drives, are automatically mounted under `/media`.
+- System configuration updates automatically adjust the relevant files within `/etc`.
+- When software is installed, the package manager places all required files into their appropriate system directories (e.g., `/bin`, `/lib`).
+- When a software needs to be uninstalled, the package manager deletes all the necessary files from those designated folders.
