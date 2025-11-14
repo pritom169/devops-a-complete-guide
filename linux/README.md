@@ -91,3 +91,11 @@ Many of these directories operate automatically behind the scenes during regular
 - System configuration updates automatically adjust the relevant files within `/etc`.
 - When software is installed, the package manager places all required files into their appropriate system directories (e.g., `/bin`, `/lib`).
 - When a software needs to be uninstalled, the package manager deletes all the necessary files from those designated folders.
+
+## Hidden Files
+
+Hidden files in Linux are used to store configuration data and other important information that should not be modified or deleted accidentally. These files are typically created by applications or the operating system to maintain settings and environment preferences.
+
+- Hidden files begin with a leading dot (`.`).
+- They are commonly referred to as **dotfiles** in UNIX-based systems.
+- They help ensure critical configuration data remains unobtrusive and protected from casual modification.
