@@ -125,3 +125,21 @@ However in Ubuntu we can also just write the software we want to install and it 
 ```shell
 java
 ```
+
+## Repositories
+
+When installing software with apt, a natural question arises: Where do these packages come from, and how does the package manager find them?
+
+Linux distributions use software repositories, which are structured storage locations containing thousands of packages. These repositories are typically hosted on remote servers, though local repositories can also be configured when needed.
+
+The package manager retrieves packages directly from these repositories, ensuring they are authentic, up-to-date, and compatible with the system.
+
+On a fresh Linux installation, it is good practice to update the local package index so the system is aware of the latest available packages and versions. This is done using:
+
+```shell
+sudo apt update
+```
+
+### Ubuntu Software Center
+
+On Linux we will mostly use apt package managre
