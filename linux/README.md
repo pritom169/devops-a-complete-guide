@@ -111,3 +111,17 @@ Unlike Windows, where a program’s files typically reside in a single directory
 A package manager downloads all the necessary packages from the internet. It also ensures the integrity and authenticity of those packages. As a software installation has dependencies, it will go out and also install those dependencies as well. Even if the dependencies has other dependencies, the package manager will install them too.
 
 As in Linux files are distributed into different directories, it will put all the necessary files into those directories too. When it comes to upgrading the software, it will search only the files requires to be updated, and install them accordingly.
+
+Package managers are included with most Linux distributions, and each distribution typically provides its own default tool. For example, Ubuntu uses APT (Advanced Package Tool) as its built-in package manager.
+
+Now we can navigate to a new terminal window and type
+
+```shell
+sudo apt search openjdk
+```
+
+However in Ubuntu we can also just write the software we want to install and it will give us the package containing that name
+
+```shell
+java
+```
