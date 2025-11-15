@@ -99,3 +99,9 @@ Hidden files in Linux are used to store configuration data and other important i
 - Hidden files begin with a leading dot (`.`).
 - They are commonly referred to as **dotfiles** in UNIX-based systems.
 - They help ensure critical configuration data remains unobtrusive and protected from casual modification.
+
+# Software Package
+
+A software package is a compressed archive that contains all the files required for an application to run, including executables, libraries, configuration files, and metadata. Many applications also rely on additional components, known as dependencies, which must be installed for the software to function correctly. For example, installing Firefox may require several supporting libraries that must be present on the system.
+
+Unlike Windows, where a program’s files typically reside in a single directory, Linux distributes application files across multiple system locations such as `/bin`, `/lib`, and others. Because these files are spread throughout the file system, manually installing or removing software is impractical and error‑prone. This is why Linux relies on package managers, which handle installation, dependency resolution, file placement, and clean removal in a controlled and consistent manner.
