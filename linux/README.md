@@ -105,3 +105,9 @@ Hidden files in Linux are used to store configuration data and other important i
 A software package is a compressed archive that contains all the files required for an application to run, including executables, libraries, configuration files, and metadata. Many applications also rely on additional components, known as dependencies, which must be installed for the software to function correctly. For example, installing Firefox may require several supporting libraries that must be present on the system.
 
 Unlike Windows, where a program’s files typically reside in a single directory, Linux distributes application files across multiple system locations such as `/bin`, `/lib`, and others. Because these files are spread throughout the file system, manually installing or removing software is impractical and error‑prone. This is why Linux relies on package managers, which handle installation, dependency resolution, file placement, and clean removal in a controlled and consistent manner.
+
+# Package Manager
+
+A package manager downloads all the necessary packages from the internet. It also ensures the integrity and authenticity of those packages. As a software installation has dependencies, it will go out and also install those dependencies as well. Even if the dependencies has other dependencies, the package manager will install them too.
+
+As in Linux files are distributed into different directories, it will put all the necessary files into those directories too. When it comes to upgrading the software, it will search only the files requires to be updated, and install them accordingly.
