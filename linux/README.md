@@ -251,3 +251,18 @@ As the team size increases managing individual responsibility by a single admin 
 To solve this in a linux way, it's a best practice to create some group.
 
 For example a person from a DevOps group can have different set of permissions than in an admin group. So when a person leaves, rather than deleting all of his permissions, the admin can just remove him from the groups. In this way, user management becomes a bit easier.
+
+### User management in Practice
+
+As we know /etc holds system wide configuration, it also holds user account information.
+
+We can simply write `cat  /etc/passwd` on terminal in order to see all the users. In the file we can see each user has exactly one line of information. Here is the pattern they follow:
+
+```
+USERNAME: PASSWORD : UID : UID :GECOS : HOMEDIR : SHELL
+```
+
+- User ID (UID): Each user has a unique ID. UID 0 is reserved for root
+- Group ID (GID): The primary group ID (stored in /etc/group file). Each user will have a primary group and their ID will be stored here.
+- Home Directory (HOMEDIR): Home directory of the user
+- Default shell (SHELL): Absolute path of a shell
