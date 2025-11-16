@@ -185,7 +185,7 @@ Vim is a highly efficient and lightweight text editor that comes preinstalled on
 
 Vim has two modes:
 
-1. **Command Mode (default):** In the commad mode the user can move around, see, copy text and write some command.
+1. **Command Mode (default):** In the command mode the user can move around, see, copy text and write some command.
 
 2. **Insert Mode (primarily for typing text):**
 
@@ -202,4 +202,17 @@ Even more useful commands to know:
 - `dd` - to remove the whole line
 - `d5` - to delete 5 lines
 - `u` - to undo the previous action
-- `A` - type capital A to jump to the end of the line and switch to insert mode from normal mode
+- `A` - type capital A to jump to the end of the line and switch to insert mode from command mode
+- `$` - type `$` to jump to the end of the line and it will not switch to insert mode
+- `0` - type 0 to jump to the beginning of the line and it will also not switch to insert mode
+- `100G` - to jump to line 100
+
+File searching commands:
+
+- command mode + `/<search-text>` - to search a text inside the document
+- command mode + `n` - to navigate to the next searched match
+- command mode + `N` - to search in opposite direction
+
+Text replacement command:
+
+- command mode + `:%s/old/new` - to replace an **old** text with a **new** text
