@@ -154,3 +154,10 @@ Other option we have is snap. Benefits of snaps are:
 
 - Snap uses self contained packages. It contains all the packages contained inside.
 - Everything you need to run the application is in one full package
+
+### Differences between APT and SNAP
+
+- Snap packages are self contained whereas dependencies in apt is distributed into different directories
+- Snap Supports universal Linux packages (package type .snap), whereas apt supports only specific linux distributions (package type .deb)
+- Snap also does automatic updates for it's packages whereas packages installed via apt needs to be updated manually updated
+- Since snap used self contained packages, the similar dependencies that could have been shared via multiple packages, get download multiple times. As a result, snap packages requires more disk space than apt.
