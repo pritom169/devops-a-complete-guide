@@ -237,3 +237,9 @@ Each service (like nginx, mysql, apache, postgres) often has its own dedicated u
 ## Windows vs Linux (User Account)
 
 Both Windows and Linux allow multiple user accounts on the same device, and these accounts are stored on the system — not tied to the hardware. In Linux, user accounts are typically local unless the machine uses centralized authentication (e.g., LDAP or Active Directory). Removing the system’s storage would remove the user accounts simply because the account database lives on the disk, not because they are tied to hardware.
+
+## Multiple Users on a Server
+
+For Linux having Multi-User is important for servers. Now you might be asking, why not just use a standard user? In other words, why not a shared user?
+
+In a shared teams with variability of skills, different users should have different permission as it will allow for more traceability.
