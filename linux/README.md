@@ -142,4 +142,15 @@ sudo apt update
 
 ### Ubuntu Software Center
 
-On Linux we will mostly use apt package managre
+On Linux we will mostly use apt package managers. However, we may need other resources as some packages are not available in those official repositories.
+
+It could be also that the latest version could not be present.
+
+In those cases we have some alternatives. One of those alternatives are Ubuntu Software Center
+
+### Snap Packages
+
+Other option we have is snap. Benefits of snaps are:
+
+- Snap uses self contained packages. It contains all the packages contained inside.
+- Everything you need to run the application is in one full package
