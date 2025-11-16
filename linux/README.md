@@ -171,3 +171,10 @@ We have another option for package installation. A PPA (Personal Package Archive
 - The first choice will always be apt. It should be used whenever possible.
 - If that is not possible, the first alternative is snap package manager.
 - Otherwise we can also add custom repositories.
+
+## Package Manager for other Linux distributions
+
+There are two major linux distributions type. They are followings:
+
+- Debian based (Ubuntu, Debian, Mint) - In debian based operating systems, apt is the primary package manager
+- Red Hat based (RHEL, CentOS, Fedora) - In Red Hat based operating systems, yum is primarily used
