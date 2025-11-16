@@ -243,3 +243,11 @@ Both Windows and Linux allow multiple user accounts on the same device, and thes
 For Linux having Multi-User is important for servers. Now you might be asking, why not just use a standard user? In other words, why not a shared user?
 
 In a shared teams with variability of skills, different users should have different permission as it will allow for more traceability.
+
+# Users and Groups
+
+As the team size increases managing individual responsibility by a single admin becomes difficult.
+
+To solve this in a linux way, it's a best practice to create some group.
+
+For example a person from a DevOps group can have different set of permissions than in an admin group. So when a person leaves, rather than deleting all of his permissions, the admin can just remove him from the groups. In this way, user management becomes a bit easier.
