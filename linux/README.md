@@ -181,4 +181,25 @@ There are two major linux distributions type. They are followings:
 
 # Vim Editor
 
-Vim is a highly efficient and lightweight text editor that comes preinstalled on almost all Linux systems, making it especially valuable for editing files on servers or over SSH where graphical tools are unavailable. Its fully keyboard-driven workflow allows for fast navigation and editing.
+Vim is a highly efficient and lightweight text editor that comes preinstalled on almost all Linux systems, making it especially valuable for editing files on servers or over SSH where graphical tools are unavailable. Its fully keyboard-driven workflow allows for fast navigation and editing. To open a file in VIM one can type `vim <filename-with-extension>`
+
+Vim has two modes:
+
+1. **Command Mode (default):** In the commad mode the user can move around, see, copy text and write some command.
+
+2. **Insert Mode (primarily for typing text):**
+
+- `i` - for typing texts normally
+- `Esc` - stop typing and go back to normal mode
+- `:w`- to save
+- `:q` - to quit
+- `:wq` - to save and quit
+- `:q!` - quit without saving
+
+Even more useful commands to know:
+
+- `vim <filename-with-extension>` - to create and open a file
+- `dd` - to remove the whole line
+- `d5` - to delete 5 lines
+- `u` - to undo the previous action
+- `A` - type capital A to jump to the end of the line and switch to insert mode from normal mode
