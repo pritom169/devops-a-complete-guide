@@ -165,3 +165,9 @@ Other option we have is snap. Benefits of snaps are:
 ### PPA (Personal Package Archive)
 
 We have another option for package installation. A PPA (Personal Package Archive) is a software repository hosted on Launchpad that allows developers and individuals to distribute their own Ubuntu packages directly to users. PPAs are commonly used when software is not available in Ubuntu’s official repositories or when a developer wants to provide newer, experimental, or custom versions of a package. By adding a PPA to the system, users can install and update software through APT just like official packages, but the responsibility for maintenance, security, and compatibility lies with the PPA creator—not with Ubuntu.
+
+## In a nutshell
+
+- The first choice will always be apt. It should be used whenever possible.
+- If that is not possible, the first alternative is snap package manager.
+- Otherwise we can also add custom repositories.
