@@ -216,3 +216,20 @@ File searching commands:
 Text replacement command:
 
 - command mode + `:%s/old/new` - to replace an **old** text with a **new** text
+
+# Users and Permissions
+
+In Linux there are three user categories:
+
+1. **Superuser Account:**
+   Superuser is the root user. It has unrestricted permissions.
+
+For administrative tasks: Need to login as Root user or execute commands as root (a sudo command)
+
+2. **User Account:**
+   A regular user we create to login. A user will have a dedicated directory inside `home`
+
+3. **Service Account:**
+   A Linux service account is a special type of user account created specifically for running system services, daemons, and background processes—not for human login.
+
+Each service (like nginx, mysql, apache, postgres) often has its own dedicated user account. Since the account has very restricted permissions, even if a service is hacked, the attacker gets minimal access. It also Keeps system processes separate from human users.
