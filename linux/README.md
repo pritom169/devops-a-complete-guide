@@ -233,3 +233,7 @@ For administrative tasks: Need to login as Root user or execute commands as root
    A Linux service account is a special type of user account created specifically for running system services, daemons, and background processes—not for human login.
 
 Each service (like nginx, mysql, apache, postgres) often has its own dedicated user account. Since the account has very restricted permissions, even if a service is hacked, the attacker gets minimal access. It also Keeps system processes separate from human users.
+
+## Windows vs Linux (User Account)
+
+Both Windows and Linux allow multiple user accounts on the same device, and these accounts are stored on the system — not tied to the hardware. In Linux, user accounts are typically local unless the machine uses centralized authentication (e.g., LDAP or Active Directory). Removing the system’s storage would remove the user accounts simply because the account database lives on the disk, not because they are tied to hardware.
