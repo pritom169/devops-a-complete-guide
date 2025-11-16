@@ -161,3 +161,7 @@ Other option we have is snap. Benefits of snaps are:
 - Snap Supports universal Linux packages (package type .snap), whereas apt supports only specific linux distributions (package type .deb)
 - Snap also does automatic updates for it's packages whereas packages installed via apt needs to be updated manually updated
 - Since snap used self contained packages, the similar dependencies that could have been shared via multiple packages, get download multiple times. As a result, snap packages requires more disk space than apt.
+
+### PPA (Personal Package Archive)
+
+We have another option for package installation. A PPA (Personal Package Archive) is a software repository hosted on Launchpad that allows developers and individuals to distribute their own Ubuntu packages directly to users. PPAs are commonly used when software is not available in Ubuntu’s official repositories or when a developer wants to provide newer, experimental, or custom versions of a package. By adding a PPA to the system, users can install and update software through APT just like official packages, but the responsibility for maintenance, security, and compatibility lies with the PPA creator—not with Ubuntu.
