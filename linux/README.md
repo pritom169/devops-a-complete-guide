@@ -178,3 +178,7 @@ There are two major linux distributions type. They are followings:
 
 - Debian based (Ubuntu, Debian, Mint) - In debian based operating systems, apt is the primary package manager
 - Red Hat based (RHEL, CentOS, Fedora) - In Red Hat based operating systems, yum is primarily used
+
+# Vim Editor
+
+Vim is a highly efficient and lightweight text editor that comes preinstalled on almost all Linux systems, making it especially valuable for editing files on servers or over SSH where graphical tools are unavailable. Its fully keyboard-driven workflow allows for fast navigation and editing.
