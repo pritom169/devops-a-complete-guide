@@ -259,10 +259,38 @@ As we know /etc holds system wide configuration, it also holds user account info
 We can simply write `cat  /etc/passwd` on terminal in order to see all the users. In the file we can see each user has exactly one line of information. Here is the pattern they follow:
 
 ```
-USERNAME: PASSWORD : UID : UID :GECOS : HOMEDIR : SHELL
+USERNAME: PASSWORD : UID : GID :GECOS : HOMEDIR : SHELL
 ```
 
 - User ID (UID): Each user has a unique ID. UID 0 is reserved for root
 - Group ID (GID): The primary group ID (stored in /etc/group file). Each user will have a primary group and their ID will be stored here.
 - Home Directory (HOMEDIR): Home directory of the user
 - Default shell (SHELL): Absolute path of a shell
+
+#### Add a new user
+
+To create a new user, run:
+
+```shell
+sudo adduser tom
+```
+
+After the account is created, you can verify its presence by checking the system’s user database:
+
+```shell
+cat /etc/passwd
+```
+
+When a new user is added, a primary group with the same name is automatically created and assigned as the user’s default group.
+
+To set or update Tom’s password, use:
+
+```shell
+sudo passwd tom
+```
+
+To switch to the newly created user account, run:
+
+```shell
+su - tom
+```
