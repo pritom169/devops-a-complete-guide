@@ -294,3 +294,19 @@ To switch to the newly created user account, run:
 ```shell
 su - tom
 ```
+
+#### Creating Groups
+
+Managing permissions for individual users quickly becomes inefficient as the number of users grows. To simplify administration, Linux uses groups—allowing users with similar responsibilities to share a common set of permissions.
+
+To create a new group named `devops`, run:
+
+```shell
+sudo groupadd devops
+```
+
+You can view all existing groups on the system by checking the `/etc/group` file:
+
+```shell
+cat /etc/group
+```
