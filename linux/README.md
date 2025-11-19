@@ -332,3 +332,21 @@ After changing the primary group, Tom’s original primary group becomes unused.
 ```shell
 sudo delgroup tom
 ```
+
+- -G → set secondary groups (overwrite existing ones)
+- admin → the only secondary group Tom will belong to after this
+
+Now let's replace Tom's entire list of secondary groups with the group `admin`.
+
+```shell
+sudo usermod -G admin tom
+```
+
+- -a → append (only works together with -G)
+- -G newgroup → add him to this additional secondary group
+
+Let's assume we don't want to remove all the secondary groups. This command adds Tom to the group newgroup without removing his current group memberships.
+
+```shell
+sudo usermod -aG newgroup tom
+```
