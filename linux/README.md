@@ -350,3 +350,15 @@ Let's assume we don't want to remove all the secondary groups. This command adds
 ```shell
 sudo usermod -aG newgroup tom
 ```
+
+To view the groups the current user belongs to, run:
+
+```shell
+groups
+```
+
+To check the group memberships of another user—for example, Tom—use:
+
+```shell
+groups tom
+```
