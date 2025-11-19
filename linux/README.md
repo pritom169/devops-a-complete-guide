@@ -310,3 +310,13 @@ You can view all existing groups on the system by checking the `/etc/group` file
 ```shell
 cat /etc/group
 ```
+
+On the internet you might see `adduser`, `addgroup`, `deluser`, and `delgroup`
+
+Also you might see `useradd`, `groupadd`, `userdel`and `groupdel`
+
+- When working manually, use adduser and addgroup because they are simpler, interactive, and provide sensible defaults.
+
+- When writing automation or scripts, use useradd and groupadd because they are non-interactive, stable, and require explicit configuration.
+
+#### Change of groups
