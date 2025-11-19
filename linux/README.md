@@ -319,4 +319,16 @@ Also you might see `useradd`, `groupadd`, `userdel`and `groupdel`
 
 - When writing automation or scripts, use useradd and groupadd because they are non-interactive, stable, and require explicit configuration.
 
-#### Change of groups
+#### Change of Groups
+
+To modify a user’s primary group, we can use the `usermod` command. The following example assigns the `devops` group as Tom’s new primary group:
+
+```shell
+sudo usermod -g devops tom
+```
+
+After changing the primary group, Tom’s original primary group becomes unused. Since it is no longer needed, we can safely delete it:
+
+```shell
+sudo delgroup tom
+```
