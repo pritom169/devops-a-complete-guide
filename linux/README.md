@@ -362,3 +362,17 @@ To check the group memberships of another user—for example, Tom—use:
 ```shell
 groups tom
 ```
+
+### User Creation with Group Assignment
+
+We can create a new user and simultaneously assign them to a group. The following command creates a user named `nicole` and adds her to the `devops` group as a secondary group:
+
+```shell
+sudo useradd -G devops nicole
+```
+
+To remove a user from a group, we can use the `gpasswd` command. The example below removes `nicole` from the `devops` group:
+
+```shell
+sudo gpasswd -d nicole devops
+```
