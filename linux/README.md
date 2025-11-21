@@ -584,3 +584,9 @@ history | less
 ```
 
 ### Piping and Grepping
+
+We have seen how to get the history of command in a readable fashion. If we want to filter those commands we have to use grep (Globally Search for Regular Expression and Print out)
+
+```shell
+history | grep sudo
+```
