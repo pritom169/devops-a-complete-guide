@@ -624,3 +624,19 @@ history | grep rm > sudo-rm-commands.txt   # Overwrites the file with the new co
 
 history | grep rm >> sudo-rm-commands.txt  # Appends the new content to the end of the file
 ```
+
+## Shell Scripting
+
+Shell scripting is the practice of writing a sequence of Linux commands in a file so they can be executed automatically by the shell. It is commonly used to automate repetitive tasks, combine multiple commands into workflows, process files, and create lightweight programs without requiring a full programming language.
+
+### Types of Shells
+
+Linux systems provide different shell programs, each offering its own features and capabilities:
+
+1. **sh (Bourne Shell) — `/bin/sh`**  
+   The original Unix shell, widely supported and historically used as the default on older Linux distributions.
+
+2. **Bash (Bourne Again Shell) — `/bin/bash`**  
+   An enhanced and more feature-rich version of the Bourne shell. Bash is the default shell on most modern Linux and UNIX‑like systems and is the most commonly used shell today.
+
+In everyday usage, the terms _shell_ and _Bash_ are often used interchangeably. Bash functions as a complete scripting language, enabling the creation of robust and flexible shell scripts.
