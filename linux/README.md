@@ -576,3 +576,11 @@ In Linux, a pipe (`|`) allows the output of one command to be passed directly as
 ```shell
 cat /var/log/syslog | less
 ```
+
+You can also view your previously executed commands in a readable, scrollable format by piping the command history into `less`:
+
+```shell
+history | less
+```
+
+### Piping and Grepping
