@@ -568,3 +568,11 @@ sudo chmod g-w config.yaml
 | `4755`                    | `-rwsr-xr-x` | Setuid executable (runs as owner)       | `/usr/bin/passwd`                 |
 | `2755`                    | `-rwxr-sr-x` | Setgid executable (runs as group)       | Shared collaboration tools        |
 | `1777`                    | `drwxrwxrwt` | Sticky directory (public but protected) | `/tmp` directory                  |
+
+## Piping Commands
+
+In Linux, a pipe (`|`) allows the output of one command to be passed directly as the input to another. For example, the command below sends the contents of the system log to `less`, making it easier to scroll through and read:
+
+```shell
+cat /var/log/syslog | less
+```
