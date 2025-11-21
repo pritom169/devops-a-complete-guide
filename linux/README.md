@@ -486,3 +486,43 @@ drwxrwxr-x 2 mypritux mypritux 4096 Nov 21 11:44 app
 | **8**    | `r`       | Others can read                      |
 | **9**    | `-`       | Others cannot write                  |
 | **10**   | `x`       | Others can execute / enter directory |
+
+##### Modifying Executable Permissions
+
+First, we will revoke executable permissions for the `app` directory. Note that for directories, removing the executable bit prevents users from traversing (entering) that directory.
+
+```shell
+sudo chmod -x app
+```
+
+##### Targeting Specific Ownership Classes
+
+To modify permissions for a specific entity (User, Group, or Others) rather than applying the change globally, you must specify the ownership class prior to the operator.
+
+For example, to remove write permission specifically for the group, use the g designator:
+
+```shell
+sudo chmod g-w config.yaml
+```
+
+| **Category**     | **Symbol** | **Description**                                | **Octal Value** |
+| ---------------- | ---------- | ---------------------------------------------- | --------------- |
+| **User Classes** |            |                                                |                 |
+| Owner            | `u`        | File/directory owner                           | -               |
+| Group            | `g`        | Group members                                  | -               |
+| Other            | `o`        | All other users                                | -               |
+| All              | `a`        | All users (u+g+o)                              | -               |
+| **Operations**   |            |                                                |                 |
+| Add              | `+`        | Grant permission                               | -               |
+| Remove           | `-`        | Revoke permission                              | -               |
+| Set exactly      | `=`        | Set exact permissions                          | -               |
+| **Permissions**  |            |                                                |                 |
+| Read             | `r`        | View file contents / List directory            | 4               |
+| Write            | `w`        | Modify file / Create/delete files in directory | 2               |
+| Execute          | `x`        | Run file / Access directory                    | 1               |
+| No permission    | `-`        | No access                                      | 0               |
+
+**Common Examples:**
+
+- `chmod u+x file` - Add execute permission for owner
+- `chmod go-w file` - Remove write permission for group and others
