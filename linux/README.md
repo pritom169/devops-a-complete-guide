@@ -602,3 +602,25 @@ We can also use `grep` to check whether a specific keyword appears within a file
 ```shell
 cat config.yaml | grep Deployment
 ```
+
+### Redirects
+
+Redirects in Linux allow you to control where a command reads its input from and where it sends its output. Instead of displaying results on the terminal, you can redirect them into a file for storage, processing, or review.
+
+```shell
+history | grep sudo > sudo-commands.txt
+```
+
+We can also use redirection to copy the contents of one file into another:
+
+```shell
+cat sudo-commands.txt > sudo-rm-commands.txt
+```
+
+Redirection is also useful when filtering data and saving the results to a new file. The following examples show the difference between overwriting a file and appending to it:
+
+```shell
+history | grep rm > sudo-rm-commands.txt   # Overwrites the file with the new content
+
+history | grep rm >> sudo-rm-commands.txt  # Appends the new content to the end of the file
+```
