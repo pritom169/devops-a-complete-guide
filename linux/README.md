@@ -376,3 +376,29 @@ To remove a user from a group, we can use the `gpasswd` command. The example bel
 ```shell
 sudo gpasswd -d nicole devops
 ```
+
+# File Permissions and Ownership
+
+In Linux, almost everything is treated as a file. Because of this, permissions revolve around determining who can read, write, or execute these files.
+
+To begin, here are some familiar commands:
+
+```shell
+ls         # list all files in the current directory
+ls -a      # list all files, including hidden ones
+```
+
+To view files along with their detailed permissions, ownership, and metadata, use:
+
+```shell
+ls -l
+```
+
+## Ownership
+
+Ownership defines who controls a file and what actions they are allowed to perform. Every file in Linux has two types of owners:
+
+1. **User (Owner):** The specific user who owns the file.
+2. **Group:** A group of users who share access permissions to the file.
+3. The user
+4. The group
