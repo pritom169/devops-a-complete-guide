@@ -526,3 +526,45 @@ sudo chmod g-w config.yaml
 
 - `chmod u+x file` - Add execute permission for owner
 - `chmod go-w file` - Remove write permission for group and others
+- `chmod g=rwx directory` - Give read, write and executable permission to the directory
+- `chmod g=rw- directory` - Give read, write, and remove executable permission to the directory
+
+##### Change permission with digits
+
+| **Octal** | **Binary** | **Symbolic** | **Owner**              | **Group**       | **Other**      | **Description**                  |
+| --------- | ---------- | ------------ | ---------------------- | --------------- | -------------- | -------------------------------- |
+| **0**     | 000        | `---`        | No permissions         | No permissions  | No permissions | No access at all                 |
+| **1**     | 001        | `--x`        | No permissions         | No permissions  | Execute only   | Others can execute/traverse only |
+| **2**     | 010        | `-w-`        | No permissions         | Write only      | No permissions | Group can modify only (rare)     |
+| **3**     | 011        | `-wx`        | No permissions         | Write + Execute | No permissions | Group can modify and execute     |
+| **4**     | 100        | `r--`        | Read only              | No permissions  | No permissions | Owner can view only              |
+| **5**     | 101        | `r-x`        | Read + Execute         | No permissions  | No permissions | Owner can view and execute       |
+| **6**     | 110        | `rw-`        | Read + Write           | No permissions  | No permissions | Owner can view and modify        |
+| **7**     | 111        | `rwx`        | Read + Write + Execute | No permissions  | No permissions | Owner has full permissions       |
+
+| **Three-Digit Octal** | **Symbolic** | **Description**                     | **Common Use Case**                       |
+| --------------------- | ------------ | ----------------------------------- | ----------------------------------------- |
+| **000**               | `----------` | No permissions for anyone           | Inaccessible file                         |
+| **400**               | `-r--------` | Owner read only                     | Protected read-only file                  |
+| **600**               | `-rw-------` | Owner read/write only               | Private files (SSH keys, passwords)       |
+| **640**               | `-rw-r-----` | Owner read/write, group read        | Shared read-only with group               |
+| **644**               | `-rw-r--r--` | Owner read/write, others read       | Public readable files (documents, images) |
+| **660**               | `-rw-rw----` | Owner and group read/write          | Collaborative files within group          |
+| **664**               | `-rw-rw-r--` | Owner/group read/write, others read | Shared editable, publicly readable        |
+| **666**               | `-rw-rw-rw-` | Everyone read/write                 | World-writable (insecure, avoid)          |
+| **700**               | `-rwx------` | Owner full access only              | Private scripts and programs              |
+| **750**               | `-rwxr-x---` | Owner full, group execute           | Scripts for group execution               |
+| **755**               | `-rwxr-xr-x` | Owner full, others execute/read     | Public executables, web directories       |
+| **770**               | `-rwxrwx---` | Owner/group full access             | Shared project directories                |
+| **775**               | `-rwxrwxr-x` | Owner/group full, others execute    | Collaborative executables                 |
+| **777**               | `-rwxrwxrwx` | Everyone full access                | World-writable/executable (dangerous!)    |
+
+| **Special Permissions**   | **Octal**    | **Effect on Files**                     | **Effect on Directories**         |
+| ------------------------- | ------------ | --------------------------------------- | --------------------------------- |
+| Setuid (`s` in owner)     | **4000**     | Execute as file owner                   | No effect                         |
+| Setgid (`s` in group)     | **2000**     | Execute as group owner                  | New files inherit directory group |
+| Sticky bit (`t` in other) | **1000**     | No effect                               | Only owner can delete their files |
+| **Combined Examples:**    |              |                                         |                                   |
+| `4755`                    | `-rwsr-xr-x` | Setuid executable (runs as owner)       | `/usr/bin/passwd`                 |
+| `2755`                    | `-rwxr-sr-x` | Setgid executable (runs as group)       | Shared collaboration tools        |
+| `1777`                    | `drwxrwxrwt` | Sticky directory (public but protected) | `/tmp` directory                  |
