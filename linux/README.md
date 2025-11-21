@@ -585,8 +585,20 @@ history | less
 
 ### Piping and Grepping
 
-We have seen how to get the history of command in a readable fashion. If we want to filter those commands we have to use grep (Globally Search for Regular Expression and Print out)
+We have already seen how to view command history in a structured and readable format. To further refine the output, we can use `grep`—a powerful tool for searching text based on patterns. For example, the following command filters the history to display only entries that include the keyword `sudo`:
 
 ```shell
 history | grep sudo
+```
+
+To narrow the results even more, we can search for multiple terms. The example below retrieves only those history entries that contain both `sudo` and the `chmod` command:
+
+```shell
+history | grep "sudo chmod"
+```
+
+We can also use `grep` to check whether a specific keyword appears within a file. For instance, to find lines in `config.yaml` that contain the word `Deployment`, run:
+
+```shell
+cat config.yaml | grep Deployment
 ```
