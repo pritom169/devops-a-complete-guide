@@ -427,3 +427,34 @@ sudo chgrp devops text.txt
 - **chgrp** — Stands for _change group_ and updates the group associated with the file.
 - **devops** — The new group assigned to the file.
 - **text.txt** — The file whose group ownership is being modified.
+
+#### Analyzing permissions
+
+When we type `ls -l` we see the following commands:
+
+```shell
+drwxrwxr-x 2 mypritux mypritux 4096 Nov 21 11:44 app
+-rw-rw-r-- 1 mypritux mypritux  107 Nov 16 19:20 config.yaml
+-rw-rw-r-- 1 tom      devops      0 Nov 20 08:49 text.txt
+```
+
+#### Linux Permission Vocabulary
+
+| Symbol              | Meaning                | Applies To             | Description                                                      |
+| ------------------- | ---------------------- | ---------------------- | ---------------------------------------------------------------- |
+| **d**               | Directory              | File Type              | The item is a directory.                                         |
+| **-**               | Regular File           | File Type              | A normal file (text, binary, etc.).                              |
+| **l**               | Symbolic Link          | File Type              | A shortcut-like reference to another file.                       |
+| **r**               | Read                   | Owner / Group / Others | Allows viewing the file or listing folder contents.              |
+| **w**               | Write                  | Owner / Group / Others | Allows modifying a file or adding/removing files in a directory. |
+| **x**               | Execute                | Owner / Group / Others | Allows running a file or entering a directory.                   |
+| **---**             | No Permission          | Owner / Group / Others | Access is not granted.                                           |
+| **rwx**             | Full Permission        | Owner / Group / Others | Read + write + execute.                                          |
+| **rw-**             | Read + Write           | Owner / Group / Others | Modify and read, but cannot execute.                             |
+| **r-x**             | Read + Execute         | Owner / Group / Others | View + execute, cannot modify.                                   |
+| **r--**             | Read Only              | Owner / Group / Others | Only view.                                                       |
+| **w--**             | Write Only             | Owner / Group / Others | Modify without viewing (rare).                                   |
+| **x--**             | Execute Only           | Owner / Group / Others | Execute/enter but cannot read.                                   |
+| **Hard Link Count** | A number like `1`, `2` | Metadata               | Number of directory entries pointing to the file.                |
+
+---
