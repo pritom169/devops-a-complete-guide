@@ -402,3 +402,28 @@ Ownership defines who controls a file and what actions they are allowed to perfo
 2. **Group:** A group of users who share access permissions to the file.
 3. The user
 4. The group
+
+### Change of Ownership
+
+File ownership in Linux can be modified at both the user and group level. The following examples demonstrate how to change each type of ownership.
+
+To change the **user (owner)** of a file, use the `chown` command:
+
+```shell
+sudo chown admin text.txt
+```
+
+- **sudo** — Executes the command with elevated (root) privileges, which are required for modifying ownership.
+- **chown** — Stands for _change owner_ and is used to assign a new user as the file owner.
+- **admin** — The new owner of the file.
+- **text.txt** — The file whose ownership is being updated.
+
+To change the **group ownership** of a file, use the `chgrp` command:
+
+```shell
+sudo chgrp devops text.txt
+```
+
+- **chgrp** — Stands for _change group_ and updates the group associated with the file.
+- **devops** — The new group assigned to the file.
+- **text.txt** — The file whose group ownership is being modified.
