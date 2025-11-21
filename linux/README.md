@@ -458,3 +458,31 @@ drwxrwxr-x 2 mypritux mypritux 4096 Nov 21 11:44 app
 | **Hard Link Count** | A number like `1`, `2` | Metadata               | Number of directory entries pointing to the file.                |
 
 ---
+
+#### Understanding Permission Positions
+
+##### Permission Position Table
+
+| Position | Characters | Meaning                                                   |
+| -------- | ---------- | --------------------------------------------------------- |
+| **1**    | `d`        | File type (`d` = directory, `-` = file, `l` = link, etc.) |
+| **2–4**  | `rwx`      | Owner permissions                                         |
+| **5–7**  | `rwx`      | Group permissions                                         |
+| **8–10** | `r-x`      | Others (public) permissions                               |
+
+---
+
+##### Expanded Breakdown
+
+| Position | Character | Description                          |
+| -------- | --------- | ------------------------------------ |
+| **1**    | `d`       | Directory                            |
+| **2**    | `r`       | Owner can read                       |
+| **3**    | `w`       | Owner can write                      |
+| **4**    | `x`       | Owner can execute / enter directory  |
+| **5**    | `r`       | Group can read                       |
+| **6**    | `w`       | Group can write                      |
+| **7**    | `x`       | Group can execute / enter directory  |
+| **8**    | `r`       | Others can read                      |
+| **9**    | `-`       | Others cannot write                  |
+| **10**   | `x`       | Others can execute / enter directory |
