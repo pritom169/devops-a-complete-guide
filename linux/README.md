@@ -641,7 +641,7 @@ Linux systems provide different shell programs, each offering its own features a
 
 In everyday usage, the terms _shell_ and _Bash_ are often used interchangeably. Bash functions as a complete scripting language, enabling the creation of robust and flexible shell scripts.
 
-## Shebang
+### Shebang
 
 A common question is: **If all shell scripts use the `.sh` extension, how does the operating system know which shell to execute them with?**
 
@@ -666,3 +666,17 @@ You can specify Bash as the interpreter by adding this at the top of the file:
 
 > The # symbol is often read as sharp, and ! is traditionally called bang.
 > Combined, sharp-bang became shebang.
+
+### Bash Concepts
+
+#### Variables
+
+Bash variables allow you to store and reuse values within a script. They do not require explicit data types, and by convention, variable names use uppercase for constants and lowercase for regular variables. To reference a variable, prefix its name with a `$`.
+
+```bash
+name="Pritom"
+age=100
+echo "Hello, I am $name, and I am $age years old"
+```
+
+##### Reading User Input
