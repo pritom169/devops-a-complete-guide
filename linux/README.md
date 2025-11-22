@@ -688,3 +688,13 @@ echo "What's your favorite color?"
 read color
 echo "You chose: $color"
 ```
+
+##### Command Substitution
+
+Command substitution allows you to execute a command and use its output as a value inside another command or variable. It is commonly used to capture dynamic information—such as dates, system data, or command results—directly within scripts.
+
+```bash
+current_date=$(date +%Y-%m-%d)
+user=$(whoami)
+echo "Today is $current_date and you are $user"
+```
