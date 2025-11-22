@@ -680,3 +680,11 @@ echo "Hello, I am $name, and I am $age years old"
 ```
 
 ##### Reading User Input
+
+Bash provides the `read` command to capture input from the user during script execution.
+
+```bash
+echo "What's your favorite color?"
+read color
+echo "You chose: $color"
+```
