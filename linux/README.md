@@ -640,3 +640,29 @@ Linux systems provide different shell programs, each offering its own features a
    An enhanced and more feature-rich version of the Bourne shell. Bash is the default shell on most modern Linux and UNIX‑like systems and is the most commonly used shell today.
 
 In everyday usage, the terms _shell_ and _Bash_ are often used interchangeably. Bash functions as a complete scripting language, enabling the creation of robust and flexible shell scripts.
+
+## Shebang
+
+A common question is: **If all shell scripts use the `.sh` extension, how does the operating system know which shell to execute them with?**
+
+Different scripts may be written for different shells—such as **Bash**, **sh**, or **Zsh**. To ensure the correct interpreter is used, we explicitly specify it.
+
+This is done using a **shebang**.  
+A **shebang** is the very first line of a script and tells the operating system which interpreter should execute the file.
+
+For example, after creating a script with:
+
+```shell
+touch setup.sh
+```
+
+You can specify Bash as the interpreter by adding this at the top of the file:
+
+```shell
+#!/bin/bash
+```
+
+> Why is it called a “shebang”?
+
+> The # symbol is often read as sharp, and ! is traditionally called bang.
+> Combined, sharp-bang became shebang.
