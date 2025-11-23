@@ -726,3 +726,21 @@ for fruit in ${fruits[@]}; do
         echo "I like $fruit"
 done
 ```
+
+##### Functions
+
+```bash
+greet() {
+	local person=$1
+	echo "Hello, $person!"
+}
+
+add_numbers(){
+	local sum=$(($1 + $2))
+	echo $sum
+}
+
+greet "Pritom"
+result=$(add_numbers 5 7)
+echo "5 + 7 = $result"
+```
