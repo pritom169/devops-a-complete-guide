@@ -689,7 +689,7 @@ read color
 echo "You chose: $color"
 ```
 
-##### Command Substitution
+#### Command Substitution
 
 Command substitution allows you to execute a command and use its output as a value inside another command or variable. It is commonly used to capture dynamic information—such as dates, system data, or command results—directly within scripts.
 
@@ -699,7 +699,7 @@ user=$(whoami)
 echo "Today is $current_date and you are $user"
 ```
 
-##### Conditionals
+#### Conditionals
 
 Conditionals in Bash allow a script to make decisions based on whether a condition is true or false. The `if` statement is commonly used to check file types, compare values, or verify the status of commands.
 
@@ -714,7 +714,7 @@ else
 fi
 ```
 
-##### Loops
+#### Loops
 
 Arrays in Bash allow you to store multiple values in a single variable. Using a `for` loop, you can iterate through each element and perform actions on them.  
 The example below demonstrates iterating through an array of fruits and printing a message for each one:
@@ -727,7 +727,7 @@ for fruit in ${fruits[@]}; do
 done
 ```
 
-##### Functions
+#### Functions
 
 ```bash
 greet() {
@@ -745,7 +745,7 @@ result=$(add_numbers 5 7)
 echo "5 + 7 = $result"
 ```
 
-##### Case Statements
+#### Case Statements
 
 Case statements in Bash are more like switch statements in other languages like C, and Java.
 
@@ -762,4 +762,15 @@ case $fruit in
         echo "Unknown fruit"
         ;;
 esac
+```
+
+#### String Operations
+
+```bash
+text="Hello World"
+echo "Length: ${#text}"
+echo "Uppercase: ${text^^}"
+echo "Lowercase: ${text,,}"
+echo "Substring: ${text:0:5}"
+echo "Replace: ${text/World/Bash}"
 ```
