@@ -698,3 +698,18 @@ current_date=$(date +%Y-%m-%d)
 user=$(whoami)
 echo "Today is $current_date and you are $user"
 ```
+
+##### Conditionals
+
+Conditionals in Bash allow a script to make decisions based on whether a condition is true or false. The `if` statement is commonly used to check file types, compare values, or verify the status of commands.
+
+```bash
+#!/bin/bash
+filename="test.txt"
+
+if [ -f "$filename" ]; then
+	echo "$filename exists"
+else
+	echo "$filename does not exists"
+fi
+```
