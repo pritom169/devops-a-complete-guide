@@ -744,3 +744,22 @@ greet "Pritom"
 result=$(add_numbers 5 7)
 echo "5 + 7 = $result"
 ```
+
+##### Case Statements
+
+Case statements in Bash are more like switch statements in other languages like C, and Java.
+
+```bash
+fruit="apple"
+case $fruit in
+    apple)
+        echo "It's an apple"
+        ;;
+    banana)
+        echo "It's a banana"
+        ;;
+    *)
+        echo "Unknown fruit"
+        ;;
+esac
+```
