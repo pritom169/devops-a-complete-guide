@@ -774,3 +774,23 @@ echo "Lowercase: ${text,,}"
 echo "Substring: ${text:0:5}"
 echo "Replace: ${text/World/Bash}"
 ```
+
+#### File Operations
+
+```bash
+# Create a file
+echo "Sample content" > output.txt
+
+# Append to file
+echo "More content" >> output.txt
+
+# Read file line by line
+while IFS= read -r line; do
+    echo "Line: $line"
+done < output.txt
+
+# Check if the file exists
+if [ -e "output.txt" ]; then
+        echo "File Exists"
+fi
+```
