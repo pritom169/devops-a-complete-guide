@@ -713,3 +713,16 @@ else
 	echo "$filename does not exists"
 fi
 ```
+
+##### Loops
+
+Arrays in Bash allow you to store multiple values in a single variable. Using a `for` loop, you can iterate through each element and perform actions on them.  
+The example below demonstrates iterating through an array of fruits and printing a message for each one:
+
+```bash
+fruits=("apple" "banana" "cherry" "date")
+
+for fruit in ${fruits[@]}; do
+        echo "I like $fruit"
+done
+```
