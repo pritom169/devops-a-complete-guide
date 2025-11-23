@@ -800,3 +800,7 @@ fi
 Environment variables in Linux are key‑value pairs that define how the operating system and applications behave. They provide configuration details such as system paths, user preferences, and runtime settings that influence how programs execute. These variables ensure consistency across sessions and allow applications to adapt to the user’s environment.
 
 For example, environment variables can define a user’s preferred shell (Bash, sh, Zsh), default text editor (Vim, Nano), browser (Chrome, Firefox), or other personalized settings that shape the overall user experience.
+
+- Environment variables stores information
+- Environment variables are available for the whole environment not just only in the script
+- By convention, the environment variables are defined in UPPER CASE
