@@ -804,3 +804,11 @@ For example, environment variables can define a user’s preferred shell (Bash, 
 - Environment variables stores information
 - Environment variables are available for the whole environment not just only in the script
 - By convention, the environment variables are defined in UPPER CASE
+
+### Viewing Environment Variables
+
+To display all environment variables currently available in your session, use the following command:
+
+```bash
+printenv
+```
