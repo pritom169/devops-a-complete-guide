@@ -1900,3 +1900,14 @@ AWS recommends following the **Principle of Least Privilege** when assigning per
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
+#### Signing In with an IAM User
+
+After permissions are assigned, the IAM user can access AWS through:
+
+| Access Method | URL/Command | Requirements |
+|---------------|-------------|--------------|
+| **AWS Console** | `https://<account-id>.signin.aws.amazon.com/console` | Username + Password + MFA (if enabled) |
+| **AWS CLI** | `aws configure` | Access Key ID + Secret Access Key |
+| **Programmatic Access** | SDK/API calls | Access Key ID + Secret Access Key |
+
+> **Note**: The account-specific sign-in URL can be customized with an alias via **IAM → Dashboard → Account Alias**.
