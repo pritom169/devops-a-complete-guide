@@ -1857,3 +1857,25 @@ Administrators can delegate specific permissions to other users without granting
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
+
+#### Attaching Permissions to an IAM User
+
+To grant permissions to an existing IAM user, the root user (or another user with IAM administrative privileges) must attach policies through the AWS Console.
+
+**Navigation Path:**
+
+```
+IAM → Users → [username] → Add permissions → Attach policies directly
+```
+
+**Step-by-Step Process:**
+
+1. Sign in to the AWS Console as the root user or an IAM administrator
+2. Navigate to the **IAM** service
+3. Select **Users** from the left navigation panel
+4. Click on the target username
+5. Select the **Permissions** tab
+6. Click **Add permissions** → **Attach policies directly**
+7. Search for and select the appropriate policy
+8. Click **Next** → **Add permissions**
+
