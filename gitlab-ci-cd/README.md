@@ -1809,3 +1809,18 @@ IAM is the AWS service for managing access to AWS resources securely. It enables
 | **Roles** | Temporary credentials assumable by users or services | EC2 instances, Lambda functions, cross-account access |
 | **Policies** | JSON documents defining permissions | Granting or denying specific actions on resources |
 
+#### Creating an Administrator User
+
+The first recommended action after creating an AWS account is establishing an administrator IAM user for day-to-day operations.
+
+**Step-by-step process:**
+
+1. Sign in to the AWS Console as the root user
+2. Navigate to **IAM** service
+3. Select **Users** → **Create user**
+4. Enter a username (e.g., `admin`)
+5. Enable **AWS Management Console access**
+6. Select **Attach policies directly**
+7. Attach the `AdministratorAccess` managed policy
+8. Complete user creation and securely store credentials
+
