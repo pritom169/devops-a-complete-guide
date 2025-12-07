@@ -1879,3 +1879,24 @@ IAM → Users → [username] → Add permissions → Attach policies directly
 7. Search for and select the appropriate policy
 8. Click **Next** → **Add permissions**
 
+#### Principle of Least Privilege
+
+AWS recommends following the **Principle of Least Privilege** when assigning permissions:
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  Least Privilege Principle                                              │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  ❌ Anti-pattern: Grant AdministratorAccess to all users                │
+│                                                                         │
+│  ✅ Best practice: Grant only the specific permissions required         │
+│                                                                         │
+│  Example for a CI/CD pipeline user:                                     │
+│  • AmazonEC2ContainerRegistryPowerUser (push/pull images)               │
+│  • AmazonS3ReadOnlyAccess (read deployment artifacts)                   │
+│  • CloudWatchLogsFullAccess (write pipeline logs)                       │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
