@@ -1746,3 +1746,17 @@ Verifying runner... is valid                        runner=fgt0Ey8bE
 
 Before deploying GitLab Runner on AWS infrastructure, understanding AWS Identity and Access Management (IAM) fundamentals is essential for maintaining security best practices.
 
+#### Understanding the Root User
+
+When an AWS account is created, a **root user** is automatically provisioned with unrestricted access to all AWS services and resources. The root user credentials consist of the email address used to create the account and its associated password.
+
+| Root User Characteristic | Description |
+|--------------------------|-------------|
+| **Access Level** | Unlimited privileges across all AWS services |
+| **Creation** | Automatically created with the AWS account |
+| **Credentials** | Email address + password + optional MFA |
+| **Billing Access** | Full access to billing, payment methods, and account settings |
+| **Deletability** | Cannot be deleted or restricted |
+
+> **Security Warning**: AWS strongly recommends against using the root user for everyday tasks. The root user should only be used for account-level operations that specifically require root credentials.
+
