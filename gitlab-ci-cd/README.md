@@ -1741,3 +1741,8 @@ Running in system-mode.
 
 Verifying runner... is valid                        runner=fgt0Ey8bE
 ```
+
+### AWS Prerequisites
+
+Before deploying GitLab Runner on AWS infrastructure, understanding AWS Identity and Access Management (IAM) fundamentals is essential for maintaining security best practices.
+
