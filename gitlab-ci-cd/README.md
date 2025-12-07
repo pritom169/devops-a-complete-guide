@@ -1800,3 +1800,12 @@ IAM is the AWS service for managing access to AWS resources securely. It enables
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
+#### IAM Core Components
+
+| Component | Description | Use Case |
+|-----------|-------------|----------|
+| **Users** | Individual identities with long-term credentials | Team members needing AWS console or CLI access |
+| **Groups** | Collections of users sharing common permissions | Organizing users by team or function (Developers, Admins) |
+| **Roles** | Temporary credentials assumable by users or services | EC2 instances, Lambda functions, cross-account access |
+| **Policies** | JSON documents defining permissions | Granting or denying specific actions on resources |
+
