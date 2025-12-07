@@ -1824,3 +1824,36 @@ The first recommended action after creating an AWS account is establishing an ad
 7. Attach the `AdministratorAccess` managed policy
 8. Complete user creation and securely store credentials
 
+#### Administrator vs Root User Permissions
+
+| Capability | Root User | Administrator User |
+|------------|-----------|-------------------|
+| Manage IAM users, groups, roles | ✅ | ✅ |
+| Access all AWS services | ✅ | ✅ |
+| View and modify billing information | ✅ | ❌ (unless explicitly granted) |
+| Change account-level settings | ✅ | ❌ |
+| Close the AWS account | ✅ | ❌ |
+| Create and manage resources | ✅ | ✅ |
+| Delegate permissions to other users | ✅ | ✅ |
+
+#### Permission Delegation Flow
+
+Administrators can delegate specific permissions to other users without granting full administrative access:
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  Permission Delegation Example                                          │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  Administrator                                                          │
+│       │                                                                 │
+│       ├──▶ Creates "Developers" group with EC2 + S3 permissions         │
+│       │                                                                 │
+│       ├──▶ Creates "CI-CD" role for GitLab Runner with ECR permissions  │
+│       │                                                                 │
+│       └──▶ Creates "ReadOnly" user for auditing purposes                │
+│                                                                         │
+│  Each entity receives only the permissions necessary for their role     │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
