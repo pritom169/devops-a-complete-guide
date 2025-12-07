@@ -1771,3 +1771,32 @@ Certain operations can only be performed by the root user:
 - Configuring an S3 bucket for MFA delete
 - Editing or deleting an S3 bucket policy with an invalid VPC ID or endpoint ID
 
+#### AWS IAM (Identity and Access Management)
+
+IAM is the AWS service for managing access to AWS resources securely. It enables fine-grained control over who can do what within your AWS environment.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        AWS IAM Hierarchy                                │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  ┌─────────────┐                                                        │
+│  │  Root User  │ ← Account owner, unrestricted access                   │
+│  └──────┬──────┘                                                        │
+│         │ creates                                                       │
+│         ▼                                                               │
+│  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐               │
+│  │    Users    │────▶│   Groups    │────▶│   Roles     │               │
+│  └─────────────┘     └─────────────┘     └─────────────┘               │
+│         │                   │                   │                       │
+│         └───────────────────┴───────────────────┘                       │
+│                             │                                           │
+│                             ▼                                           │
+│                    ┌─────────────────┐                                  │
+│                    │    Policies     │                                  │
+│                    │  (Permissions)  │                                  │
+│                    └─────────────────┘                                  │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
