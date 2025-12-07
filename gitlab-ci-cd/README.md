@@ -1760,3 +1760,14 @@ When an AWS account is created, a **root user** is automatically provisioned wit
 
 > **Security Warning**: AWS strongly recommends against using the root user for everyday tasks. The root user should only be used for account-level operations that specifically require root credentials.
 
+#### Tasks Requiring Root User Access
+
+Certain operations can only be performed by the root user:
+
+- Changing account settings (account name, email, root password)
+- Restoring IAM user permissions
+- Activating IAM access to the Billing and Cost Management console
+- Closing the AWS account
+- Configuring an S3 bucket for MFA delete
+- Editing or deleting an S3 bucket policy with an invalid VPC ID or endpoint ID
+
