@@ -1533,3 +1533,34 @@ GitLab resolves Docker images using the following precedence:
 ```
 
 This hierarchy enables flexible configuration where common cases use the global image while specialized jobs override as needed.
+
+### Project Runners
+
+Project runners are dedicated runners associated with specific GitLab projects. Unlike shared runners that serve multiple projects across an instance, project runners provide isolated execution environments for individual projects or teams.
+
+#### Use Cases for Project Runners
+
+| Use Case | Description |
+|----------|-------------|
+| **Security Isolation** | Sensitive projects requiring isolated build environments to prevent credential or data leakage |
+| **Specialized Requirements** | Jobs needing specific hardware (GPUs), software, or network configurations unavailable on shared runners |
+| **High CI/CD Volume** | Projects with frequent pipeline executions that would benefit from dedicated compute resources |
+| **Compliance Requirements** | Regulatory requirements mandating dedicated infrastructure for builds and deployments |
+
+#### Project Runner Setup Overview
+
+Setting up a project-specific runner requires three steps:
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  1. Provision Infrastructure                                            │
+│     Set up a machine (VM, container, bare metal, or cloud instance)     │
+├─────────────────────────────────────────────────────────────────────────┤
+│  2. Install GitLab Runner                                               │
+│     Download and install the GitLab Runner application                  │
+├─────────────────────────────────────────────────────────────────────────┤
+│  3. Register with GitLab Instance                                       │
+│     Connect the runner to your GitLab project using a registration token│
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
