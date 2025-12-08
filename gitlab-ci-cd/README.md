@@ -1577,3 +1577,8 @@ After installation, the runner must be registered with a GitLab project. Registr
 - **Authenticating the connection**: Using a project-specific registration token obtained from **Settings > CI/CD > Runners**
 - **Configuring the executor**: Specifying how jobs run (Shell, Docker, Kubernetes, etc.)
 - **Assigning tags**: Labeling the runner for targeted job execution
+
+### Installing GitLab Runner on macOS
+
+This section provides a step-by-step guide for installing and configuring GitLab Runner on macOS, including both Apple Silicon (M1/M2/M3) and Intel-based Macs.
+
