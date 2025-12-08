@@ -812,3 +812,11 @@ To display all environment variables currently available in your session, use th
 ```bash
 printenv
 ```
+
+### Environment Variables
+
+Environment variables allow each user to maintain individualized system preferences without affecting others.
+
+- Every user operates within their own environment configuration.
+- Users can customize their environment by defining personal preferences such as font size, default shell (Bash, sh), preferred editor (Vim, Nano), or default browser (Chrome, Firefox).
+- These configurations are isolated, ensuring that one user’s settings do not interfere with or override another user’s environment.
