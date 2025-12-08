@@ -1564,3 +1564,7 @@ Setting up a project-specific runner requires three steps:
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
+### Setting up a GitLab Runner
+
+GitLab Runner can be installed on virtually any platform—from a Raspberry Pi to a local workstation to cloud-based virtual machines. The installation process is straightforward and platform-agnostic.
+
