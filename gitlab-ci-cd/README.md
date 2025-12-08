@@ -1670,3 +1670,74 @@ already the config should be automatically reloaded!
 Configuration (with the authentication token) was saved in "/etc/gitlab-runner/config.toml"
 ```
 
+#### Step 5: Install as a System Service
+
+Install GitLab Runner as a LaunchDaemon to ensure it starts automatically on boot:
+
+```bash
+gitlab-runner install
+```
+
+Output:
+
+```
+Runtime platform                                    arch=arm64 os=darwin pid=36732 revision=9ffb4aa0 version=18.8.0
+```
+
+This command creates a LaunchDaemon plist file that manages the runner process.
+
+#### Step 6: Start the Runner
+
+Start the GitLab Runner service:
+
+```bash
+gitlab-runner start
+```
+
+Output:
+
+```
+Runtime platform                                    arch=arm64 os=darwin pid=36736 revision=9ffb4aa0 version=18.8.0
+```
+
+#### Runner Service Management Commands
+
+| Command | Description |
+|---------|-------------|
+| `gitlab-runner start` | Start the runner service |
+| `gitlab-runner stop` | Stop the runner service |
+| `gitlab-runner restart` | Restart the runner service |
+| `gitlab-runner status` | Check if the runner is running |
+| `gitlab-runner uninstall` | Remove the runner service |
+| `gitlab-runner verify` | Verify runner registration with GitLab |
+| `gitlab-runner list` | List all configured runners |
+
+#### Step 7: Verify Runner Status
+
+Confirm the runner is operational:
+
+```bash
+gitlab-runner status
+```
+
+Expected output for a running service:
+
+```
+Runtime platform                                    arch=arm64 os=darwin pid=36740 revision=9ffb4aa0 version=18.8.0
+gitlab-runner: Service is running
+```
+
+Verify the runner is connected to GitLab:
+
+```bash
+gitlab-runner verify
+```
+
+Expected output:
+
+```
+Runtime platform                                    arch=arm64 os=darwin pid=36745 revision=9ffb4aa0 version=18.8.0
+Running in system-mode.
+
+Verifying runner... is valid                        runner=fgt0Ey8bE
+```
