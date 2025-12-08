@@ -1582,3 +1582,14 @@ After installation, the runner must be registered with a GitLab project. Registr
 
 This section provides a step-by-step guide for installing and configuring GitLab Runner on macOS, including both Apple Silicon (M1/M2/M3) and Intel-based Macs.
 
+#### Step 1: Download GitLab Runner Binary
+
+Download the appropriate binary based on your Mac's architecture:
+
+**For Apple Silicon (M1/M2/M3/M4):**
+
+```bash
+sudo curl --output /usr/local/bin/gitlab-runner \
+  "https://s3.dualstack.us-east-1.amazonaws.com/gitlab-runner-downloads/latest/binaries/gitlab-runner-darwin-arm64"
+```
+
