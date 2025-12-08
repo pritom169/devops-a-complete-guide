@@ -1617,3 +1617,22 @@ GO version:   go1.23.6
 Built:        2025-01-20T15:15:15+0000
 OS/Arch:      darwin/arm64
 ```
+
+#### Step 3: Obtain the Registration Token
+
+Before registering the runner, obtain the authentication token from GitLab:
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  Navigate to Your GitLab Project                                        │
+│                                                                         │
+│  1. Go to Settings > CI/CD                                              │
+│  2. Expand the "Runners" section                                        │
+│  3. Click "New project runner"                                          │
+│  4. Configure runner options (tags, description, protected)             │
+│  5. Copy the generated authentication token (starts with glrt-)         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+> **Security Note**: The runner token provides access to execute CI/CD jobs. Treat it as a sensitive credential and never commit it to version control.
+
