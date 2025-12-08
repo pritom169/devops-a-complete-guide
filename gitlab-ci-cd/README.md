@@ -1636,3 +1636,37 @@ Before registering the runner, obtain the authentication token from GitLab:
 
 > **Security Note**: The runner token provides access to execute CI/CD jobs. Treat it as a sensitive credential and never commit it to version control.
 
+#### Step 4: Register the Runner
+
+Run the registration command with your token:
+
+```bash
+sudo gitlab-runner register \
+  --url https://gitlab.com \
+  --token <your-runner-token>
+```
+
+The interactive registration process will prompt for additional configuration:
+
+```
+Runtime platform                                    arch=arm64 os=darwin pid=36673 revision=9ffb4aa0 version=18.8.0
+Running in system-mode.
+
+Enter the GitLab instance URL (for example, https://gitlab.com/):
+[https://gitlab.com]: <press Enter to accept default>
+
+Verifying runner... is valid                        runner=fgt0Ey8bE
+
+Enter a name for the runner. This is stored only in the local config.toml file:
+[Your-Mac.local]: local-runner
+
+Enter an executor: instance, custom, virtualbox, docker, docker+machine,
+kubernetes, shell, ssh, parallels, docker-windows, docker-autoscaler:
+shell
+
+Runner registered successfully. Feel free to start it, but if it's running
+already the config should be automatically reloaded!
+
+Configuration (with the authentication token) was saved in "/etc/gitlab-runner/config.toml"
+```
+
