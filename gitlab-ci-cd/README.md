@@ -1568,3 +1568,12 @@ Setting up a project-specific runner requires three steps:
 
 GitLab Runner can be installed on virtually any platform—from a Raspberry Pi to a local workstation to cloud-based virtual machines. The installation process is straightforward and platform-agnostic.
 
+
+#### Runner Registration
+
+After installation, the runner must be registered with a GitLab project. Registration establishes the connection between the runner and GitLab by:
+
+- **Binding to a GitLab instance**: Configuring the runner to communicate with a specific GitLab server (e.g., `gitlab.com` or a self-hosted instance)
+- **Authenticating the connection**: Using a project-specific registration token obtained from **Settings > CI/CD > Runners**
+- **Configuring the executor**: Specifying how jobs run (Shell, Docker, Kubernetes, etc.)
+- **Assigning tags**: Labeling the runner for targeted job execution
