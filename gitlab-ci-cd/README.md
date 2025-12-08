@@ -1593,3 +1593,27 @@ sudo curl --output /usr/local/bin/gitlab-runner \
   "https://s3.dualstack.us-east-1.amazonaws.com/gitlab-runner-downloads/latest/binaries/gitlab-runner-darwin-arm64"
 ```
 
+#### Step 2: Make the Binary Executable
+
+Grant execution permissions to the downloaded binary:
+
+```bash
+sudo chmod +x /usr/local/bin/gitlab-runner
+```
+
+Verify the installation by checking the version:
+
+```bash
+gitlab-runner --version
+```
+
+Expected output:
+
+```
+Version:      18.8.0
+Git revision: 9ffb4aa0
+Git branch:   18-8-stable
+GO version:   go1.23.6
+Built:        2025-01-20T15:15:15+0000
+OS/Arch:      darwin/arm64
+```
