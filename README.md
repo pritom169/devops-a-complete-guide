@@ -32,14 +32,35 @@ Linux is the foundation of DevOps. In this module, I have compiled comprehensive
 
 ---
 
+### 🐳 [Module 02: Containers & Docker](./containers/README.md)
+
+Containers revolutionized application deployment by packaging code with dependencies into portable, isolated units. This module covers Docker fundamentals, architecture, and production best practices.
+
+#### **Topics Covered**
+
+| Category | Topics | Key Highlights |
+|:---|:---|:---|
+| **Fundamentals** | • Container concepts<br>• Images vs Containers<br>• Docker vs VMs | Lightweight isolation, shared kernel, 10-100x efficiency vs VMs |
+| **Architecture** | • Docker Client/Daemon<br>• Container Runtime<br>• Registries (Hub, ECR) | Client-server model, containerd/runc, image distribution |
+| **Core Commands** | • Image management<br>• Container lifecycle<br>• Port mapping<br>• Networking | `pull`, `run`, `exec`, `logs`, `-p` flag, container DNS |
+| **Dockerfile** | • Build instructions<br>• Layer optimization<br>• Multi-stage builds | `FROM`, `COPY`, `RUN`, `CMD`, caching strategies |
+| **Docker Compose** | • Multi-container apps<br>• Service orchestration<br>• Volumes & networks | YAML configuration, `docker-compose up/down` |
+| **Security** | • Image scanning<br>• Non-root users<br>• Secret management<br>• `.dockerignore` | Trivy/Scout, least privilege, BuildKit secrets |
+| **Best Practices** | • Minimal base images<br>• Version pinning<br>• Size optimization | Alpine/distroless, avoid `latest`, layer reduction |
+| **CI/CD Integration** | • AWS ECR workflow<br>• Image tagging<br>• Registry authentication | Build → Test → Push → Deploy pipeline |
+
+**[Click here to read the detailed Container Notes](./containers/README.md)**
+
+---
+
 ## Learning Roadmap
 
-- [x] **Phase 1: Linux Fundamentals & Scripting** (Current Focus)
-- [ ] **Phase 2:** Containerization (Docker)
-- [ ] **Phase 3:** Container Orchestration (Kubernetes)
-- [ ] **Phase 4:** CI/CD Pipelines (Jenkins/GitHub Actions)
-- [ ] **Phase 5:** Infrastructure as Code (Terraform/Ansible)
-- [ ] **Phase 6:** Monitoring (Prometheus, Grafana, ELK Stack)
+- **Phase 1:** Linux Fundamentals & Scripting
+- **Phase 2:** Containerization (Docker)
+- **Phase 3:** Container Orchestration (Kubernetes)
+- **Phase 4:** CI/CD Pipelines (GitLab CI/CD)
+- **Phase 5:** Infrastructure as Code (Terraform/Ansible)
+- **Phase 6:** Monitoring (Prometheus, Grafana, ELK Stack)
 
 ---
 
