@@ -2108,14 +2108,120 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 # Final image: ~200MB (just JRE + JAR)
 ```
 
-**Benefits Summary:**
+### 7. Use Least Privileged User
 
-| Aspect | Single Stage | Multi-Stage |
-|--------|--------------|-------------|
-| Image size | 1.2GB | 180MB |
-| Attack surface | Large (build tools) | Minimal |
-| Secrets exposure | Risk of leaking build-time secrets | Secrets stay in build stage |
-| Build cache | Poor | Excellent |
+**Why This Matters:**
+
+By default, containers run as `root`. If an attacker exploits your application, they have root access inside the container. While container isolation provides some protection, running as root:
+1. Increases impact of container escapes
+2. Allows modification of system files
+3. Can affect mounted volumes with root permissions
+4. Violates security best practices and compliance requirements
+
+**The Problem:**
+
+```dockerfile
+# ❌ BAD - Runs as root by default
+FROM node:18-alpine
+WORKDIR /app
+COPY . .
+RUN npm install
+CMD ["node", "server.js"]
+
+# Inside container:
+# $ whoami
+# root
+# $ id
+# uid=0(root) gid=0(root) groups=0(root)
+```
+
+**The Solution:**
+
+```dockerfile
+# ✅ GOOD - Create and use non-root user
+FROM node:18-alpine
+
+# Create a group and user with specific UID/GID
+RUN addgroup -g 1001 -S appgroup && \
+    adduser -u 1001 -S appuser -G appgroup
+
+WORKDIR /app
+
+# Change ownership of the working directory
+COPY --chown=appuser:appgroup package*.json ./
+RUN npm ci --only=production
+
+COPY --chown=appuser:appgroup . .
+
+# Switch to non-root user BEFORE CMD
+USER appuser
+
+CMD ["node", "server.js"]
+
+# Inside container:
+# $ whoami
+# appuser
+# $ id
+# uid=1001(appuser) gid=1001(appgroup) groups=1001(appgroup)
+```
+
+**Why Specific UID/GID (1001)?**
+
+```dockerfile
+# Using specific UID/GID helps with:
+# 1. Consistent permissions across containers
+# 2. Matching host user for volume mounts
+# 3. Avoiding conflicts with system users (< 1000)
+
+RUN addgroup -g 1001 -S appgroup && \
+    adduser -u 1001 -S appuser -G appgroup
+```
+
+**Handling File Permissions:**
+
+```dockerfile
+FROM node:18-alpine
+
+RUN addgroup -g 1001 -S app && adduser -u 1001 -S app -G app
+
+WORKDIR /app
+
+# Option 1: Copy with ownership
+COPY --chown=app:app . .
+
+# Option 2: Change ownership after copy
+COPY . .
+RUN chown -R app:app /app
+
+# Option 3: For directories that need write access
+RUN mkdir -p /app/logs /app/tmp && \
+    chown -R app:app /app/logs /app/tmp
+
+USER app
+CMD ["node", "server.js"]
+```
+
+**For Images That Need Some Root Operations:**
+
+```dockerfile
+FROM node:18-alpine
+
+# Do root operations FIRST
+RUN apk add --no-cache tini && \
+    addgroup -g 1001 -S app && \
+    adduser -u 1001 -S app -G app
+
+WORKDIR /app
+COPY --chown=app:app . .
+RUN npm ci --only=production
+
+# Switch to non-root LAST
+USER app
+
+# Use tini as init process
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["node", "server.js"]
+```
 
 ---
 
