@@ -2225,6 +2225,105 @@ CMD ["node", "server.js"]
 
 ---
 
+### 8. Scan Your Images for Vulnerabilities
+
+**Why This Matters:**
+
+Even official images contain vulnerabilities. The `node:18-alpine` image you pulled today might have 5 known CVEs (Common Vulnerabilities and Exposures). Without scanning:
+1. You deploy vulnerable software unknowingly
+2. You fail security audits and compliance checks
+3. You become an easy target for automated attacks
+
+**Available Scanning Tools:**
+
+| Tool | Type | Best For |
+|------|------|----------|
+| Docker Scout | Built-in | Quick local scans |
+| Trivy | Open Source | CI/CD integration |
+| Snyk | Commercial | Comprehensive analysis |
+| Grype | Open Source | Fast, accurate |
+| Clair | Open Source | Registry integration |
+
+**Using Docker Scout:**
+
+```bash
+# Scan a local image
+docker scout cves myapp:latest
+
+# Scan with detailed output
+docker scout cves --format markdown myapp:latest
+
+# Quick summary
+docker scout quickview myapp:latest
+
+# Compare two images
+docker scout compare myapp:v1 myapp:v2
+```
+
+**Using Trivy (Recommended for CI/CD):**
+
+```bash
+# Install Trivy
+brew install trivy  # macOS
+apt-get install trivy  # Debian/Ubuntu
+
+# Scan an image
+trivy image myapp:latest
+
+# Scan with severity filter
+trivy image --severity HIGH,CRITICAL myapp:latest
+
+# Output as JSON for automation
+trivy image --format json --output results.json myapp:latest
+
+# Fail build if vulnerabilities found (for CI/CD)
+trivy image --exit-code 1 --severity CRITICAL myapp:latest
+```
+
+**Integrating Scanning in CI/CD:**
+
+```yaml
+# GitHub Actions example
+name: Build and Scan
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t myapp:${{ github.sha }} .
+
+      - name: Scan for vulnerabilities
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: myapp:${{ github.sha }}
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'  # Fail the build if vulnerabilities found
+
+      - name: Push image
+        if: success()
+        run: docker push myregistry/myapp:${{ github.sha }}
+```
+
+**Interpreting Scan Results:**
+
+```
+myapp:latest (alpine 3.19)
+===========================
+Total: 5 (UNKNOWN: 0, LOW: 2, MEDIUM: 2, HIGH: 1, CRITICAL: 0)
+
+┌──────────────┬────────────────┬──────────┬───────────────────┐
+│   Library    │ Vulnerability  │ Severity │  Fixed Version    │
+├──────────────┼────────────────┼──────────┼───────────────────┤
+│ libcrypto3   │ CVE-2024-1234  │ HIGH     │ 3.1.4-r1          │
+│ libssl3      │ CVE-2024-1235  │ MEDIUM   │ 3.1.4-r1          │
+└──────────────┴────────────────┴──────────┴───────────────────┘
+```
+
 ### Complete Workflow Summary
 
 ```bash
