@@ -2343,3 +2343,154 @@ docker-compose up
 ```
 
 ---
+
+### 9. Don't Leak Sensitive Information to Docker Images
+
+**Why This Matters:**
+
+Secrets embedded in images can be extracted by anyone with access to the image. Docker images are layered—even if you delete a secret in a later layer, it still exists in earlier layers and can be extracted.
+
+**Common Mistakes:**
+
+```dockerfile
+# ❌ NEVER DO THIS - Secret in environment variable
+FROM node:18-alpine
+ENV DATABASE_PASSWORD=supersecret123
+ENV API_KEY=sk-1234567890abcdef
+
+# ❌ NEVER DO THIS - Copying secrets file
+COPY .env /app/.env
+COPY credentials.json /app/
+
+# ❌ NEVER DO THIS - Secret in RUN command
+RUN curl -H "Authorization: Bearer sk-secret-token" https://api.example.com
+
+# ❌ NEVER DO THIS - Secret in build argument (still visible in history)
+ARG NPM_TOKEN=secret123
+RUN npm install
+```
+
+**Extracting Secrets from Images (What Attackers Do):**
+
+```bash
+# View image history - exposes ARG and ENV values
+docker history myapp:latest
+
+# Extract and examine layers
+docker save myapp:latest | tar -xf -
+# Now you can see every file ever added to any layer
+
+# View environment variables
+docker inspect myapp:latest | jq '.[0].Config.Env'
+```
+
+**The Solution - Build-Time Secrets (Docker BuildKit):**
+
+```dockerfile
+# syntax=docker/dockerfile:1.4
+FROM node:18-alpine
+
+WORKDIR /app
+COPY package*.json ./
+
+# Mount secret at build time - NOT stored in image
+RUN --mount=type=secret,id=npmrc,target=/root/.npmrc \
+    npm ci --only=production
+
+COPY . .
+CMD ["node", "server.js"]
+```
+
+```bash
+# Build with secret
+docker build --secret id=npmrc,src=$HOME/.npmrc -t myapp .
+```
+
+**The Solution - Runtime Secrets (Docker Compose):**
+
+```yaml
+# docker-compose.yml
+version: '3.8'
+services:
+  app:
+    image: myapp
+    secrets:
+      - db_password
+      - api_key
+    environment:
+      - DB_PASSWORD_FILE=/run/secrets/db_password
+      - API_KEY_FILE=/run/secrets/api_key
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+  api_key:
+    file: ./secrets/api_key.txt
+```
+
+```javascript
+// Read secrets from files at runtime
+const fs = require('fs');
+const dbPassword = fs.readFileSync('/run/secrets/db_password', 'utf8').trim();
+const apiKey = fs.readFileSync('/run/secrets/api_key', 'utf8').trim();
+```
+
+**The Solution - Environment Variables at Runtime:**
+
+```dockerfile
+# Dockerfile - NO secrets baked in
+FROM node:18-alpine
+WORKDIR /app
+COPY . .
+RUN npm ci --only=production
+CMD ["node", "server.js"]
+```
+
+```bash
+# Pass secrets at runtime
+docker run -e DATABASE_URL="postgres://user:pass@host/db" \
+           -e API_KEY="sk-secret" \
+           myapp:latest
+```
+
+```yaml
+# Or via docker-compose with .env file
+# docker-compose.yml
+services:
+  app:
+    image: myapp
+    env_file:
+      - .env  # NOT copied into image, read at runtime
+```
+
+**Multi-Stage Build to Prevent Secret Leakage:**
+
+```dockerfile
+# syntax=docker/dockerfile:1.4
+
+# ========== Build Stage (secrets used here) ==========
+FROM node:18-alpine AS builder
+WORKDIR /app
+
+COPY package*.json ./
+
+# Secret only exists in this stage
+RUN --mount=type=secret,id=npmrc,target=/root/.npmrc \
+    npm ci
+
+COPY . .
+RUN npm run build
+
+# ========== Production Stage (no secrets) ==========
+FROM node:18-alpine
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Copy only built artifacts - secrets don't transfer
+COPY --from=builder /app/dist ./dist
+
+USER node
+CMD ["node", "dist/server.js"]
+```
