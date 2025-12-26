@@ -1641,6 +1641,43 @@ FROM nginx:1.25-alpine
 
 ---
 
+### 2. Use Specific Image Versions (Pin Your Versions)
+
+**Why This Matters:**
+
+The `latest` tag is mutable—it points to whatever the newest version is at any given time. This creates several problems:
+
+1. **Unpredictable builds:** Your image today might differ from tomorrow's
+2. **Breaking changes:** A new version might introduce incompatibilities
+3. **Security auditing:** You can't track exactly what version is deployed
+4. **Rollback difficulties:** Hard to reproduce a previous working state
+
+**The Problem Illustrated:**
+
+```dockerfile
+# ❌ BAD - What version is "latest"? It changes constantly
+FROM node:latest
+
+# Timeline of disaster:
+# Monday:    latest = 18.17.0 → Build works ✓
+# Tuesday:   latest = 20.0.0  → Build breaks ✗ (breaking changes in Node 20)
+# Wednesday: You can't figure out why production differs from staging
+```
+
+**The Solution:**
+
+```dockerfile
+# ✅ GOOD - Exact version, reproducible forever
+FROM node:18.19.0-alpine3.19
+
+# ✅ ACCEPTABLE - Minor version pinning (gets security patches)
+FROM node:18.19-alpine
+
+# ✅ ACCEPTABLE - Major version pinning (if you need flexibility)
+FROM node:18-alpine
+```
+
+---
 
 
 ---
