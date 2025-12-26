@@ -1678,7 +1678,92 @@ FROM node:18-alpine
 ```
 
 ---
+### 3. Use Minimal Base Images
 
+**Why This Matters:**
+
+Every package, library, and binary in your image is:
+1. **A potential security vulnerability** - More code = more attack surface
+2. **Additional size** - Slower pulls, more storage costs
+3. **Unnecessary complexity** - Tools you'll never use
+
+**Size Comparison:**
+
+| Base Image | Size | Packages | Use Case |
+|------------|------|----------|----------|
+| `ubuntu:22.04` | ~77MB | ~100+ | Full OS, many tools |
+| `debian:bookworm` | ~124MB | ~100+ | Full OS, stable |
+| `debian:bookworm-slim` | ~74MB | ~50 | Reduced Debian |
+| `alpine:3.19` | ~7MB | ~15 | Minimal, musl libc |
+| `distroless/static` | ~2MB | None | Just your binary |
+| `scratch` | 0MB | None | Empty, for static binaries |
+
+**The Security Perspective:**
+
+```dockerfile
+# ❌ BAD - Full Ubuntu image
+FROM ubuntu:22.04
+# Contains: bash, apt, curl, wget, ssh, and 100+ other packages
+# Each package is a potential CVE waiting to happen
+# Attack surface: HUGE
+
+# ✅ GOOD - Alpine-based image
+FROM node:18-alpine
+# Contains: Node.js, npm, minimal shell utilities
+# Attack surface: SMALL
+```
+
+**Practical Example - Node.js Application:**
+
+```dockerfile
+# ❌ Full Node image - 1.1GB
+FROM node:18
+WORKDIR /app
+COPY . .
+RUN npm install
+CMD ["node", "server.js"]
+# Result: 1.1GB+ image with Python, gcc, make, and tons of dev tools
+
+# ✅ Alpine Node image - 180MB
+FROM node:18-alpine
+WORKDIR /app
+COPY . .
+RUN npm install --production
+CMD ["node", "server.js"]
+# Result: ~180MB image with just what you need
+```
+
+**For Compiled Languages (Go, Rust) - Use Distroless or Scratch:**
+
+```dockerfile
+# Build stage
+FROM golang:1.21-alpine AS builder
+WORKDIR /app
+COPY . .
+RUN CGO_ENABLED=0 go build -o server .
+
+# ✅ BEST - Distroless image (no shell, no package manager)
+FROM gcr.io/distroless/static-debian12
+COPY --from=builder /app/server /
+CMD ["/server"]
+# Result: ~7MB image with ZERO attack surface beyond your app
+
+# ✅ ULTIMATE - Scratch (empty) image
+FROM scratch
+COPY --from=builder /app/server /
+CMD ["/server"]
+# Result: ~5MB image (just your binary)
+```
+
+**When Alpine Might Not Work:**
+
+Alpine uses `musl` libc instead of `glibc`. Some applications (especially those with native bindings) may have compatibility issues:
+
+```dockerfile
+# If Alpine causes issues, use slim variants instead
+FROM node:18-slim       # Debian-based but minimal
+FROM python:3.11-slim   # Smaller than full, uses glibc
+```
 
 ---
 
