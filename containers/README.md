@@ -1575,7 +1575,30 @@ Container created → Data written to volume → Container removed → DATA PRES
                                                                       ↓
 New container created → Mounts same volume → DATA AVAILABLE
 ```
+#### Commands That Preserve Data
 
+| Command | Effect on Data |
+|---------|---------------|
+| `docker-compose stop` | Data preserved (containers paused) |
+| `docker-compose down` | Data preserved (containers removed, volumes kept) |
+| `docker-compose restart` | Data preserved |
+| `docker-compose down -v` | **DATA DELETED** (removes volumes) |
+
+#### Useful Volume Commands
+
+```bash
+# List all volumes
+docker volume ls
+
+# Inspect volume details (see mount location)
+docker volume inspect mongo-data
+
+# Remove a specific volume (DELETES DATA)
+docker volume rm mongo-data
+
+# Remove all unused volumes
+docker volume prune
+```
 
 
 ---
