@@ -1764,6 +1764,100 @@ Alpine uses `musl` libc instead of `glibc`. Some applications (especially those 
 FROM node:18-slim       # Debian-based but minimal
 FROM python:3.11-slim   # Smaller than full, uses glibc
 ```
+---
+
+### 4. Optimize Caching Image Layers
+
+**Why This Matters:**
+
+Docker builds images layer by layer. Each instruction creates a new layer. Docker caches these layers and reuses them if nothing has changed. Poor layer ordering means:
+1. **Slower builds** - Rebuilding unchanged layers
+2. **Larger images** - Duplicate data across layers
+3. **Wasted bandwidth** - Re-pushing unchanged layers
+
+**How Docker Layer Caching Works:**
+
+```
+Dockerfile Instructions:
+    FROM node:18-alpine          → Layer 1 (cached if unchanged)
+    WORKDIR /app                 → Layer 2 (cached if Layer 1 unchanged)
+    COPY package.json .          → Layer 3 (invalidated if package.json changes)
+    RUN npm install              → Layer 4 (invalidated if Layer 3 invalidated)
+    COPY . .                     → Layer 5 (invalidated if ANY source file changes)
+    CMD ["node", "server.js"]    → Layer 6 (invalidated if Layer 5 invalidated)
+```
+
+**Key Insight:** When a layer is invalidated, ALL subsequent layers must be rebuilt.
+
+**The Problem:**
+
+```dockerfile
+# ❌ BAD - Copies everything first, then installs dependencies
+FROM node:18-alpine
+WORKDIR /app
+COPY . .                    # Layer invalidated on ANY file change
+RUN npm install             # Must reinstall ALL deps even for tiny code change
+CMD ["node", "server.js"]
+
+# Change one line of code → npm install runs again (slow!)
+```
+
+**The Solution:**
+
+```dockerfile
+# ✅ GOOD - Copy dependency files first, then source code
+FROM node:18-alpine
+WORKDIR /app
+
+# Layer 1: Copy only dependency definitions
+COPY package.json package-lock.json ./
+
+# Layer 2: Install dependencies (cached unless package*.json changes)
+RUN npm ci --only=production
+
+# Layer 3: Copy source code (only this rebuilds on code changes)
+COPY . .
+
+CMD ["node", "server.js"]
+
+# Change one line of code → only COPY . . runs again (fast!)
+```
+
+**Advanced Caching Strategies:**
+
+```dockerfile
+# Combine RUN commands to reduce layers
+# ❌ BAD - Multiple layers
+RUN apt-get update
+RUN apt-get install -y curl
+RUN apt-get install -y vim
+RUN apt-get clean
+
+# ✅ GOOD - Single layer, cleanup in same layer
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        curl \
+        vim && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+```
+
+**Python Example:**
+
+```dockerfile
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Copy requirements first (changes less frequently)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy source code (changes frequently)
+COPY . .
+
+CMD ["python", "app.py"]
+```
 
 ---
 
