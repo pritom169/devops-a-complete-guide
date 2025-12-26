@@ -1483,6 +1483,22 @@ The application at [codes/docker/js-app/app/server.js](../codes/docker/js-app/ap
 
 ---
 
+## Docker Compose: Overview and Data Persistence
+
+### What is Docker Compose?
+
+Docker Compose is a tool for defining and running multi-container Docker applications. Instead of running multiple `docker run` commands with complex flags, you define your entire application stack in a single YAML file.
+
+**Key Benefits:**
+- **Declarative Configuration:** Define what you want, not how to do it
+- **Single Command Deployment:** Start all services with `docker-compose up`
+- **Automatic Networking:** Containers can communicate using service names
+- **Easy Reproducibility:** Share the YAML file to replicate environments
+
+
+
+---
+
 ### Complete Workflow Summary
 
 ```bash
@@ -1490,7 +1506,7 @@ The application at [codes/docker/js-app/app/server.js](../codes/docker/js-app/ap
 docker build -t <IAM-id>.dkr.ecr.<aws-region>.amazonaws.com/<repository-name>:<tag>.
 
 # 2. Authenticate with ECR
-aws ecr get-login-password --region <aws-region> | docker login --username AWS --password-stdin <IAM-id>.dkr.ecr.eu-central-1.amazonaws.com
+aws ecr get-login-password --region <aws-region> | docker login --username AWS --password-stdin <IAM-id>.dkr.ecr.<aws-region> .amazonaws.com
 
 # 3. Push to ECR
 docker push <IAM-id>.dkr.ecr.<aws-region> .amazonaws.com/<repository-name>:<tag>
