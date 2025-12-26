@@ -1495,6 +1495,43 @@ Docker Compose is a tool for defining and running multi-container Docker applica
 - **Automatic Networking:** Containers can communicate using service names
 - **Easy Reproducibility:** Share the YAML file to replicate environments
 
+### How Docker Compose Works
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    docker-compose.yaml                       │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
+│  │  Service 1  │  │  Service 2  │  │  Service 3  │          │
+│  │  (my-app)   │  │  (mongodb)  │  │  (mongo-    │          │
+│  │             │  │             │  │   express)  │          │
+│  └─────────────┘  └─────────────┘  └─────────────┘          │
+└─────────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+              docker-compose up -d
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  Docker Engine                               │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
+│  │ Container 1 │  │ Container 2 │  │ Container 3 │          │
+│  │  (my-app)   │◄─┤  (mongodb)  │◄─┤  (mongo-    │          │
+│  │   :3000     │  │   :27017    │  │   express)  │          │
+│  └─────────────┘  └─────────────┘  │   :8081     │          │
+│         │                │         └─────────────┘          │
+│         └────────────────┴──────────────┘                   │
+│                    Default Network                           │
+│              (automatic DNS resolution)                      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Execution Flow:**
+1. Docker Compose reads the YAML file
+2. Creates a default network for all services
+3. Pulls required images (if not available locally)
+4. Creates and starts containers in dependency order
+5. Services communicate via container names as DNS hostnames
+
 
 
 ---
