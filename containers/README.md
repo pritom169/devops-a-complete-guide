@@ -1765,7 +1765,126 @@ FROM node:18-slim       # Debian-based but minimal
 FROM python:3.11-slim   # Smaller than full, uses glibc
 ```
 ---
+### 5. Use .dockerignore to Exclude Files and Folders
 
+**Why This Matters:**
+
+When you run `docker build`, Docker sends the entire "build context" (your project directory) to the Docker daemon. Without `.dockerignore`:
+1. **Slower builds** - Sending unnecessary files (node_modules, .git)
+2. **Larger images** - Including dev dependencies, logs, temp files
+3. **Security risks** - Accidentally including secrets, credentials, env files
+4. **Cache invalidation** - Changes to ignored files still trigger rebuilds
+
+**The Problem:**
+
+```
+project/
+├── .git/                    # 500MB of git history
+├── node_modules/            # 800MB of dependencies
+├── .env                     # Contains API keys! 🔐
+├── .env.local               # More secrets! 🔐
+├── coverage/                # Test coverage reports
+├── dist/                    # Built files (we'll rebuild anyway)
+├── *.log                    # Log files
+├── Dockerfile
+├── package.json
+└── src/
+```
+
+Without `.dockerignore`, ALL of this gets sent to Docker daemon and potentially included in your image.
+
+**The Solution - Create `.dockerignore`:**
+
+```dockerignore
+# .dockerignore
+
+# Dependencies (will be installed fresh in container)
+node_modules
+npm-debug.log
+
+# Version control
+.git
+.gitignore
+
+# IDE and editor files
+.idea
+.vscode
+*.swp
+*.swo
+
+# Environment and secrets (CRITICAL!)
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+secrets/
+
+# Build artifacts (will be rebuilt in container)
+dist
+build
+coverage
+.nyc_output
+
+# Documentation (not needed at runtime)
+*.md
+docs/
+LICENSE
+
+# Docker files (meta, not needed in image)
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files (not needed in production)
+__tests__
+*.test.js
+*.spec.js
+test/
+tests/
+
+# Logs
+*.log
+logs/
+```
+
+**Impact Comparison:**
+
+```bash
+# Without .dockerignore
+$ docker build .
+Sending build context to Docker daemon  1.2GB  # Slow!
+
+# With .dockerignore
+$ docker build .
+Sending build context to Docker daemon  5.4MB  # Fast!
+```
+
+**Security-Critical Exclusions:**
+
+```dockerignore
+# NEVER include these in your image
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_rsa.pub
+credentials.json
+service-account.json
+.aws/
+.ssh/
+secrets/
+config/secrets/
+```
+
+---
 ### 4. Optimize Caching Image Layers
 
 **Why This Matters:**
