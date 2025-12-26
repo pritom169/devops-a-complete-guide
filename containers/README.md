@@ -1600,6 +1600,48 @@ docker volume rm mongo-data
 docker volume prune
 ```
 
+---
+
+## Docker Security, Size & Best Practices: In-Depth Guide
+
+Building secure, efficient Docker images requires understanding why each practice matters. This section explains the reasoning behind each recommendation with practical examples.
+
+---
+
+### 1. Only Use Official/Trusted Docker Images as Base Images
+
+**Why This Matters:**
+
+Base images form the foundation of your container. A compromised base image means every container built from it inherits those vulnerabilities or malware. Attackers have been known to publish malicious images with names similar to popular official images (typosquatting).
+
+**The Risk:**
+
+```dockerfile
+# ❌ DANGEROUS - Unknown publisher, could contain malware
+FROM randomuser/node-server:latest
+
+# ❌ RISKY - Typosquatting attack (note the typo)
+FROM nod3:18-alpine
+```
+
+When you use an untrusted image, you're essentially running someone else's code with full access to your application and potentially your infrastructure.
+
+**The Solution:**
+
+```dockerfile
+# ✅ SAFE - Official Node.js image maintained by Docker and Node.js team
+FROM node:18-alpine
+
+# ✅ SAFE - Official PostgreSQL image
+FROM postgres:16-alpine
+
+# ✅ SAFE - Verified publisher image (look for "Docker Official Image" badge)
+FROM nginx:1.25-alpine
+```
+
+---
+
+
 
 ---
 
