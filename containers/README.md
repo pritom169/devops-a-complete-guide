@@ -1532,6 +1532,50 @@ Docker Compose is a tool for defining and running multi-container Docker applica
 4. Creates and starts containers in dependency order
 5. Services communicate via container names as DNS hostnames
 
+### Data Persistence with Docker Volumes
+
+This project uses Docker volumes to persist MongoDB data across container restarts.
+
+**The Problem:** Container filesystems are ephemeral. When a container is removed, all data inside it is lost.
+
+**The Solution:** Mount a Docker volume to store data outside the container's lifecycle.
+
+#### Volume Configuration in docker-compose.yaml
+
+```yaml
+services:
+  mongodb:
+    image: mongo
+    volumes:
+      - mongo-data:/data/db    # Mount volume to MongoDB's data directory
+
+volumes:
+  mongo-data:                   # Declare the named volume
+    driver: local
+```
+
+**How It Works:**
+
+| Component | Value | Purpose |
+|-----------|-------|---------|
+| `mongo-data` | Named volume | Persistent storage managed by Docker |
+| `/data/db` | Container path | Where MongoDB stores its database files |
+| `driver: local` | Storage driver | Uses local disk storage |
+
+#### Data Lifecycle
+
+**Without Volume:**
+```
+Container created → Data written → Container removed → DATA LOST
+```
+
+**With Volume:**
+```
+Container created → Data written to volume → Container removed → DATA PRESERVED
+                                                                      ↓
+New container created → Mounts same volume → DATA AVAILABLE
+```
+
 
 
 ---
