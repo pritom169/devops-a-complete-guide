@@ -1980,6 +1980,145 @@ CMD ["python", "app.py"]
 
 ---
 
+### 6. Use Multi-Stage Builds for Cleaner Dockerfiles
+
+**Why This Matters:**
+
+Many applications require build tools that aren't needed at runtime:
+- **Node.js:** `npm`, `node-gyp`, build scripts
+- **Go:** The entire Go compiler
+- **Java:** Maven/Gradle, JDK (only need JRE at runtime)
+- **TypeScript:** `tsc`, type definitions
+
+Multi-stage builds let you use these tools during build, then copy only the artifacts to a minimal runtime image.
+
+**The Problem - Single Stage Build:**
+
+```dockerfile
+# ❌ BAD - Everything in one stage
+FROM node:18
+
+WORKDIR /app
+COPY . .
+
+# These are only needed during build
+RUN npm install
+RUN npm run build  # Compiles TypeScript
+
+# But they stay in the image!
+# Image contains: TypeScript, dev dependencies, source files...
+CMD ["node", "dist/server.js"]
+
+# Result: 1.2GB image with tons of unnecessary files
+```
+
+**The Solution - Multi-Stage Build:**
+
+```dockerfile
+# ✅ GOOD - Multi-stage build
+
+# ========== Stage 1: Build ==========
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# Install ALL dependencies (including devDependencies)
+COPY package*.json ./
+RUN npm ci
+
+# Copy source and build
+COPY . .
+RUN npm run build
+# At this point we have: node_modules (1GB), src/, dist/, etc.
+
+# ========== Stage 2: Production ==========
+FROM node:18-alpine AS production
+
+WORKDIR /app
+
+# Only copy what we need for production
+COPY package*.json ./
+RUN npm ci --only=production  # Only production deps
+
+# Copy built artifacts from builder stage
+COPY --from=builder /app/dist ./dist
+
+# Create non-root user
+RUN addgroup -S app && adduser -S app -G app
+USER app
+
+CMD ["node", "dist/server.js"]
+
+# Result: 180MB image with only production requirements
+```
+
+**Go Application Example:**
+
+```dockerfile
+# ========== Build Stage ==========
+FROM golang:1.21-alpine AS builder
+
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+
+# ========== Production Stage ==========
+FROM alpine:3.19
+
+# Add CA certificates for HTTPS
+RUN apk --no-cache add ca-certificates
+
+WORKDIR /root/
+COPY --from=builder /app/main .
+
+CMD ["./main"]
+
+# Build stage: ~800MB (Go compiler, tools, source)
+# Final image: ~15MB (just the binary + certs)
+```
+
+**Java Application Example:**
+
+```dockerfile
+# ========== Build Stage ==========
+FROM maven:3.9-eclipse-temurin-21 AS builder
+
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+COPY src ./src
+RUN mvn package -DskipTests
+
+# ========== Production Stage ==========
+FROM eclipse-temurin:21-jre-alpine
+
+WORKDIR /app
+COPY --from=builder /app/target/*.jar app.jar
+
+RUN addgroup -S app && adduser -S app -G app
+USER app
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# Build stage: ~500MB (JDK, Maven, source)
+# Final image: ~200MB (just JRE + JAR)
+```
+
+**Benefits Summary:**
+
+| Aspect | Single Stage | Multi-Stage |
+|--------|--------------|-------------|
+| Image size | 1.2GB | 180MB |
+| Attack surface | Large (build tools) | Minimal |
+| Secrets exposure | Risk of leaking build-time secrets | Secrets stay in build stage |
+| Build cache | Poor | Excellent |
+
+---
+
 ### Complete Workflow Summary
 
 ```bash
