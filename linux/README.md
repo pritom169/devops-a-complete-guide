@@ -895,3 +895,20 @@ print(f"Connecting to database as user: {db_user}")
 ```
 
 Modern programming languages provide built-in support for reading environment variables, making this approach universally applicable across different technology stacks.
+
+### Creating Custom Environment Variables
+
+To create custom environment variables in your current session, use the `export` command followed by the variable name and its value:
+
+```bash
+export DB_USERNAME=dbuser
+export DB_PASSWORD=secretpwdvalue
+export DB_NAME=mydb
+```
+
+### Deleting Env Variables
+We can also delete environement variables via
+
+```bash
+unset DB_NAME
+```
