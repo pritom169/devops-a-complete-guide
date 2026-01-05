@@ -819,3 +819,18 @@ To display all environment variables currently available in your session, use th
 ```bash
 printenv
 ```
+
+### Querying Specific Environment Variables
+
+To display the value of a specific environment variable, append the variable name to the `printenv` command. For example, to view the current user:
+
+```bash
+printenv USER
+```
+
+When multiple environment variables share similar names or patterns, you can filter the output using `grep` to display only matching entries:
+
+```bash
+printenv | grep USER
+```
+
