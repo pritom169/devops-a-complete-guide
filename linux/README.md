@@ -834,3 +834,64 @@ When multiple environment variables share similar names or patterns, you can fil
 printenv | grep USER
 ```
 
+### Use Cases for Custom Environment Variables
+
+#### Managing Sensitive Credentials
+
+Consider a scenario where a Python application running on a Linux server needs to connect to an external database. External databases typically require authentication to prevent unauthorized access. The application must provide valid credentials—such as authentication tokens or API keys—to establish a trusted connection with resources like databases or third-party APIs (e.g., Google Maps API).
+
+**The Security Challenge:**
+
+Hardcoding credentials directly into source code presents significant security risks:
+- Credentials become accessible to anyone with code access
+- Sensitive information is stored in plain text
+- Credentials may be inadvertently committed to version control systems
+
+**The Solution: Environment Variables**
+
+Environment variables provide a secure mechanism for storing sensitive configuration data. By defining credentials as environment variables on the server, we achieve several benefits:
+
+- **Separation of Concerns:** Credentials remain separate from application code
+- **Access Control:** Only authorized processes and users with appropriate permissions can access these variables
+- **Flexibility:** Configuration can be modified without code changes
+
+**Example Implementation:**
+
+First, define the environment variables on the server:
+
+```bash
+export DB_PWD=secretpassword
+export DB_USER=mysqluser
+export API_KEY=your_api_key_here
+```
+
+**Accessing Environment Variables in Python:**
+
+Once defined, these environment variables become accessible to all applications and processes running within the environment. Here's how to access them in a Python application:
+
+```python
+import os
+
+# Retrieve environment variables
+db_user = os.environ.get('DB_USER')
+db_password = os.environ.get('DB_PWD')
+api_key = os.environ.get('API_KEY')
+
+# Use environment variables in your application
+print(f"Connecting to database as user: {db_user}")
+
+# Example: Database connection (pseudocode)
+# connection = database.connect(
+#     user=db_user,
+#     password=db_password,
+#     host='localhost'
+# )
+
+# Example: API request with authentication
+# response = requests.get(
+#     'https://maps.googleapis.com/maps/api/geocode/json',
+#     params={'address': '1600 Amphitheatre Parkway', 'key': api_key}
+# )
+```
+
+Modern programming languages provide built-in support for reading environment variables, making this approach universally applicable across different technology stacks.
