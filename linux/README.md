@@ -805,18 +805,17 @@ For example, environment variables can define a user’s preferred shell (Bash, 
 - Environment variables are available for the whole environment not just only in the script
 - By convention, the environment variables are defined in UPPER CASE
 
-### Viewing Environment Variables
+### Key Characteristics of Environment Variables
+
+- **Format:** Environment variables are expressed as `KEY=value` pairs.
+- **Purpose:** They store configuration information that influences system and application behavior.
+- **Scope:** Environment variables are accessible throughout the entire environment, not limited to individual scripts or sessions.
+- **Naming Convention:** By convention, environment variable names are defined in uppercase letters.
+- **Example:** `SHELL=/bin/bash` defines the default shell for the current user.
+
 
 To display all environment variables currently available in your session, use the following command:
 
 ```bash
 printenv
 ```
-
-### Environment Variables
-
-Environment variables allow each user to maintain individualized system preferences without affecting others.
-
-- Every user operates within their own environment configuration.
-- Users can customize their environment by defining personal preferences such as font size, default shell (Bash, sh), preferred editor (Vim, Nano), or default browser (Chrome, Firefox).
-- These configurations are isolated, ensuring that one user’s settings do not interfere with or override another user’s environment.
