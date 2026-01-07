@@ -813,7 +813,6 @@ For example, environment variables can define a user’s preferred shell (Bash, 
 - **Naming Convention:** By convention, environment variable names are defined in uppercase letters.
 - **Example:** `SHELL=/bin/bash` defines the default shell for the current user.
 
-
 To display all environment variables currently available in your session, use the following command:
 
 ```bash
@@ -843,6 +842,7 @@ Consider a scenario where a Python application running on a Linux server needs t
 **The Security Challenge:**
 
 Hardcoding credentials directly into source code presents significant security risks:
+
 - Credentials become accessible to anyone with code access
 - Sensitive information is stored in plain text
 - Credentials may be inadvertently committed to version control systems
@@ -906,9 +906,38 @@ export DB_PASSWORD=secretpwdvalue
 export DB_NAME=mydb
 ```
 
-### Deleting Env Variables
-We can also delete environement variables via
+### Removing Environment Variables
+
+To remove an environment variable from the current session, use the `unset` command:
 
 ```bash
 unset DB_NAME
 ```
+
+### Persisting Environment Variables
+
+Environment variables created using `export` in the terminal are temporary; they persist only for the duration of the current session. Once the terminal is closed, these variables are lost.
+
+To make environment variables persistent across new sessions, they must be defined in the user's shell configuration file, such as `.bashrc` (for Bash shells). This file is located in the user's home directory and is executed whenever a new interactive shell is started.
+
+To add persistent variables, open the `.bashrc` file using a text editor:
+
+```bash
+vim ~/.bashrc
+```
+
+Append the export commands to the end of the file:
+
+```bash
+export DB_USERNAME=dbuser
+export DB_PASSWORD=secretpwdvalue
+export DB_NAME=mydb
+```
+
+Save and close the file. Changes to `.bashrc` do not affect the current session immediately. To apply the changes to the current session without restarting the terminal, reload the configuration file using the `source` command:
+
+```bash
+source ~/.bashrc
+```
+
+Now, the environment variables will be available in the current session and all future sessions.
