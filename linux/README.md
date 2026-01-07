@@ -953,3 +953,28 @@ PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/u
 ```
 
 This configuration instructs the shell which directories to search, and in what order, when resolving executable commands entered by the user.
+
+### Introduction to SSH
+
+We can authenticate to a server using multiple ways.
+
+1. **Username and Password:**
+   In a company the system administrator creates username and password such that a normal user can login using those credentials. However, there is another way to log into the server.
+
+2. **SSH:**
+   We can login to a remote server without using password all the time. This is actually even more secure than using username and password.
+
+#### Authentication Process using SSH
+
+When you attempt to connect to a remote server, here's what happens step-by-step:
+
+1. **Connection Initiation**
+   You run something like ssh user@server.com. Your SSH client initiates a connection to the server.
+2. **Server Sends a Challenge**
+   The server looks in the authorized user's ~/.ssh/authorized_keys file for your public key. If found, it generates a random challenge message, encrypts it with your public key, and sends it to your client.
+3. **Client Proves Identity**
+   Your SSH client uses your private key to decrypt the challenge. It then sends back a response (typically a hash of the decrypted challenge combined with the session ID) to prove it possesses the private key.
+4. **Server Verifies**
+   The server verifies the response matches what it expects. If correct, authentication succeeds and you're granted access. This entire exchange happens in seconds.
+
+The beauty of this system is that the private key never travels over the network, so even if someone intercepts the communication, they cannot steal your credentials.
