@@ -941,3 +941,13 @@ source ~/.bashrc
 ```
 
 Now, the environment variables will be available in the current session and all future sessions.
+
+### Persisting Environment Variables System-Wide
+
+The environment variables configured so far are specific to a single user. To define environment variables globally for all users on the system, we can modify the `/etc/environment` file. This file typically contains the system-wide `PATH` variable, which lists directories containing executable files, separated by colons (`:`).
+
+```bash
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+```
+
+The `PATH` variable instructs the shell where to search for executable programs when a command is run.
