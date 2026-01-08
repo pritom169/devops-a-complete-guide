@@ -1,4 +1,4 @@
-# 🚀 DevOps Learning Journey
+# DevOps - A Complete Guide
 
 Welcome to my DevOps documentation repository. It includes notes from system administration fundamentals to advanced Cloud Infrastructure and CI/CD pipelines.
 
