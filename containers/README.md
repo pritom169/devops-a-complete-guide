@@ -87,3 +87,10 @@ If one container crashes or is hacked, it is isolated from the others. You can r
 
 In the old days, if a server had a bug, an admin would SSH in and try to "patch" it live. This often caused "configuration drift" where servers became unique "snowflakes."
 With containers, you never patch a running container. You simply fix the code, build a *new* image, kill the old container, and start the new one. This ensures the system is always in a known, clean state.
+
+## Docker Images
+A docker image contains layers of images.
+
+- Most of the time, the base image is alpine image or image for any other linux distrubution. It is called base image. It also makes sure the image is as small as possible.
+- In the next layers there will be some intermeditary layers of images.
+- Finally there will beapplication image.
