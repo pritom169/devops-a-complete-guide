@@ -89,8 +89,26 @@ In the old days, if a server had a bug, an admin would SSH in and try to "patch"
 With containers, you never patch a running container. You simply fix the code, build a *new* image, kill the old container, and start the new one. This ensures the system is always in a known, clean state.
 
 ## Docker Images
-A docker image contains layers of images.
+A Docker image consists of a series of read-only layers.
 
-- Most of the time, the base image is alpine image or image for any other linux distrubution. It is called base image. It also makes sure the image is as small as possible.
-- In the next layers there will be some intermeditary layers of images.
-- Finally there will beapplication image.
+-   **Base Image:** The foundational layer (e.g., Alpine Linux, Ubuntu). It provides the core OS filesystem and is optimized for size.
+-   **Intermediate Layers:** Contain dependencies, libraries, and configuration instructions added on top of the base image.
+-   **Application Layer:** The final layer containing your application code and entrypoint.
+
+## Container vs. Image
+
+Understanding the distinction between a **Container Image** and a **Container** is fundamental.
+
+### 1. What is a Container Image?
+An **Image** is a static, read-only template that includes everything needed to run an application: code, runtime, libraries, environment variables, and configuration files.
+
+*   **State:** Inert (exists on disk). It does not consume CPU or memory until run.
+*   **Mutability:** Immutable. You cannot change an image once it is built; you must build a new one to apply changes.
+*   **Architecture:** Built from stacked read-only layers (OS, Dependencies, Code).
+
+### 2. What is a Container?
+A **Container** is a running instance of an image. It brings the static image to life as an isolated process.
+
+*   **State:** Active (consumes CPU & Memory). You can start, stop, and interact with it.
+*   **Mutability:** Ephemeral. It adds a thin Read/Write layer on top of the image. Changes made here are lost when the container is removed, unless persisted in Volumes.
+*   **Layering:** The container layer sits on top of the image layers, allowing modification without altering the underlying image.
