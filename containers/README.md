@@ -144,3 +144,49 @@ graph LR
     style D fill:#ffebee,stroke:#c62828,stroke-width:2px
     style E fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
 ```
+
+### What virtualization targets?
+Virtualization emerged to solve a fundamental problem: how to run multiple isolated operating systems on a single physical machine. Traditional virtualization (using hypervisors) virtualizes the hardware layer itself.
+
+A hypervisor like VMware ESXi or KVM sits between the physical hardware and guest operating systems, presenting each guest with what appears to be complete, dedicated hardware—virtual CPUs, virtual memory, virtual network cards, virtual disks. Each virtual machine (VM) runs its own full operating system kernel, completely unaware it's sharing physical resources with other VMs. The hypervisor manages this illusion, translating virtual hardware operations into physical ones and ensuring isolation between guests.
+
+This is powerful but heavyweight. Each VM needs its own complete OS installation, which means gigabytes of disk space, significant memory overhead, and minutes to boot up. You're essentially running multiple complete computers on one physical machine.
+
+```mermaid
+graph LR
+    subgraph VM1["Virtual Machine 1"]
+        A1[App A]
+        B1[Guest OS<br/>Full Linux Kernel]
+    end
+    
+    subgraph VM2["Virtual Machine 2"]
+        A2[App B]
+        B2[Guest OS<br/>Full Windows Kernel]
+    end
+    
+    subgraph VM3["Virtual Machine 3"]
+        A3[App C]
+        B3[Guest OS<br/>Full Linux Kernel]
+    end
+    
+    H[Hypervisor<br/>VMware ESXi / KVM<br/>Hardware Virtualization Layer]
+    HW[Physical Hardware<br/>CPU, RAM, Storage, Network]
+    
+    A1 --> B1
+    A2 --> B2
+    A3 --> B3
+    
+    B1 --> H
+    B2 --> H
+    B3 --> H
+    H --> HW
+    
+    style A1 fill:#e1f5ff,stroke:#0288d1,stroke-width:2px
+    style A2 fill:#e1f5ff,stroke:#0288d1,stroke-width:2px
+    style A3 fill:#e1f5ff,stroke:#0288d1,stroke-width:2px
+    style B1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style B2 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style B3 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style H fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style HW fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+```
