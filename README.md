@@ -39,6 +39,7 @@ Linux is the foundation of DevOps. In this module, I have compiled comprehensive
 - [ ] **Phase 3:** Container Orchestration (Kubernetes)
 - [ ] **Phase 4:** CI/CD Pipelines (Jenkins/GitHub Actions)
 - [ ] **Phase 5:** Infrastructure as Code (Terraform/Ansible)
+- [ ] **Phase 6:** Monitoring (Prometheus, Grafana, ELK Stack)
 
 ---
 
