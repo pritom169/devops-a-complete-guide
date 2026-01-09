@@ -112,3 +112,35 @@ A **Container** is a running instance of an image. It brings the static image to
 *   **State:** Active (consumes CPU & Memory). You can start, stop, and interact with it.
 *   **Mutability:** Ephemeral. It adds a thin Read/Write layer on top of the image. Changes made here are lost when the container is removed, unless persisted in Volumes.
 *   **Layering:** The container layer sits on top of the image layers, allowing modification without altering the underlying image.
+
+## Docker vs Virtual Machine
+
+### The Anatomy of an Operating System
+
+An operating system is built in layers, each abstracting complexity from the layer above it. At the foundation sits the kernel, which directly manages hardware resources like CPU, memory, storage, and network devices. The kernel handles critical tasks: scheduling processes, allocating memory, managing file systems, and controlling device drivers.
+
+Above the kernel are system libraries that provide standardized interfaces for applications to interact with kernel services without needing to know hardware details. Then come system utilities and services—background processes that handle logging, networking, user authentication, and other housekeeping tasks. At the top layer are user applications that people actually interact with.
+
+This layered architecture exists because hardware is complex and diverse. The OS creates a consistent, stable interface so developers don't need to write different code for every processor or storage device.
+
+```mermaid
+graph TB
+    subgraph "Operating System Layers"
+        A[User Applications<br/>Web Browsers, IDEs, Games]
+        B[System Utilities & Services<br/>Logging, Networking, Authentication]
+        C[System Libraries<br/>libc, libssl, Standard APIs]
+        D[Kernel<br/>Process Scheduling, Memory Management,<br/>File Systems, Device Drivers]
+        E[Hardware<br/>CPU, RAM, Storage, Network Devices]
+    end
+    
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    
+    style A fill:#e1f5ff,stroke:#0288d1,stroke-width:2px
+    style B fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style D fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style E fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+```
