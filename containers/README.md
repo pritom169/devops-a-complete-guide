@@ -124,7 +124,7 @@ Above the kernel are system libraries that provide standardized interfaces for a
 This layered architecture exists because hardware is complex and diverse. The OS creates a consistent, stable interface so developers don't need to write different code for every processor or storage device.
 
 ```mermaid
-graph TB
+graph LR
     subgraph "Operating System Layers"
         A[User Applications<br/>Web Browsers, IDEs, Games]
         B[System Utilities & Services<br/>Logging, Networking, Authentication]
