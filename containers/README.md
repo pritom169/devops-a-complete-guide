@@ -190,3 +190,94 @@ graph LR
     style H fill:#ffebee,stroke:#c62828,stroke-width:2px
     style HW fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
 ```
+
+### Containers: Virtualizing at a Different Layer
+Containers take a fundamentally different approach. Instead of virtualizing hardware, they virtualize at the operating system layer. All containers on a host share the same kernel but are isolated from each other through kernel features like namespaces and cgroups.
+
+When you run a container, you're not booting a new operating system. You're creating an isolated process environment that has its own view of the filesystem, network interfaces, process tree, and user IDs—but it's all managed by the host's single kernel. The container engine (like Docker) uses Linux namespaces to create these isolated views and cgroups to limit resource usage.
+
+This is why containers are so lightweight. A container image only needs the application code, its dependencies, and minimal filesystem utilities. It doesn't need kernel, drivers, or init systems. Containers typically measure in megabytes rather than gigabytes, start in seconds rather than minutes, and use far less memory.
+
+```mermaid
+graph LR
+    subgraph C1["Container 1"]
+        A1[App A]
+        L1[Libraries &<br/>Dependencies]
+    end
+    
+    subgraph C2["Container 2"]
+        A2[App B]
+        L2[Libraries &<br/>Dependencies]
+    end
+    
+    subgraph C3["Container 3"]
+        A3[App C]
+        L3[Libraries &<br/>Dependencies]
+    end
+    
+    CE[Container Engine<br/>Docker / containerd<br/>Namespaces & cgroups]
+    HOS[Host OS Kernel<br/>Shared Linux Kernel]
+    HW[Physical Hardware<br/>CPU, RAM, Storage, Network]
+    
+    A1 --> L1
+    A2 --> L2
+    A3 --> L3
+    
+    L1 --> CE
+    L2 --> CE
+    L3 --> CE
+    CE --> HOS
+    HOS --> HW
+    
+    style A1 fill:#e1f5ff,stroke:#0288d1,stroke-width:2px
+    style A2 fill:#e1f5ff,stroke:#0288d1,stroke-width:2px
+    style A3 fill:#e1f5ff,stroke:#0288d1,stroke-width:2px
+    style L1 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style L2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style L3 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style CE fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style HOS fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style HW fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+```
+
+### Key Differences: VMs vs Containers
+
+```mermaid
+graph TB
+    subgraph Comparison["Architecture Comparison"]
+        subgraph VM["Virtual Machine Architecture"]
+            VM_APP1[App]
+            VM_OS1[Full Guest OS<br/>~GBs]
+            VM_HYP[Hypervisor]
+            VM_HW[Hardware]
+            
+            VM_APP1 --> VM_OS1
+            VM_OS1 --> VM_HYP
+            VM_HYP --> VM_HW
+        end
+        
+        subgraph CONT["Container Architecture"]
+            CONT_APP1[App]
+            CONT_LIB1[Libraries<br/>~MBs]
+            CONT_ENG[Container Engine]
+            CONT_OS[Shared Host OS Kernel]
+            CONT_HW[Hardware]
+            
+            CONT_APP1 --> CONT_LIB1
+            CONT_LIB1 --> CONT_ENG
+            CONT_ENG --> CONT_OS
+            CONT_OS --> CONT_HW
+        end
+    end
+    
+    style VM_APP1 fill:#e1f5ff,stroke:#0288d1,stroke-width:2px
+    style VM_OS1 fill:#fff3e0,stroke:#f57c00,stroke-width:3px
+    style VM_HYP fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style VM_HW fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    
+    style CONT_APP1 fill:#e1f5ff,stroke:#0288d1,stroke-width:2px
+    style CONT_LIB1 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style CONT_ENG fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style CONT_OS fill:#ffebee,stroke:#c62828,stroke-width:3px
+    style CONT_HW fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+```
