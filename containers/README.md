@@ -441,5 +441,18 @@ docker rm -f <container_id>
 
 ---
 
+## Port Mapping: Connecting Containers to the Outside World
+
+### Understanding Container Networking Isolation
+
+By default, Docker containers run in an **isolated network environment**. This means:
+
+*   Each container has its own network namespace with its own network interfaces, IP addresses, and routing tables.
+*   A container can expose services on any port internally (e.g., a web server listening on port 80).
+*   However, these ports are **not accessible from the host machine or external networks** unless explicitly mapped.
+
+This isolation is a security feature—containers cannot accidentally expose services to the outside world.
+
+
 
 
