@@ -776,7 +776,37 @@ When working with containers, debugging is essential for diagnosing issues, moni
 
 ---
 
+## `docker run` vs `docker start`
 
+### Key Difference
+
+**`docker run`** creates a **new container** from an image and starts it.  
+**`docker start`** starts an **existing stopped container**.
+
+### Comparison Table
+
+| Aspect | `docker run` | `docker start` |
+| :--- | :--- | :--- |
+| **Purpose** | Create + Start a new container | Start an existing stopped container |
+| **Input** | Image name (e.g., `nginx`) | Container ID or name |
+| **Creates new container?** | Yes | No |
+| **Use case** | First time running an image | Restarting a stopped container |
+| **Example** | `docker run -d nginx` | `docker start my-nginx` |
+
+### Workflow Example
+
+```bash
+# Step 1: Create and start a new container from nginx image
+docker run -d --name web nginx
+
+# Step 2: Stop the container
+docker stop web
+
+# Step 3: Start the existing container again (NOT docker run)
+docker start web
+```
+
+**Key Takeaway:** Use `docker run` once to create a container, then use `docker start`/`docker stop` to control its lifecycle.
 
 
 
