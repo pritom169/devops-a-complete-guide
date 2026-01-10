@@ -565,7 +565,45 @@ docker port <container_id>
 
 ---
 
-ironments.
+### Inspecting Port Mappings
+
+#### View Port Mappings for Running Containers
+```bash
+docker ps
+```
+
+The `PORTS` column shows the mappings:
+```
+CONTAINER ID   IMAGE     PORTS                  
+abc123def456   nginx     0.0.0.0:8080->80/tcp
+```
+
+This means host port `8080` is mapped to container port `80`.
+
+#### View Detailed Port Information
+```bash
+docker port <container_name_or_id>
+```
+
+**Example:**
+```bash
+docker port web1
+```
+
+**Output:**
+```
+80/tcp -> 0.0.0.0:8080
+```
+
+#### Inspect Full Container Configuration
+```bash
+docker inspect <container_id>
+```
+
+Look for the `"Ports"` section in the JSON output for detailed networking information.
+
+---
+
 
 
 
