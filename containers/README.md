@@ -649,7 +649,20 @@ docker run -d -p 3000:3000 -v $(pwd):/app --name node-dev node:18
 
 ---
 
+### Understanding the Network Flow
 
+When you access `http://localhost:8080`:
+
+1.  **Request hits the host** on port `8080`.
+2.  **Docker's iptables rules** intercept the traffic.
+3.  **Traffic is forwarded** to the container's network namespace.
+4.  **The container receives** the request on port `80`.
+5.  **The application** (e.g., Nginx) processes the request.
+6.  **Response travels back** through the same path.
+
+This happens transparently—the application inside the container doesn't know it's being accessed via port `8080`.
+
+---
 
 
 
