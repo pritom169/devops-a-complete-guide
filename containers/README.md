@@ -420,6 +420,13 @@ Replace `<container_id>` with the actual container ID (visible from `docker ps`)
 ```bash
 docker stop 3f2a1b8c9d4e
 ```
+#### Starting Stopped Containers
+To restart a stopped container:
+
+```bash
+docker start <container_id>
+```
+
 
 
 
