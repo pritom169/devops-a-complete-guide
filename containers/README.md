@@ -407,3 +407,19 @@ docker ps -a
 
 The `-a` flag shows all containers regardless of their state (running, stopped, exited).
 
+#### Stopping Containers
+To gracefully stop a running container:
+
+```bash
+docker stop <container_id>
+```
+
+Replace `<container_id>` with the actual container ID (visible from `docker ps`). Docker sends a `SIGTERM` signal, allowing the process to shut down gracefully. If the container doesn't stop within the timeout period (default 10 seconds), Docker sends a `SIGKILL` signal.
+
+**Example:**
+```bash
+docker stop 3f2a1b8c9d4e
+```
+
+
+
