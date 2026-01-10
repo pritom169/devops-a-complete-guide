@@ -604,6 +604,52 @@ Look for the `"Ports"` section in the JSON output for detailed networking inform
 
 ---
 
+### Practical Examples
+
+#### Example 1: Running a Web Server
+Run an Nginx web server accessible on port `8080`:
+
+```bash
+docker run -d -p 8080:80 --name my-nginx nginx
+```
+
+*   Visit `http://localhost:8080` in your browser.
+*   The Nginx default page should appear.
+
+#### Example 2: Running a Database
+Run a PostgreSQL database accessible on the default port `5432`:
+
+```bash
+docker run -d -p 5432:5432 --name my-postgres -e POSTGRES_PASSWORD=secret postgres
+```
+
+*   Connect to the database using: `localhost:5432`
+*   Username: `postgres`, Password: `secret`
+
+#### Example 3: Running Multiple Redis Instances
+Run two Redis instances on different ports:
+
+```bash
+docker run -d -p 6379:6379 --name redis1 redis
+docker run -d -p 6380:6379 --name redis2 redis
+```
+
+*   `redis1` accessible on `localhost:6379`
+*   `redis2` accessible on `localhost:6380`
+
+#### Example 4: Development Environment
+Run a Node.js app with live reload on port `3000`:
+
+```bash
+docker run -d -p 3000:3000 -v $(pwd):/app --name node-dev node:18
+```
+
+*   Maps port `3000`
+*   Mounts current directory for live code updates
+
+---
+
+
 
 
 
