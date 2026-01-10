@@ -808,5 +808,19 @@ docker start web
 
 **Key Takeaway:** Use `docker run` once to create a container, then use `docker start`/`docker stop` to control its lifecycle.
 
+---
 
+## Docker Demo Project Overview
 
+Consider a practical scenario where a developer is building a Node.js application with the following workflow:
+
+1. **Local Development:** The application requires MongoDB as its database. Instead of installing MongoDB directly on the host machine, the developer runs it as a Docker container, ensuring environment isolation and consistency.
+
+2. **Source Control:** The developer commits the application code to a Git repository (e.g., GitHub, GitLab).
+
+3. **CI/CD Pipeline:** A code push triggers a Jenkins pipeline that performs the following:
+   - Builds a Docker image from the application code
+   - Runs automated tests to verify functionality
+   - Upon successful validation, pushes the image to a private Docker registry (Amazon ECR)
+
+4. **Deployment:** The development server pulls the validated application image from the private registry and the MongoDB image from Docker Hub. Both containers are deployed and configured to communicate with each other via Docker networking.
