@@ -760,6 +760,23 @@ When working with containers, debugging is essential for diagnosing issues, moni
 | `docker logs --since TIME <container>` | Show logs since specific time | `docker logs --since 30m my-nginx` |
 | `docker logs -f --tail 100 --since 10m <container>` | Combine options | `docker logs -f --tail 100 --since 10m my-nginx` |
 
+---
+
+### 2. Executing Commands Inside Running Containers
+
+| Command | Purpose | Example |
+| :--- | :--- | :--- |
+| `docker exec -it <container> /bin/bash` | Interactive shell access (bash) | `docker exec -it my-nginx /bin/bash` |
+| `docker exec -it <container> /bin/sh` | Interactive shell (for Alpine images) | `docker exec -it my-nginx /bin/sh` |
+| `docker exec <container> <command>` | Run single command | `docker exec my-nginx ls -la /usr/share/nginx/html` |
+| `docker exec <container> env` | Check environment variables | `docker exec my-nginx env` |
+| `docker exec <container> ps aux` | Check running processes | `docker exec my-nginx ps aux` |
+| `docker exec <container> ping -c 3 <host>` | Test network connectivity | `docker exec my-nginx ping -c 3 google.com` |
+| `docker exec -u <user> <container> <command>` | Run command as specific user | `docker exec -u root my-nginx whoami` |
+
+---
+
+
 
 
 
