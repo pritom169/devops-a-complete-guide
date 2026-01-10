@@ -488,6 +488,84 @@ This command:
 
 ---
 
+### Common Port Mapping Patterns
+
+#### 1. Single Port Mapping
+Map one host port to one container port:
+
+```bash
+docker run -d -p 3000:3000 node-app
+```
+
+*   Host port `3000` → Container port `3000`
+*   Access via: `http://localhost:3000`
+
+#### 2. Multiple Port Mappings
+Map multiple ports by using multiple `-p` flags:
+
+```bash
+docker run -d -p 8080:80 -p 8443:443 nginx
+```
+
+*   Host port `8080` → Container port `80` (HTTP)
+*   Host port `8443` → Container port `443` (HTTPS)
+
+#### 3. Mapping to Different Host Ports
+Useful when running multiple instances of the same service:
+
+```bash
+docker run -d -p 9001:80 --name web1 nginx
+docker run -d -p 9002:80 --name web2 nginx
+```
+
+*   `web1` accessible at `http://localhost:9001`
+*   `web2` accessible at `http://localhost:9002`
+
+Both containers run Nginx on port `80` internally, but they're accessible on different host ports.
+
+#### 4. Binding to Specific Host Interfaces
+By default, Docker binds to all network interfaces (`0.0.0.0`). You can bind to a specific IP:
+
+```bash
+docker run -d -p 127.0.0.1:8080:80 nginx
+```
+
+*   Only accessible from `localhost` (not from external networks).
+*   Useful for security when you don't want external access.
+
+To bind to a specific network interface:
+```bash
+docker run -d -p 192.168.1.100:8080:80 nginx
+```
+
+#### 5. Random Host Port Assignment
+Let Docker automatically assign an available host port:
+
+```bash
+docker run -d -P nginx
+```
+
+The `-P` (capital P) flag publishes **all exposed ports** to random available host ports.
+
+To see which ports were assigned:
+```bash
+docker ps
+```
+
+Or:
+```bash
+docker port <container_id>
+```
+
+**Example output:**
+```
+80/tcp -> 0.0.0.0:32768
+443/tcp -> 0.0.0.0:32769
+```
+
+---
+
+ironments.
 
 
 
