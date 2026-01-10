@@ -664,6 +664,46 @@ This happens transparently—the application inside the container doesn't know i
 
 ---
 
+### Common Pitfalls and Solutions
+
+#### Problem 1: Port Already in Use
+**Error:**
+```
+Error response from daemon: driver failed programming external connectivity: 
+Bind for 0.0.0.0:8080 failed: port is already allocated
+```
+
+**Solution:**
+*   Another process (or container) is using port `8080`.
+*   Check what's using the port: `lsof -i :8080` (macOS/Linux) or `netstat -ano | findstr :8080` (Windows)
+*   Use a different host port: `docker run -p 8081:80 nginx`
+
+#### Problem 2: Cannot Access Container from External Network
+**Issue:** You can access the container from `localhost` but not from another machine.
+
+**Solution:**
+*   Ensure you're binding to `0.0.0.0` (all interfaces), not `127.0.0.1`:
+    ```bash
+    docker run -p 0.0.0.0:8080:80 nginx
+    ```
+*   Check firewall rules on the host machine.
+
+#### Problem 3: Wrong Port Mapping Order
+**Mistake:**
+```bash
+docker run -p 80:8080 nginx  # WRONG
+```
+
+This tries to map host port `80` to container port `8080`, but Nginx listens on `80` inside the container.
+
+**Correct:**
+```bash
+docker run -p 8080:80 nginx  # CORRECT
+```
+
+---
+
+
 
 
 
