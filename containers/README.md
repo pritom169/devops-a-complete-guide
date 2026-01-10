@@ -731,7 +731,17 @@ docker-compose up -d
 
 ---
 
+### Summary
 
+| Concept | Syntax | Example |
+| :--- | :--- | :--- |
+| Basic port mapping | `-p <host>:<container>` | `-p 8080:80` |
+| Multiple ports | Multiple `-p` flags | `-p 8080:80 -p 8443:443` |
+| Bind to specific IP | `-p <ip>:<host>:<container>` | `-p 127.0.0.1:8080:80` |
+| Random port assignment | `-P` | `-P` (publishes all exposed ports) |
+| View port mappings | `docker ps` or `docker port <id>` | `docker port my-nginx` |
+
+Port mapping is fundamental to making containerized applications accessible and is one of the most commonly used Docker features in both development and production environments.
 
 
 
