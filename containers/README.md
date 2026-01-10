@@ -384,3 +384,26 @@ docker run -d redis
 
 The `-d` flag runs the container in detached mode, returning control to your terminal immediately. The container runs in the background.
 
+#### Viewing Running Containers
+To list all currently running containers:
+
+```bash
+docker ps
+```
+
+Output includes:
+- Container ID
+- Image name
+- Command
+- Creation time
+- Status
+- Ports
+- Container name
+
+**Viewing All Containers (Including Stopped):**
+```bash
+docker ps -a
+```
+
+The `-a` flag shows all containers regardless of their state (running, stopped, exited).
+
