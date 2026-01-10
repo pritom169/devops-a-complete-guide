@@ -743,6 +743,22 @@ docker-compose up -d
 
 Port mapping is fundamental to making containerized applications accessible and is one of the most commonly used Docker features in both development and production environments.
 
+---
+
+## Docker Debugging and Troubleshooting
+
+When working with containers, debugging is essential for diagnosing issues, monitoring performance, and understanding container behavior. Docker provides several powerful commands for troubleshooting.
+
+### 1. Viewing Container Logs
+
+| Command | Purpose | Example |
+| :--- | :--- | :--- |
+| `docker logs <container>` | View all container logs | `docker logs my-nginx` |
+| `docker logs -f <container>` | Follow logs in real-time (like `tail -f`) | `docker logs -f my-nginx` |
+| `docker logs --tail N <container>` | View last N lines | `docker logs --tail 50 my-nginx` |
+| `docker logs -t <container>` | Show logs with timestamps | `docker logs -t my-nginx` |
+| `docker logs --since TIME <container>` | Show logs since specific time | `docker logs --since 30m my-nginx` |
+| `docker logs -f --tail 100 --since 10m <container>` | Combine options | `docker logs -f --tail 100 --since 10m my-nginx` |
 
 
 
