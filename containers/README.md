@@ -467,6 +467,28 @@ To make a containerized service accessible, you must create a **port mapping** (
 When you map ports, Docker sets up **iptables rules** (on Linux) or equivalent networking rules to forward traffic from the host port to the container port.
 
 ---
+### Port Mapping Syntax
+
+The `-p` (or `--publish`) flag is used to map ports when running a container:
+
+```bash
+docker run -p <host_port>:<container_port> <image>
+```
+
+**Example:**
+```bash
+docker run -p 8080:80 nginx
+```
+
+This command:
+1.  Starts an Nginx container.
+2.  Nginx inside the container listens on port `80`.
+3.  Maps host port `8080` to container port `80`.
+4.  You can now access Nginx by visiting `http://localhost:8080` in your browser.
+
+---
+
+
 
 
 
