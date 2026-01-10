@@ -703,6 +703,35 @@ docker run -p 8080:80 nginx  # CORRECT
 
 ---
 
+### Port Mapping with Docker Compose
+
+In a `docker-compose.yml` file, port mappings are defined under the `ports` section:
+
+```yaml
+version: '3.8'
+services:
+  web:
+    image: nginx
+    ports:
+      - "8080:80"      # host:container
+      - "8443:443"
+  
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: secret
+```
+
+Run with:
+```bash
+docker-compose up -d
+```
+
+---
+
+
 
 
 
