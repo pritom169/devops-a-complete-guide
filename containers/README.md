@@ -327,3 +327,60 @@ Docker is written in the Go programming language and takes advantage of several 
 * **Union File Systems (UnionFS):** Efficient file systems that operate by creating layers, making them very lightweight and fast. This is why Docker images are built in layers.
 
 ---
+
+## Essential Docker Commands
+
+### Image Management
+
+#### Pulling Images from a Registry
+To download an image from Docker Hub (or another configured registry):
+
+```bash
+docker pull redis
+```
+
+This command downloads the `redis` image with the `latest` tag to your local machine.
+
+#### Listing Local Images
+To view all images stored locally:
+
+```bash
+docker images
+```
+
+This displays a table showing:
+- Repository name
+- Tag
+- Image ID
+- Creation date
+- Size
+
+#### Pulling Specific Image Versions
+To pull a specific version (tag) of an image:
+
+```bash
+docker run redis:8.4.0
+```
+
+If the image doesn't exist locally, `docker run` automatically pulls it before creating the container.
+
+---
+
+### Container Lifecycle Management
+
+#### Creating and Running Containers
+
+**Foreground Mode (Attached):**
+```bash
+docker run redis
+```
+
+This starts a Redis container in the foreground. The terminal is attached to the container's output stream. Pressing `CTRL+C` sends a stop signal to the container.
+
+**Detached Mode (Background):**
+```bash
+docker run -d redis
+```
+
+The `-d` flag runs the container in detached mode, returning control to your terminal immediately. The container runs in the background.
+
