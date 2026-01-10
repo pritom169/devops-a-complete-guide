@@ -776,6 +776,19 @@ When working with containers, debugging is essential for diagnosing issues, moni
 
 ---
 
+### 3. Inspecting Container Details
+
+| Command | Purpose | Example |
+| :--- | :--- | :--- |
+| `docker inspect <container>` | Get all container details (JSON) | `docker inspect my-nginx` |
+| `docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <container>` | Get container IP address | `docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' my-nginx` |
+| `docker inspect --format='{{.State.Status}}' <container>` | Get container state | `docker inspect --format='{{.State.Status}}' my-nginx` |
+| `docker inspect --format='{{json .Mounts}}' <container>` | Get mounted volumes | `docker inspect --format='{{json .Mounts}}' my-nginx \| jq` |
+| `docker inspect --format='{{json .Config.Env}}' <container>` | Get environment variables | `docker inspect --format='{{json .Config.Env}}' my-nginx \| jq` |
+
+
+---
+
 
 
 
