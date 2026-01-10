@@ -452,6 +452,21 @@ By default, Docker containers run in an **isolated network environment**. This m
 *   However, these ports are **not accessible from the host machine or external networks** unless explicitly mapped.
 
 This isolation is a security feature—containers cannot accidentally expose services to the outside world.
+### The Concept: Host Port vs. Container Port
+
+To make a containerized service accessible, you must create a **port mapping** (also called port binding or port publishing) that bridges the container's isolated network to the host's network.
+
+**Container Port:** The port on which the application inside the container is listening.
+*   Example: An Nginx web server inside a container listens on port `80` by default.
+
+**Host Port:** The port on the host machine that forwards traffic to the container port.
+*   Example: You might map host port `8080` to container port `80`, so accessing `localhost:8080` on your machine routes traffic to the container's port `80`.
+
+**The Mapping:** `<host_port>:<container_port>`
+
+When you map ports, Docker sets up **iptables rules** (on Linux) or equivalent networking rules to forward traffic from the host port to the container port.
+
+---
 
 
 
