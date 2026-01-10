@@ -426,7 +426,20 @@ To restart a stopped container:
 ```bash
 docker start <container_id>
 ```
+#### Removing Containers
+To delete a stopped container:
 
+```bash
+docker rm <container_id>
+```
+
+To force-remove a running container:
+
+```bash
+docker rm -f <container_id>
+```
+
+---
 
 
 
