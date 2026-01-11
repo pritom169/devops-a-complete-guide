@@ -824,3 +824,18 @@ Consider a practical scenario where a developer is building a Node.js applicatio
    - Upon successful validation, pushes the image to a private Docker registry (Amazon ECR)
 
 4. **Deployment:** The development server pulls the validated application image from the private registry and the MongoDB image from Docker Hub. Both containers are deployed and configured to communicate with each other via Docker networking.
+
+---
+
+## Docker Networks in the Demo Project
+
+### What is a Docker Network?
+
+A Docker network allows containers to communicate with each other in an isolated virtual network. By default, containers cannot reach each other unless they are on the same network.
+
+### Creation of Docker Network
+
+```bash
+# Create a custom network
+docker network create app-network
+```
