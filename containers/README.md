@@ -856,3 +856,23 @@ docker run -d \
 - **Credentials:** `admin:password`
 - **Network:** `mongo-network`
 
+#### 3. Start Mongo Express (Web UI)
+```bash
+docker run -d \
+  -p 8081:8081 \
+  -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin \
+  -e ME_CONFIG_MONGODB_ADMINPASSWORD=password \
+  -e ME_CONFIG_BASICAUTH_USERNAME=user \
+  -e ME_CONFIG_BASICAUTH_PASSWORD=pass \
+  -e ME_CONFIG_MONGODB_SERVER=mongodb \
+  --net mongo-network \
+  --name mongo-express \
+  mongo-express
+```
+
+**Configuration:**
+- **Web UI:** `http://localhost:8081`
+- **Login:** `user:pass`
+- **MongoDB Connection:** Uses container name `mongodb` (DNS resolution)
+
+**Key Insight:** Both containers communicate via `mongo-network`. Mongo Express connects to MongoDB using the container name `mongodb` instead of IP addresses.
