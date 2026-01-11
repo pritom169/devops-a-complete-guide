@@ -833,9 +833,26 @@ Consider a practical scenario where a developer is building a Node.js applicatio
 
 A Docker network allows containers to communicate with each other in an isolated virtual network. By default, containers cannot reach each other unless they are on the same network.
 
-### Creation of Docker Network
+### Network Setup Example
 
+#### 1. Create Network
 ```bash
-# Create a custom network
-docker network create app-network
+docker network create mongo-network
 ```
+
+#### 2. Start MongoDB Container
+```bash
+docker run -d \
+  -p 27017:27017 \
+  -e MONGO_INITDB_ROOT_USERNAME=admin \
+  -e MONGO_INITDB_ROOT_PASSWORD=password \
+  --net mongo-network \
+  --name mongodb \
+  mongo
+```
+
+**Configuration:**
+- **Port:** `27017` (MongoDB default)
+- **Credentials:** `admin:password`
+- **Network:** `mongo-network`
+
