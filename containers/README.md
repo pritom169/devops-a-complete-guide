@@ -876,3 +876,41 @@ docker run -d \
 - **MongoDB Connection:** Uses container name `mongodb` (DNS resolution)
 
 **Key Insight:** Both containers communicate via `mongo-network`. Mongo Express connects to MongoDB using the container name `mongodb` instead of IP addresses.
+
+### Application Setup: Database and API Configuration
+
+#### Database Initialization
+
+Using the Mongo Express web interface at `http://localhost:8081`, create the following database structure:
+
+1. **Database Name:** `user-account`
+2. **Collection Name:** `users`
+
+This collection will store user profile data for the application.
+
+#### Application Connection String
+
+The Node.js application connects to MongoDB using the following connection string:
+
+```
+mongodb://admin:password@localhost:27017
+```
+
+**Connection String Breakdown:**
+- **Protocol:** `mongodb://`
+- **Credentials:** `admin:password` (username:password)
+- **Host:** `localhost` (since we're running locally and have port-mapped 27017)
+- **Port:** `27017` (MongoDB default port)
+
+> **Note:** This connection approach is simplified for demonstration purposes. In production environments, use environment variables for credentials, implement connection pooling, and follow security best practices such as using MongoDB Atlas or properly secured self-hosted instances.
+
+#### API Endpoints
+
+The application exposes two RESTful API endpoints for user profile management:
+
+| Endpoint | Method | Purpose | Description |
+| :--- | :--- | :--- | :--- |
+| `/get-profile` | GET | Retrieve user profile | Fetches user data from the `users` collection |
+| `/update-profile` | POST | Update user profile | Updates or creates user profile data (upsert operation) |
+
+**Reference Implementation:** [View source code](https://github.com/pritommazumder/devops-a-complete-guide/tree/main/codes/docker/js-app) 
