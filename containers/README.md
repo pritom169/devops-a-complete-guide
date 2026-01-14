@@ -1102,3 +1102,42 @@ Data written inside a container lives in a temporary writable layer. When a cont
 To ensure data survives container restarts and deletions (crucial for databases like MongoDB), we use **Docker Volumes**. This mechanism decouples data from the container lifecycle.
 
 > *We will explore Docker Volumes and storage strategies in depth in the upcoming section.*
+
+---
+
+## What is a Dockerfile? A Complete Overview
+
+### Definition
+
+A **Dockerfile** is a blueprint for building docker images. In short words, it's a text file containing set of instruction used to build a Docker image.
+
+The first line of every docker image start from `FROM image`, in our case that will be `FROM node`. It also specifies the base image to use for the new image.
+
+Since we have a JS backend, our base image will be node. What does basing our node image means? We are going to have node installed inside our image. This is what `FROM nodes` gives us.
+
+We can set environment variables inside the docker-compose file. However if we want to do it inside the Dockerfile it will look something like this.
+
+```bash
+ENV MONGO_DB_USERNAME=admin \
+    MONGO_DB_PWD=password
+```
+
+We have talked about `FROM`, `ENV`. Now let's talk about `RUN` command. By using `RUN` we can execute any kind of Linux command. 
+
+```bash
+RUN mkdir -p /home/app
+```
+
+An important note, this directory will live inside a container. Not in the local machine.
+
+```bash
+COPY ./home/app
+```
+
+Copy command executes inside the host machine not inside the container. So if we need to copy some files from the host machine, this should be the configuration.
+
+```bash
+CMD ["node", "server.js"]
+```
+
+CMD performs an entry point linux command. What it actually does is starts the app by running the command `node server.js`
