@@ -1086,7 +1086,7 @@ docker-compose -f mongo.yaml up
 
 ---
 
-## Data Persistence and Container Ephemerality
+### Data Persistence and Container Ephemerality
 
 A fundamental characteristic of Docker containers is their **ephemeral nature**.
 
