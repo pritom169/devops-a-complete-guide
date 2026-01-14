@@ -913,4 +913,175 @@ The application exposes two RESTful API endpoints for user profile management:
 | `/get-profile` | GET | Retrieve user profile | Fetches user data from the `users` collection |
 | `/update-profile` | POST | Update user profile | Updates or creates user profile data (upsert operation) |
 
-**Reference Implementation:** [View source code](https://github.com/pritommazumder/devops-a-complete-guide/tree/main/codes/docker/js-app) 
+**Reference Implementation:** [View source code](https://github.com/pritommazumder/devops-a-complete-guide/tree/main/codes/docker/js-app)
+
+## Docker Compose files
+As we can see, we have to write long and complicated docker run commands to start our containers. This is not a good practice.
+
+However we can replace these complicated docker run commands with docker compose files. It has many benefits.
+- It helps to structure commands.
+- Containers, networks, volumes and configuration all can be done using a YAML file
+- Declarative appraoch: We declare what we want to do, not how to do it.
+- Communication via container name
+- By default, Compose sets up a single network for our app
+
+### Docker CLI to Docker Compose: Conversion Rules
+
+Converting Docker CLI commands to Docker Compose follows a systematic mapping of flags and options to YAML properties. Below is a comprehensive rule-based conversion guide.
+
+#### Rule-Based Mapping Table
+
+| Docker CLI Flag | Docker Compose Property | YAML Location | Example CLI | Example Compose |
+| :--- | :--- | :--- | :--- | :--- |
+| `image_name` (positional) | `image:` | `services.<name>.image` | `mongo` | `image: mongo` |
+| `--name container_name` | Service name | `services.<name>` | `--name mongodb` | `mongodb:` (service key) |
+| `-p host:container` | `ports:` | `services.<name>.ports` | `-p 27017:27017` | `- "27017:27017"` |
+| `-e KEY=VALUE` | `environment:` | `services.<name>.environment` | `-e MONGO_INITDB_ROOT_USERNAME=admin` | `- MONGO_INITDB_ROOT_USERNAME=admin` |
+| `--net network_name` | `networks:` | `services.<name>.networks` | `--net mongo-network` | `networks: [mongo-network]` |
+| `-d` (detached) | N/A | Implicit | `-d` | *(Always runs detached)* |
+| `-v host:container` | `volumes:` | `services.<name>.volumes` | `-v mongo-data:/data/db` | `- mongo-data:/data/db` |
+| `--restart policy` | `restart:` | `services.<name>.restart` | `--restart always` | `restart: always` |
+| N/A | `depends_on:` | `services.<name>.depends_on` | N/A | `depends_on: [mongodb]` |
+
+---
+
+#### Conversion Process: Step-by-Step
+
+**Step 1: Identify the Image**
+```bash
+docker run mongo
+```
+↓
+```yaml
+services:
+  service-name:
+    image: mongo
+```
+
+**Step 2: Map Container Name to Service Name**
+```bash
+docker run --name mongodb mongo
+```
+↓
+```yaml
+services:
+  mongodb:  # Container name becomes service name
+    image: mongo
+```
+
+**Step 3: Convert Port Mappings**
+```bash
+docker run -p 27017:27017 mongo
+```
+↓
+```yaml
+services:
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"  # Always use quotes for port mappings
+```
+
+**Step 4: Convert Environment Variables**
+```bash
+docker run -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password mongo
+```
+↓
+```yaml
+services:
+  mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    # Alternative syntax:
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: admin
+    #   MONGO_INITDB_ROOT_PASSWORD: password
+```
+
+**Step 5: Convert Network Configuration**
+```bash
+docker network create mongo-network
+docker run --net mongo-network mongo
+```
+↓
+```yaml
+services:
+  mongodb:
+    image: mongo
+    networks:
+      - mongo-network
+
+networks:
+  mongo-network:
+    driver: bridge  # Default network driver
+```
+
+**Step 6: Convert Volume Mounts**
+```bash
+docker run -v mongo-data:/data/db mongo
+```
+↓
+```yaml
+services:
+  mongodb:
+    image: mongo
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+    driver: local  # Default volume driver
+```
+
+---
+
+### Complete Conversion Example: MongoDB + Mongo Express
+```yaml
+version: '3'
+services:
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    restart: always
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+```
+
+---
+
+### Conversion Comparison Table
+
+| Aspect | Docker CLI | Docker Compose |
+| :--- | :--- | :--- |
+| **Command Count** | 3 commands (network create + 2 × docker run) | 1 file |
+| **Network Creation** | Manual (`docker network create`) | Automatic (declared in YAML) |
+| **Container Naming** | `--name` flag | Service name (key in `services:`) |
+| **Startup Order** | Manual (run MongoDB first) | Automatic (`depends_on:`) |
+| **Configuration Management** | Flags in terminal | Declarative YAML file |
+| **Reproducibility** | Copy/paste commands | Version-controlled file |
+| **Multi-container Coordination** | Manual orchestration | Single `docker-compose up` |
+| **Network DNS** | Manual `--net` flag | Automatic (all services in same network) |
+| **Volume Management** | Manual creation or inline | Declared in `volumes:` section |
+
+---
+
+### Running the Docker Compose Stack
+
+```bash
+# Start all services (detached mode)
+docker-compose -f mongo.yaml up
+```
+
+---
