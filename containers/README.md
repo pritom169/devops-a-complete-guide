@@ -1085,3 +1085,15 @@ docker-compose -f mongo.yaml up
 ```
 
 ---
+
+## Data Persistence and Container Ephemerality
+
+A fundamental characteristic of Docker containers is their **ephemeral nature**.
+
+**The Challenge:**
+Data written inside a container lives in a temporary writable layer. When a container is stopped and removed, that data is destroyed. Even if you start a new container from the exact same image, it instantiates with a fresh, clean filesystem.
+
+**The Solution:**
+To ensure data survives container restarts and deletions (crucial for databases like MongoDB), we use **Docker Volumes**. This mechanism decouples data from the container lifecycle.
+
+> *We will explore Docker Volumes and storage strategies in depth in the upcoming section.*
