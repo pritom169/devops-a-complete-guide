@@ -1109,37 +1109,28 @@ To ensure data survives container restarts and deletions (crucial for databases 
 
 ### Definition
 
-A **Dockerfile** is a blueprint for building docker images. In short words, it's a text file containing set of instruction used to build a Docker image.
+A **Dockerfile** is a blueprint for building Docker images. It is a text file containing a set of instructions used to assemble a Docker image in an automated and reproducible manner.
 
-The first line of every docker image start from `FROM image`, in our case that will be `FROM node`. It also specifies the base image to use for the new image.
+---
 
-Since we have a JS backend, our base image will be node. What does basing our node image means? We are going to have node installed inside our image. This is what `FROM nodes` gives us.
+### Core Dockerfile Instructions
 
-We can set environment variables inside the docker-compose file. However if we want to do it inside the Dockerfile it will look something like this.
+| Instruction | Purpose | Syntax | Example | Execution Context | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **FROM** | Specifies the base image upon which the new image will be built. Must be the first instruction in a Dockerfile. | `FROM <image>:<tag>` | `FROM node:18-alpine` | Build time | For a JavaScript backend, using `node` as the base image ensures Node.js is pre-installed in the container environment. |
+| **ENV** | Defines environment variables that will be available within the container. | `ENV <KEY>=<VALUE>` | `ENV MONGO_DB_USERNAME=admin \`<br>`    MONGO_DB_PWD=password` | Build time + Runtime | While environment variables can be set in Docker Compose files, defining them in the Dockerfile bakes them into the image itself. |
+| **RUN** | Executes commands during the image build process. Used for installing packages, creating directories, or system configurations. | `RUN <command>` | `RUN mkdir -p /home/app` | Build time (inside container) | Commands operate within the container's filesystem, not on the host machine. Multiple `RUN` instructions can be used throughout a Dockerfile. |
+| **COPY** | Copies files and directories from the host machine into the container's filesystem. | `COPY <source_path> <destination_path>` | `COPY . /home/app` | Build time (from host to container) | Operates on the **host machine**, transferring files into the image being built. Source path is relative to the build context. |
+| **CMD** | Specifies the default command that will be executed when a container starts from the image. | `CMD ["executable", "param1", "param2"]` | `CMD ["node", "server.js"]` | Runtime (when container starts) | Only one `CMD` instruction is executed (last one takes precedence). This is the entry point that runs your application. |
 
-```bash
-ENV MONGO_DB_USERNAME=admin \
-    MONGO_DB_PWD=password
-```
+---
 
-We have talked about `FROM`, `ENV`. Now let's talk about `RUN` command. By using `RUN` we can execute any kind of Linux command. 
+### Key Differences: RUN vs CMD
 
-```bash
-RUN mkdir -p /home/app
-```
-
-An important note, this directory will live inside a container. Not in the local machine.
-
-```bash
-COPY ./home/app
-```
-
-Copy command executes inside the host machine not inside the container. So if we need to copy some files from the host machine, this should be the configuration.
-
-```bash
-CMD ["node", "server.js"]
-```
-
-CMD performs an entry point linux command. What it actually does is starts the app by running the command `node server.js` inside of the container.
-
-One might ask what is the difference between `RUN` and `CMD`. `CMD` is the command for entry point and `RUN` can execute multiple times.
+| Aspect | `RUN` | `CMD` |
+| :--- | :--- | :--- |
+| **Purpose** | Executes commands during image build | Defines the default command to run when container starts |
+| **Execution Time** | Build time | Runtime (when container starts) |
+| **Frequency** | Can appear multiple times in a Dockerfile | Only one `CMD` instruction is executed (last one takes precedence) |
+| **Use Case** | Installing dependencies, setting up environment | Starting the application process |
+| **Example** | `RUN npm install` — Installs dependencies during build | `CMD ["node", "app.js"]` — Starts the Node.js application when container runs |
