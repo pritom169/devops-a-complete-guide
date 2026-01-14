@@ -1140,4 +1140,6 @@ Copy command executes inside the host machine not inside the container. So if we
 CMD ["node", "server.js"]
 ```
 
-CMD performs an entry point linux command. What it actually does is starts the app by running the command `node server.js`
+CMD performs an entry point linux command. What it actually does is starts the app by running the command `node server.js` inside of the container.
+
+One might ask what is the difference between `RUN` and `CMD`. `CMD` is the command for entry point and `RUN` can execute multiple times.
