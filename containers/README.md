@@ -1084,6 +1084,11 @@ services:
 docker-compose -f mongo.yaml up
 ```
 
+### Stopping the Docker Container
+```bash
+docker-compose -f mongo.yaml down
+```
+
 ---
 
 ### Data Persistence and Container Ephemerality
