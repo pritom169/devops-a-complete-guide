@@ -1134,3 +1134,15 @@ A **Dockerfile** is a blueprint for building Docker images. It is a text file co
 | **Frequency** | Can appear multiple times in a Dockerfile | Only one `CMD` instruction is executed (last one takes precedence) |
 | **Use Case** | Installing dependencies, setting up environment | Starting the application process |
 | **Example** | `RUN npm install` — Installs dependencies during build | `CMD ["node", "app.js"]` — Starts the Node.js application when container runs |
+
+### Image Layers
+
+Docker images are composed of multiple layers stacked hierarchically. Each layer represents a filesystem change or instruction from the Dockerfile. Understanding this layered architecture is crucial for optimizing image size and build performance.
+
+**Layer Hierarchy Example:**
+
+The application image (`app:1.0`) demonstrates the following layer dependency chain:
+
+- **Application Layer:** `app:1.0` (custom application code)
+  - **Base Runtime Layer:** `node:25-alpine` (Node.js runtime environment)
+    - **Operating System Layer:** `alpine:3.23` (minimal Linux distribution optimized for containers)
