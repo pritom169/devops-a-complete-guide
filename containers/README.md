@@ -1333,3 +1333,113 @@ To use a different tag (e.g., version number instead of `latest`):
     docker push <account-id>.dkr.ecr.eu-central-1.amazonaws.com/js-app:v1.0.0
 
 _NOTE: Replace `<account-id>` with your 12-digit AWS Account ID_
+
+## Pulling and Running Images from AWS ECR
+
+After pushing an image to a private registry like AWS ECR, it needs to be pulled and run on a target environment (e.g., a development server). This section documents the complete workflow for simulating this process locally.
+
+### The Deployment Scenario
+
+In a typical CI/CD pipeline:
+1. **CI/CD Pipeline** builds the Docker image and pushes it to AWS ECR
+2. **Development/Production Server** pulls the image from ECR and runs it alongside other services (e.g., MongoDB)
+
+This workflow can be simulated locally to test the deployment process before actual server deployment.
+
+---
+
+### Step 1: Authenticate Docker with ECR
+
+Before pulling images from a private ECR repository, Docker must be authenticated:
+
+```bash
+aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin <IAM-id>.dkr.ecr.<aws-region-name>.amazonaws.com
+```
+
+**What this command does:**
+- `aws ecr get-login-password` retrieves a temporary authentication token from AWS
+- The token is piped to `docker login` to authenticate with the ECR registry
+- Authentication is valid for 12 hours
+
+---
+
+### Step 2: Pull the Image from ECR
+
+```bash
+docker pull <IAM-id>.dkr.ecr.<aws-region-name>.amazonaws.com/<registry-name>:<tag>
+```
+
+This downloads the image from the private ECR repository to your local machine.
+
+---
+
+### Step 3: Run with Docker Compose
+
+Since the application requires MongoDB, use Docker Compose to orchestrate multiple containers:
+
+**docker-compose.yaml:**
+```yaml
+version: '3'
+services:
+  my-app:
+    image: <IAM-id>.dkr.ecr.<aws-region-name>.amazonaws.com/<registry-name>:<tag>
+    ports:
+      - 3000:3000
+  mongodb:
+    image: mongo
+    ports:
+     - 27017:27017
+    environment:
+     - MONGO_INITDB_ROOT_USERNAME=admin
+     - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+     - mongo-data:/data/db
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+     - 8081:8081
+    environment:
+     - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+     - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+     - ME_CONFIG_MONGODB_SERVER=mongodb
+    depends_on:
+     - "mongodb"
+volumes:
+  mongo-data:
+    driver: local
+```
+
+**Start all services:**
+```bash
+docker-compose up
+```
+
+Or run in detached mode (background):
+```bash
+docker-compose up -d
+```
+
+---
+
+### Step 4: Verify the Deployment
+
+Once the containers are running, verify the services:
+
+| Service | URL | Purpose |
+|---------|-----|---------|
+| Node.js App | http://localhost:3000 | Main application |
+| Mongo Express | http://localhost:8081 | MongoDB admin UI |
+| MongoDB | localhost:27017 | Database (internal) |
+
+**Check running containers:**
+```bash
+docker ps
+```
+
+**View logs:**
+```bash
+docker-compose logs -f my-app
+```
+
+---
