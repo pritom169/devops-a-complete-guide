@@ -1187,3 +1187,37 @@ COPY . .
 CMD ["node", "server.js"]
 ```
 
+**Second Issue: Directory Structure Mismatch**
+
+If the host structure is:
+```
+project/
+├── Dockerfile
+├── app/
+│   └── server.js
+└── docker-compose.yaml
+```
+
+Then `COPY . .` results in:
+```
+/home/app/
+├── app/server.js    ← Nested!
+└── ...
+```
+
+`CMD` looks for `/home/app/server.js`, but file exists at `/home/app/app/server.js`.
+
+**Final Dockerfile**
+
+```dockerfile
+FROM node:25-alpine
+
+ENV MONGO_DB_USERNAME=admin \
+    MONGO_DB_PWD=password
+
+WORKDIR /home/app
+COPY ./app .
+CMD ["node", "server.js"]
+```
+
+`COPY ./app .` copies the *contents* of `app/` directly into `/home/app`, placing `server.js` at the expected path.
