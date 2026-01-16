@@ -67,6 +67,37 @@ Step 5: access the nodejs application from browser
 
 #### To build a docker image from the application
 
-    docker build -t my-app:1.0 .       
-    
+    docker build -t my-app:1.0 .
+
 The dot "." at the end of the command denotes location of the Dockerfile.
+
+## Pushing Docker Image to AWS ECR
+
+#### Prerequisites
+
+1. **Install AWS CLI** (if not installed)
+
+    ```bash
+    brew install awscli
+    ```
+
+2. **Configure AWS CLI**
+
+    ```bash
+    aws configure
+    ```
+
+    You'll be prompted for:
+    - AWS Access Key ID
+    - AWS Secret Access Key
+    - Default region name (e.g., `eu-central-1`)
+    - Default output format (e.g., `json`)
+
+3. **Add ECR Permissions to IAM User**
+
+    - Go to AWS Console → IAM → Users → Your User → Add Permissions
+    - Select "Attach policies directly"
+    - Search for `AmazonEC2ContainerRegistryFullAccess`
+    - Select it and click "Add permissions"
+
+
