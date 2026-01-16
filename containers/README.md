@@ -1146,3 +1146,44 @@ The application image (`app:1.0`) demonstrates the following layer dependency ch
 - **Application Layer:** `app:1.0` (custom application code)
   - **Base Runtime Layer:** `node:25-alpine` (Node.js runtime environment)
     - **Operating System Layer:** `alpine:3.23` (minimal Linux distribution optimized for containers)
+
+
+### Understanding WORKDIR and COPY Path Resolution
+
+**Initial Dockerfile (Problematic)**
+
+```dockerfile
+FROM node:25-alpine
+
+ENV MONGO_DB_USERNAME=admin \
+    MONGO_DB_PWD=password
+
+RUN mkdir -p /home/app
+COPY . /home/app
+CMD ["node", "server.js"]
+```
+
+Running `docker run my-app:1.0` produces: `Error: Cannot find module '/server.js'`
+
+**Root Cause:** Without `WORKDIR`, `CMD` executes from `/` (root), not `/home/app`.
+
+| Instruction | Execution Context |
+|-------------|-------------------|
+| `COPY . /home/app` | Files copied to `/home/app` |
+| `CMD ["node", "server.js"]` | Node searches in `/` |
+
+**Solution: Use WORKDIR**
+
+`WORKDIR` sets the working directory for `RUN`, `CMD`, `ENTRYPOINT`, `COPY`, and `ADD` instructions.
+
+```dockerfile
+FROM node:25-alpine
+
+ENV MONGO_DB_USERNAME=admin \
+    MONGO_DB_PWD=password
+
+WORKDIR /home/app
+COPY . .
+CMD ["node", "server.js"]
+```
+
