@@ -100,4 +100,33 @@ The dot "." at the end of the command denotes location of the Dockerfile.
     - Search for `AmazonEC2ContainerRegistryFullAccess`
     - Select it and click "Add permissions"
 
+#### Steps to Push Image to ECR
 
+Step 1: Create an ECR Repository (via AWS Console or CLI)
+
+    aws ecr create-repository --repository-name js-app --region eu-central-1
+
+Step 2: Authenticate Docker with ECR
+
+    aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin <account-id>.dkr.ecr.eu-central-1.amazonaws.com
+
+Step 3: Tag the local image for ECR
+
+    docker tag js-app:latest <account-id>.dkr.ecr.eu-central-1.amazonaws.com/js-app:latest
+
+Step 4: Push the image to ECR
+
+    docker push <account-id>.dkr.ecr.eu-central-1.amazonaws.com/js-app:latest
+
+Step 5: Verify the push (optional)
+
+    aws ecr describe-images --repository-name js-app --region eu-central-1
+
+#### Changing Image Tags
+
+To use a different tag (e.g., version number instead of `latest`):
+
+    docker tag js-app:latest <account-id>.dkr.ecr.eu-central-1.amazonaws.com/js-app:v1.0.0
+    docker push <account-id>.dkr.ecr.eu-central-1.amazonaws.com/js-app:v1.0.0
+
+_NOTE: Replace `<account-id>` with your 12-digit AWS Account ID_
