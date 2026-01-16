@@ -1443,3 +1443,62 @@ docker-compose logs -f my-app
 ```
 
 ---
+
+### Understanding Container Networking
+
+When using Docker Compose, all services are automatically placed on the same network and can communicate using their service names as hostnames.
+
+**Connection Flow:**
+```
+my-app (Node.js) → mongodb:27017 → MongoDB Container
+                   ↑
+                   Uses service name, NOT localhost
+```
+
+**Why `localhost` doesn't work between containers:**
+
+| Context | `localhost` refers to |
+|---------|----------------------|
+| Inside `my-app` container | The `my-app` container itself |
+| Inside `mongodb` container | The `mongodb` container itself |
+| On host machine | The host machine |
+
+Containers must use **service names** (e.g., `mongodb`) defined in `docker-compose.yaml` to communicate with each other.
+
+---
+
+### Application Configuration for Docker Compose
+
+The Node.js application must be configured to connect to MongoDB using the Docker Compose service name:
+
+```javascript
+// Use when running with Docker Compose
+let mongoUrlDockerCompose = "mongodb://admin:password@mongodb:27017";
+
+// Use when running locally (not in Docker)
+let mongoUrlLocal = "mongodb://admin:password@localhost:27017";
+```
+
+The application at [codes/docker/js-app/app/server.js](../codes/docker/js-app/app/server.js) uses `mongoUrlDockerCompose` when deployed in containers.
+
+---
+
+### Complete Workflow Summary
+
+```bash
+# 1. Build image with updated code
+docker build -t <IAM-id>.dkr.ecr.<aws-region>.amazonaws.com/<repository-name>:<tag>.
+
+# 2. Authenticate with ECR
+aws ecr get-login-password --region <aws-region> | docker login --username AWS --password-stdin <IAM-id>.dkr.ecr.eu-central-1.amazonaws.com
+
+# 3. Push to ECR
+docker push <IAM-id>.dkr.ecr.<aws-region> .amazonaws.com/<repository-name>:<tag>
+
+# 4. Update docker-compose.yaml with new image tag
+
+# 5. Pull and run (simulating deployment server)
+docker-compose up
+```
+
+---
