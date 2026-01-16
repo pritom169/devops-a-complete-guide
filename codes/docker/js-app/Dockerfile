@@ -5,6 +5,6 @@ ENV MONGO_DB_USERNAME=admin \
 
 WORKDIR /home/app
 
-COPY . .
+COPY ./app .
 
 CMD ["node", "server.js"]
