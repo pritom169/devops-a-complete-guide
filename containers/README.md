@@ -1221,3 +1221,55 @@ CMD ["node", "server.js"]
 ```
 
 `COPY ./app .` copies the *contents* of `app/` directly into `/home/app`, placing `server.js` at the expected path.
+
+### Optimizing Image Size with .dockerignore
+
+When building Docker images, the `COPY` instruction transfers all files from the source directory into the image. This includes development artifacts like `node_modules`, which can significantly bloat image size and increase build times.
+
+**The Problem:**
+- `node_modules` directories are often large (hundreds of MBs)
+- Dependencies should be installed fresh during the build to ensure consistency across environments
+- Copying local `node_modules` may include platform-specific binaries that won't work in the container
+
+**The Solution: `.dockerignore`**
+
+Similar to `.gitignore`, a `.dockerignore` file excludes files and directories from the build context:
+
+```dockerignore
+node_modules
+app/node_modules
+```
+
+This prevents `node_modules` from being copied, reducing the build context size and ensuring clean dependency installation.
+
+### Installing Dependencies at Build Time
+
+With `node_modules` excluded, dependencies must be installed during the image build using the `RUN` instruction:
+
+```dockerfile
+FROM node:25-alpine
+
+ENV MONGO_DB_USERNAME=admin \
+    MONGO_DB_PWD=password
+
+WORKDIR /home/app
+
+COPY ./app .
+
+RUN npm install
+
+CMD ["node", "server.js"]
+```
+
+**Execution Flow:**
+
+| Instruction | Phase | Purpose |
+|-------------|-------|---------|
+| `COPY ./app .` | Build time | Copies source code (excluding `node_modules`) |
+| `RUN npm install` | Build time | Installs dependencies inside the image |
+| `CMD ["node", "server.js"]` | Runtime | Starts the application when container runs |
+
+**Benefits of this approach:**
+- **Smaller build context:** Faster image builds due to reduced file transfer
+- **Consistent dependencies:** Fresh installation ensures compatibility with the container's OS and architecture
+- **Immutable images:** Dependencies are baked into the image, eliminating "works on my machine" issues
