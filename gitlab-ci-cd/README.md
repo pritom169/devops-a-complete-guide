@@ -153,3 +153,37 @@ Continuous Deployment takes Continuous Delivery one step further—every change 
 | **Rolling** | Incrementally update instances in a deployment group | Kubernetes deployments, minimal resource overhead |
 | **Feature Flags** | Deploy code with features disabled, enable progressively | A/B testing, gradual rollouts |
 | **Shadow/Dark Launch** | Deploy to production but don't serve real traffic | Testing with production data patterns |
+
+### GitLab CI/CD Core Concepts
+
+A typical GitLab CI/CD workflow follows this sequence:
+
+```mermaid
+graph LR
+    A[Code Changes<br/>Merged] --> B[Git Push to<br/>Remote Repository]
+    B --> C[CI Pipeline<br/>Triggered]
+    C --> D[Pipeline Execution]
+    D --> E[Run Automated Tests]
+    D --> F[Build Docker Image]
+    D --> G[Push to Container Registry]
+
+    style A fill:#e1f5ff
+    style B fill:#e1f5ff
+    style C fill:#fff4e1
+    style D fill:#ffe1e1
+    style E fill:#e8f5e9
+    style F fill:#e8f5e9
+    style G fill:#e8f5e9
+```
+
+**Pipeline Configuration**
+
+GitLab CI/CD pipelines are defined using a declarative YAML configuration file (`.gitlab-ci.yml`) stored in the repository root. This file specifies:
+
+- **Stages**: The sequential phases of the pipeline (build, test, deploy)
+- **Jobs**: Individual tasks that execute within each stage
+- **Variables**: Environment-specific configuration values
+- **Rules**: Conditions that determine when jobs run
+- **Artifacts**: Files passed between pipeline stages
+
+This "Pipeline as Code" approach ensures that CI/CD configuration is version-controlled, reviewable, and reproducible across environments.
