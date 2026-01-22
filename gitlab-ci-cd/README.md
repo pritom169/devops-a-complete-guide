@@ -162,18 +162,16 @@ A typical GitLab CI/CD workflow follows this sequence:
 graph LR
     A[Code Changes<br/>Merged] --> B[Git Push to<br/>Remote Repository]
     B --> C[CI Pipeline<br/>Triggered]
-    C --> D[Pipeline Execution]
-    D --> E[Run Automated Tests]
-    D --> F[Build Docker Image]
-    D --> G[Push to Container Registry]
+    C --> D[run_tests]
+    D --> E[build_image]
+    E --> F[push_image]
 
     style A fill:#e1f5ff
     style B fill:#e1f5ff
     style C fill:#fff4e1
-    style D fill:#ffe1e1
+    style D fill:#e8f5e9
     style E fill:#e8f5e9
     style F fill:#e8f5e9
-    style G fill:#e8f5e9
 ```
 
 **Pipeline Configuration**
@@ -187,3 +185,66 @@ GitLab CI/CD pipelines are defined using a declarative YAML configuration file (
 - **Artifacts**: Files passed between pipeline stages
 
 This "Pipeline as Code" approach ensures that CI/CD configuration is version-controlled, reviewable, and reproducible across environments.
+
+## Jobs (Basic Building Blocks of Pipeline)
+
+A **job** is the fundamental execution unit in GitLab CI/CD. Each job runs in an isolated container, executes a defined set of commands, and reports a pass/fail status. Jobs are the building blocks that, when combined, form your entire CI/CD pipeline.
+
+### Job Structure and Configuration
+
+GitLab CI/CD pipelines are configured by placing a `.gitlab-ci.yml` file in the repository root. GitLab automatically detects this file and executes the defined pipeline on each commit.
+
+```yaml
+run_tests:
+  before_script:
+    - echo "Preparing test data ..."
+  script:
+    - echo "Running tests..." # Changes made to the pipeline
+  after_script:
+    - echo "Clearing temporary files..."
+
+build_image:
+  script:
+    - echo "Building the docker image..."
+    - echo "Tagging the docker image"
+
+push_image:
+  script:
+    - echo "Logging into docker registry..."
+    - echo "Pushing docker image to registry.."
+```
+
+### Job Execution Lifecycle
+
+```mermaid
+graph TD
+    subgraph run_tests
+        A1[before_script<br/>Preparing test data] --> A2[script<br/>Running tests]
+        A2 --> A3[after_script<br/>Clearing temporary files]
+    end
+
+    subgraph build_image
+        B1[script<br/>Building the docker image] --> B2[script<br/>Tagging the docker image]
+    end
+
+    subgraph push_image
+        C1[script<br/>Logging into docker registry] --> C2[script<br/>Pushing docker image to registry]
+    end
+
+    run_tests --> build_image
+    build_image --> push_image
+
+    style A1 fill:#fff4e1
+    style A2 fill:#e8f5e9
+    style A3 fill:#e1f5ff
+    style B1 fill:#e8f5e9
+    style B2 fill:#e8f5e9
+    style C1 fill:#e8f5e9
+    style C2 fill:#e8f5e9
+```
+
+### Pipeline as Code
+
+By storing CI/CD configuration in `.gitlab-ci.yml`, the pipeline definition becomes version-controlled alongside the application code. This follows the **Infrastructure as Code (IaC)** philosophy—enabling code reviews for pipeline changes, maintaining audit history, and ensuring reproducibility across environments.
+
+Each commit triggers a full pipeline execution, automatically validating all changes against the defined quality gates.
