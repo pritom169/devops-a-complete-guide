@@ -248,3 +248,13 @@ graph TD
 By storing CI/CD configuration in `.gitlab-ci.yml`, the pipeline definition becomes version-controlled alongside the application code. This follows the **Infrastructure as Code (IaC)** philosophy—enabling code reviews for pipeline changes, maintaining audit history, and ensuring reproducibility across environments.
 
 Each commit triggers a full pipeline execution, automatically validating all changes against the defined quality gates.
+
+### Stages: Grouping and Ordering Jobs
+
+Jobs within the same stage execute in parallel, while stages themselves run sequentially. This allows pipelines to enforce execution order where dependencies exist.
+
+In the current configuration, `run_tests`, `build_image`, and `push_image` execute in parallel by default. However, the logical dependency requires sequential execution:
+
+1. **Test** — Validate code quality before building
+2. **Build** — Create the Docker image after tests pass
+3. **Push** — Upload the image to the registry only after a successful build
