@@ -305,3 +305,56 @@ deploy_image:
     - echo "Deploying new docker image to dev server..."
 ```
 
+### Job Dependencies with `needs`
+
+A limitation exists in the configuration above: jobs within the same stage execute in parallel by default. If `build_image` fails, `push_image` still executes because both jobs belong to the `build` stage.
+
+This behavior is problematic when jobs have implicit dependencies. In this case, `push_image` should only execute after `build_image` completes successfully—pushing an image that failed to build serves no purpose.
+
+GitLab CI/CD addresses this with the `needs` keyword, which creates explicit dependencies between jobs regardless of stage boundaries. The `needs` keyword enables **Directed Acyclic Graph (DAG)** scheduling, allowing fine-grained control over job execution order.
+
+```yaml
+stages:
+  - test
+  - build
+  - deploy
+
+run_unit_tests:
+  stage: test
+  before_script:
+    - echo "Preparing test data ..."
+  script:
+    - echo "Running unit tests..."
+  after_script:
+    - echo "Clearing temporary files..."
+
+run_lint_tests:
+  stage: test
+  before_script:
+    - echo "Preparing test data ..."
+  script:
+    - echo "Running lint tests..."
+  after_script:
+    - echo "Clearing temporary files..."
+
+build_image:
+  stage: build
+  script:
+    - echo "Building the docker image..."
+    - echo "Tagging the docker image"
+
+push_image:
+  stage: build
+  needs:
+    - build_image
+  script:
+    - echo "Logging into docker registry..."
+    - echo "Pushing docker image to registry.."
+
+deploy_image:
+  stage: deploy
+  script:
+    - echo "Deploying new docker image to dev server..."
+```
+
+With `needs: [build_image]`, the `push_image` job waits for `build_image` to complete successfully before executing. If `build_image` fails, `push_image` is automatically skipped.
