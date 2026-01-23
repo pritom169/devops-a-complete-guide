@@ -394,3 +394,38 @@ run_unit_tests:
     - ls
 ```
 
+#### External Shell Scripts
+
+For complex or reusable logic, external shell scripts improve maintainability. As pipeline configurations grow, embedding extensive shell commands directly in `.gitlab-ci.yml` becomes unwieldy and difficult to test independently.
+
+**Best Practice**: Extract shell logic into separate script files stored in the repository.
+
+Create a script file (`prepare-tests.sh`):
+
+```bash
+#!/bin/bash
+pwd
+ls
+mkdir test-data
+ls
+```
+
+Reference the script in the pipeline configuration:
+
+```yaml
+run_unit_tests:
+  stage: test
+  before_script:
+    - echo "Preparing test data..."
+    - chmod +x ./prepare-tests.sh
+    - ./prepare-tests.sh
+  script:
+    - echo "Running unit tests..."
+  after_script:
+    - echo "Clearing temporary files..."
+    - rm -r test-data
+    - ls
+```
+
+This separation enables script testing outside the CI environment and keeps pipeline definitions concise.
+
