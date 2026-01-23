@@ -358,3 +358,13 @@ deploy_image:
 ```
 
 With `needs: [build_image]`, the `push_image` job waits for `build_image` to complete successfully before executing. If `build_image` fails, `push_image` is automatically skipped.
+
+#### Visualizing Job Dependencies
+
+GitLab provides a graphical representation of job dependencies within the pipeline interface. To view the dependency graph:
+
+1. Navigate to **CI/CD → Pipelines** in the GitLab project
+2. Select a pipeline run
+3. Click **Job Dependencies** and enable **Show dependencies**
+
+This visualization displays the DAG structure, illustrating how jobs relate to one another and their execution order based on defined `needs` relationships.
