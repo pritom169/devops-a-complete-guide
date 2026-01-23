@@ -259,9 +259,9 @@ In the current configuration, `run_tests`, `build_image`, and `push_image` execu
 2. **Build** — Create the Docker image after tests pass
 3. **Push** — Upload the image to the registry only after a successful build
 
-To enforce sequential execution and logical grouping, GitLab CI/CD provides **stages**. Stages allow you to organize related jobs together and define explicit execution order across the pipeline. If any job fails, subsequent jobs are skipped and the pipeline terminates immediately.
+To enforce sequential execution and logical grouping, GitLab CI/CD provides **stages**. Stages organize related jobs together and define explicit execution order across the pipeline. When any job fails, subsequent stages are skipped and the pipeline terminates immediately, providing fail-fast behavior.
 
-The following configuration demonstrates how to assign jobs to stages:
+The following configuration demonstrates stage assignment:
 
 ```yaml
 stages:
@@ -304,3 +304,4 @@ deploy_image:
   script:
     - echo "Deploying new docker image to dev server..."
 ```
+
