@@ -430,3 +430,61 @@ run_unit_tests:
 This separation enables script testing outside the CI environment and keeps pipeline definitions concise.
 
 **Note**: GitLab CI/CD pipelines execute in ephemeral environments. Each job runs in a fresh container with no state preserved from previous pipeline executions. To persist data between jobs, use [artifacts](https://docs.gitlab.com/ee/ci/jobs/job_artifacts.html) or [caching](https://docs.gitlab.com/ee/ci/caching/).
+
+### Only: Controlling When Jobs Run
+
+The `only` keyword specifies the conditions under which a job should execute. This is particularly useful for restricting certain jobs to specific branches.
+
+**Problem:** By default, when a new feature branch is created, all jobs in the pipeline execute. This behavior is often undesirable—feature branches should typically only run tests, not build and push images to the registry.
+
+**Solution:** Use the `only` keyword to restrict build and deployment jobs to the `main` branch, while allowing test jobs to run on all branches.
+
+```yaml
+stages:
+  - test
+  - build
+  - deploy
+
+run_unit_tests:
+  stage: test
+  before_script:
+    - echo "Preparing test data ..."
+  script:
+    - echo "Running unit tests..."
+  after_script:
+    - echo "Clearing temporary files..."
+
+run_lint_tests:
+  stage: test
+  before_script:
+    - echo "Preparing test data ..."
+  script:
+    - echo "Running lint tests..."
+  after_script:
+    - echo "Clearing temporary files..."
+
+build_image:
+  only:
+    - main
+  stage: build
+  script:
+    - echo "Building the docker image..."
+    - echo "Tagging the docker image"
+
+push_image:
+  only:
+    - main
+  stage: build
+  needs:
+    - build_image
+  script:
+    - echo "Logging into docker registry..."
+    - echo "Pushing docker image to registry.."
+
+deploy_image:
+  only:
+    - main
+  stage: deploy
+  script:
+    - echo "Deploying new docker image to dev server..."
+```
