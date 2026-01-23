@@ -429,3 +429,4 @@ run_unit_tests:
 
 This separation enables script testing outside the CI environment and keeps pipeline definitions concise.
 
+**Note**: GitLab CI/CD pipelines execute in ephemeral environments. Each job runs in a fresh container with no state preserved from previous pipeline executions. To persist data between jobs, use [artifacts](https://docs.gitlab.com/ee/ci/jobs/job_artifacts.html) or [caching](https://docs.gitlab.com/ee/ci/caching/).
