@@ -368,3 +368,8 @@ GitLab provides a graphical representation of job dependencies within the pipeli
 3. Click **Job Dependencies** and enable **Show dependencies**
 
 This visualization displays the DAG structure, illustrating how jobs relate to one another and their execution order based on defined `needs` relationships.
+
+### Executing Shell Commands
+
+GitLab CI/CD jobs support direct shell command execution within script blocks. Commands run in the job's container environment with full shell capabilities.
+
