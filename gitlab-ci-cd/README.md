@@ -373,3 +373,24 @@ This visualization displays the DAG structure, illustrating how jobs relate to o
 
 GitLab CI/CD jobs support direct shell command execution within script blocks. Commands run in the job's container environment with full shell capabilities.
 
+#### Inline Commands
+
+Shell commands can be specified directly in the pipeline configuration:
+
+```yaml
+run_unit_tests:
+  stage: test
+  before_script:
+    - echo "Preparing test data..."
+    - pwd
+    - ls
+    - mkdir test-data
+    - ls
+  script:
+    - echo "Running unit tests..."
+  after_script:
+    - echo "Clearing temporary files..."
+    - rm -r test-data
+    - ls
+```
+
