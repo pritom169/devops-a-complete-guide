@@ -615,3 +615,14 @@ deploy_image:
   script:
     - echo "Deploying new docker image to dev server..."
 ```
+### Predefined Variables
+
+GitLab CI/CD provides predefined environment variables that are automatically available in every pipeline. These variables contain information about the pipeline, job, commit, branch, and more.
+
+**Common examples:**
+- `$CI_COMMIT_BRANCH` – The branch name
+- `$CI_PIPELINE_SOURCE` – How the pipeline was triggered (e.g., `push`, `merge_request_event`)
+- `$CI_PROJECT_NAME` – The project name
+- `$CI_JOB_ID` – The unique job ID
+
+For the complete list, see the [GitLab Predefined Variables Reference](https://docs.gitlab.com/ci/variables/predefined_variables/). 
