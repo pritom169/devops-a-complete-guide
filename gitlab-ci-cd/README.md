@@ -488,3 +488,63 @@ deploy_image:
   script:
     - echo "Deploying new docker image to dev server..."
 ```
+
+### Workflow Rules: Controlling Pipeline Behavior
+
+In production environments, pipelines typically execute only when commits are pushed to the `main` branch, not on feature branches.
+
+**Approach 1:** Add `only: main` to every job individually—this works but is repetitive and error-prone.
+
+**Approach 2 (Recommended):** Use the `workflow` keyword to define rules that apply to the entire pipeline, not just individual jobs. This provides centralized control over when the pipeline runs.
+
+In the example below, the pipeline will only execute for commits to the `main` branch:
+
+```yaml
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH != "main"
+      when: never
+    - when: always
+
+stages:
+  - test
+  - build
+  - deploy
+
+run_unit_tests:
+  stage: test
+  before_script:
+    - echo "Preparing test data ..."
+  script:
+    - echo "Running unit tests..."
+  after_script:
+    - echo "Clearing temporary files..."
+
+run_lint_tests:
+  stage: test
+  before_script:
+    - echo "Preparing test data ..."
+  script:
+    - echo "Running lint tests..."
+  after_script:
+    - echo "Clearing temporary files..."
+
+build_image:
+  stage: build
+  script:
+    - echo "Building the docker image..."
+    - echo "Tagging the docker image"
+
+push_image:
+  stage: build
+  needs:
+    - build_image
+  script:
+    - echo "Logging into docker registry..."
+    - echo "Pushing docker image to registry.."
+
+deploy_image:
+  stage: deploy
+  script:
+    - echo "Deploying new docker image to dev server..."
+```
