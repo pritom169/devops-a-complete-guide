@@ -625,4 +625,42 @@ GitLab CI/CD provides predefined environment variables that are automatically av
 - `$CI_PROJECT_NAME` – The project name
 - `$CI_JOB_ID` – The unique job ID
 
-For the complete list, see the [GitLab Predefined Variables Reference](https://docs.gitlab.com/ci/variables/predefined_variables/). 
+For the complete list, see the [GitLab Predefined Variables Reference](https://docs.gitlab.com/ci/variables/predefined_variables/).
+
+### GitLab CI/CD Variables
+
+GitLab CI/CD supports two types of variables:
+1. **Predefined variables** – Automatically provided by GitLab (covered above)
+2. **Custom variables** – User-defined variables for project-specific configuration
+
+**Use Case:** A pipeline that deploys multiple microservices to different environments can use custom variables to parameterize the service name and target environment.
+
+**Creating Custom Variables in GitLab:**
+1. Navigate to **Settings > CI/CD** in your project
+2. Expand the **Variables** section
+3. Click **Add variable**
+4. Configure the variable (e.g., `DEPLOYMENT_ENVIRONMENT`, `MICRO_SERVICE_NAME`)
+5. Set visibility to **Visible** if the value is not sensitive
+6. Uncheck protection flags if the variable should be available on all branches
+
+```yaml
+# Previous codes
+run_unit_tests:
+  stage: test
+  before_script:
+    - echo "Preparing test data ..."
+  script:
+    - echo "Running unit tests in $DEPLOYMENT_ENVIRONMENT ..."
+  after_script:
+    - echo "Clearing temporary files..."
+
+run_lint_tests:
+  stage: test
+  before_script:
+    - echo "Preparing test data ..."
+  script:
+    - echo "Running lint tests in $MICRO_SERVICE_NAME ..."
+  after_script:
+    - echo "Clearing temporary files..."
+# Rest of the codes
+```
