@@ -548,3 +548,70 @@ deploy_image:
   script:
     - echo "Deploying new docker image to dev server..."
 ```
+
+### Triggering Pipelines on Merge Requests
+
+When developers work on feature branches, they create a merge request (called a "pull request" in GitHub and Azure DevOps) to propose changes to the `main` branch. Merge requests enable code review, ensuring only quality code enters the main branch.
+
+**Best Practice:** Run tests when a merge request is created, not on every commit to a feature branch. This ensures:
+- The `main` branch remains stable
+- Feature branches (work in progress) don't trigger unnecessary pipeline runs
+- Code is validated before merging
+
+The following configuration combines workflow rules with job-level `only` constraints:
+
+```yaml
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
+      when: never
+    - when: always
+
+stages:
+  - test
+  - build
+  - deploy
+
+run_unit_tests:
+  stage: test
+  before_script:
+    - echo "Preparing test data ..."
+  script:
+    - echo "Running unit tests..."
+  after_script:
+    - echo "Clearing temporary files..."
+
+run_lint_tests:
+  stage: test
+  before_script:
+    - echo "Preparing test data ..."
+  script:
+    - echo "Running lint tests..."
+  after_script:
+    - echo "Clearing temporary files..."
+
+build_image:
+  stage: build
+  only:
+    - main
+  script:
+    - echo "Building the docker image..."
+    - echo "Tagging the docker image"
+
+push_image:
+  stage: build
+  only:
+    - main
+  needs:
+    - build_image
+  script:
+    - echo "Logging into docker registry..."
+    - echo "Pushing docker image to registry.."
+
+deploy_image:
+  stage: deploy
+  only:
+    - main
+  script:
+    - echo "Deploying new docker image to dev server..."
+```
