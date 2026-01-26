@@ -1091,3 +1091,26 @@ The **Parallels executor** is similar to VirtualBox but uses Parallels Desktop, 
 - Linux or Windows workloads
 - Environments without Parallels licensing
 - Cost-sensitive projects (requires macOS hardware + Parallels license)
+
+#### SSH Executor
+
+The **SSH executor** connects to a remote machine via SSH and executes job commands there. The runner itself doesn't run the job—it delegates execution to another host.
+
+```
+┌─────────────────┐      ┌─────────────────┐  SSH  ┌─────────────────┐
+│  GitLab Server  │─────▶│  GitLab Runner  │──────▶│  Remote Server  │
+│  (Job Queue)    │      │  (SSH Client)   │       │  (Job Execution)│
+└─────────────────┘      └─────────────────┘       └─────────────────┘
+```
+
+**When to Use:**
+- Deploying to specific servers that cannot run runners directly
+- Legacy infrastructure requiring remote command execution
+- Environments with strict firewall rules (outbound SSH only)
+- Integration with existing server infrastructure
+
+**When NOT to Use:**
+- Build jobs (no isolation between concurrent jobs)
+- Sensitive workloads (shared server state)
+- High-concurrency pipelines
+- Environments requiring reproducible builds
