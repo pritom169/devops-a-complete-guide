@@ -1129,3 +1129,50 @@ The **Instance executor** (formerly "Docker Autoscaler") is GitLab's recommended
 - On-premises environments without cloud access
 - Small teams with fixed runner capacity
 - Jobs requiring specialized hardware
+
+#### Custom Executor
+
+The **Custom executor** allows defining your own execution logic through user-provided scripts. GitLab invokes your scripts at specific lifecycle stages (prepare, run, cleanup).
+
+**When to Use:**
+- Exotic environments not covered by built-in executors
+- Integration with proprietary orchestration systems
+- LXC/LXD containers, Libvirt VMs, or custom sandboxes
+- Specialized compliance or security requirements
+
+**When NOT to Use:**
+- Standard use cases covered by Docker or Kubernetes
+- Teams without capacity to maintain custom scripts
+- Environments requiring GitLab support assistance
+
+---
+
+### Executor Comparison Matrix
+
+The following table provides a comprehensive comparison of all GitLab executors:
+
+| Executor | Isolation | Startup Speed | Scalability | Complexity | Best For |
+|----------|-----------|---------------|-------------|------------|----------|
+| **Shell** | None | Instant | Manual | Low | Simple projects, legacy systems |
+| **Docker** | Container | Fast (~seconds) | Manual | Low-Medium | Most CI/CD workloads |
+| **Docker Machine** | Container + VM | Slow (~minutes) | Auto | High | Variable workloads (deprecated) |
+| **Kubernetes** | Pod | Fast (~seconds) | Auto | High | Cloud-native, K8s environments |
+| **VirtualBox** | Full VM | Slow (~minutes) | Manual | Medium | Cross-OS testing |
+| **Parallels** | Full VM | Slow (~minutes) | Manual | Medium | macOS/iOS development |
+| **SSH** | None | Instant | Manual | Low | Remote deployments |
+| **Instance** | Container + VM | Medium | Auto | Medium-High | Modern autoscaling |
+| **Custom** | User-defined | User-defined | User-defined | High | Specialized requirements |
+
+### Detailed Pros and Cons
+
+| Executor | Pros | Cons |
+|----------|------|------|
+| **Shell** | Zero overhead, instant startup, simple configuration, full system access | No isolation, dependency conflicts, manual tool management, security risks |
+| **Docker** | Reproducible builds, version isolation, vast image ecosystem, fast startup | Requires Docker installation, limited hardware access, storage overhead |
+| **Docker Machine** | Autoscaling, cost optimization, cloud integration | Deprecated, slow VM provisioning, complex configuration, cloud lock-in |
+| **Kubernetes** | Native K8s integration, auto-scaling, resource quotas, namespace isolation | Requires K8s expertise, complex DinD setup, cluster overhead |
+| **VirtualBox** | Full OS isolation, system-level testing, snapshot support | Slow startup, resource intensive, requires local hypervisor |
+| **Parallels** | Native macOS support, Apple silicon compatibility | macOS only, licensing costs, limited to Apple hardware |
+| **SSH** | Simple remote execution, no runner on target | No isolation, shared state, manual server management |
+| **Instance** | Modern autoscaling, GitLab-supported, cloud-native | Cloud dependency, provisioning latency, configuration complexity |
+| **Custom** | Ultimate flexibility, any environment supported | Maintenance burden, no GitLab support, scripting expertise required |
