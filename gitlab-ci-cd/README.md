@@ -1114,3 +1114,18 @@ The **SSH executor** connects to a remote machine via SSH and executes job comma
 - Sensitive workloads (shared server state)
 - High-concurrency pipelines
 - Environments requiring reproducible builds
+
+#### Instance Executor
+
+The **Instance executor** (formerly "Docker Autoscaler") is GitLab's recommended replacement for Docker Machine. It provisions cloud VMs on-demand and runs jobs using Docker containers within those VMs.
+
+**When to Use:**
+- New autoscaling deployments replacing Docker Machine
+- Cost-optimized cloud-native CI/CD
+- Organizations using AWS, GCP, or Azure
+- Workloads requiring both isolation and scalability
+
+**When NOT to Use:**
+- On-premises environments without cloud access
+- Small teams with fixed runner capacity
+- Jobs requiring specialized hardware
