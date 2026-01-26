@@ -1012,3 +1012,66 @@ The **Docker Machine executor** extends the Docker executor with **autoscaling c
 - Organizations without cloud infrastructure expertise
 
 **Note:** Docker Machine is in maintenance mode. GitLab recommends the **Instance executor** or **Kubernetes executor** for new autoscaling deployments.
+
+#### Kubernetes Executor
+
+The **Kubernetes executor** runs each job as a pod in a Kubernetes cluster, leveraging container orchestration for scalability, resource management, and high availability.
+
+```
+┌─────────────────┐      ┌─────────────────┐      ┌─────────────────────────┐
+│  GitLab Server  │─────▶│  GitLab Runner  │─────▶│  Kubernetes API Server  │
+│  (Job Queue)    │      │  (In-Cluster)   │      │                         │
+└─────────────────┘      └─────────────────┘      └───────────┬─────────────┘
+                                                              │ Creates Pod
+                                                              ▼
+                                              ┌───────────────────────────────┐
+                                              │         Job Pod               │
+                                              │  ┌─────────┐  ┌─────────┐    │
+                                              │  │ Build   │  │ Helper  │    │
+                                              │  │Container│  │Container│    │
+                                              │  └─────────┘  └─────────┘    │
+                                              └───────────────────────────────┘
+```
+
+**When to Use:**
+- Organizations already running Kubernetes infrastructure
+- Workloads requiring dynamic scaling and resource limits
+- Multi-tenant environments with namespace isolation
+- Cloud-native applications deployed to Kubernetes
+
+**When NOT to Use:**
+- Teams without Kubernetes expertise
+- Simple projects that don't justify orchestration overhead
+- Jobs requiring Docker-in-Docker (complex configuration required)
+- Environments with no existing Kubernetes cluster
+
+**Pipeline Configuration:**
+
+```yaml
+variables:
+  KUBERNETES_CPU_REQUEST: "500m"
+  KUBERNETES_MEMORY_REQUEST: "1Gi"
+
+build_job:
+  image: golang:1.21
+  tags:
+    - kubernetes
+  script:
+    - go build -o app .
+```
+
+#### VirtualBox Executor
+
+The **VirtualBox executor** runs jobs inside VirtualBox virtual machines, providing complete OS-level isolation with full system access.
+
+**When to Use:**
+- Testing across multiple operating systems (Windows, Linux, macOS)
+- Jobs requiring kernel-level access or system modifications
+- Legacy applications incompatible with containerization
+- Security testing requiring complete environment isolation
+
+**When NOT to Use:**
+- High-throughput pipelines (VM startup is slow)
+- Resource-constrained environments
+- Cloud deployments (VirtualBox requires local hypervisor)
+- Stateless, containerizable workloads
