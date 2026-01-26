@@ -1176,3 +1176,40 @@ The following table provides a comprehensive comparison of all GitLab executors:
 | **SSH** | Simple remote execution, no runner on target | No isolation, shared state, manual server management |
 | **Instance** | Modern autoscaling, GitLab-supported, cloud-native | Cloud dependency, provisioning latency, configuration complexity |
 | **Custom** | Ultimate flexibility, any environment supported | Maintenance burden, no GitLab support, scripting expertise required |
+
+### Executor Selection Guide
+
+Use this decision matrix to select the appropriate executor:
+
+```
+                              ┌─────────────────────────┐
+                              │ Do you need autoscaling?│
+                              └───────────┬─────────────┘
+                                          │
+                         ┌────────────────┴────────────────┐
+                         │ Yes                             │ No
+                         ▼                                 ▼
+              ┌─────────────────────┐          ┌─────────────────────┐
+              │ Have Kubernetes?    │          │ Need OS isolation?  │
+              └──────────┬──────────┘          └──────────┬──────────┘
+                         │                                │
+              ┌──────────┴──────────┐          ┌──────────┴──────────┐
+              │ Yes          │ No   │          │ Yes          │ No   │
+              ▼              ▼      │          ▼              ▼
+        ┌──────────┐  ┌──────────┐  │    ┌──────────┐  ┌──────────┐
+        │Kubernetes│  │ Instance │  │    │VirtualBox│  │ Docker?  │
+        │ Executor │  │ Executor │  │    │/Parallels│  │          │
+        └──────────┘  └──────────┘  │    └──────────┘  └────┬─────┘
+                                    │                       │
+                                    │              ┌────────┴────────┐
+                                    │              │ Yes       │ No  │
+                                    │              ▼           ▼
+                                    │        ┌──────────┐ ┌──────────┐
+                                    │        │  Docker  │ │  Shell   │
+                                    │        │ Executor │ │ Executor │
+                                    │        └──────────┘ └──────────┘
+                                    │
+                                    └─────────────────────────────────┘
+```
+
+**Recommendation:** For most teams, the **Docker executor** provides the optimal balance of isolation, speed, and simplicity. Organizations with Kubernetes infrastructure should leverage the **Kubernetes executor**, while those requiring autoscaling without K8s should consider the **Instance executor**.
