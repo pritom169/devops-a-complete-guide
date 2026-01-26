@@ -927,3 +927,289 @@ A shared runner hosts multiple microservices:
 - **Service B** requires Node.js 20 for modern ECMAScript features
 
 With a shell executor, only one Node.js version can be installed globally, forcing teams to implement workarounds (version managers, separate runners) or accept broken builds.
+
+#### Docker Executor
+
+The **Docker executor** runs each job inside a fresh Docker container, providing isolated and reproducible build environments. This is the most widely adopted executor for modern CI/CD pipelines.
+
+```
+┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
+│  GitLab Server  │─────▶│  GitLab Runner  │─────▶│ Docker Container│
+│  (Job Queue)    │      │  (Docker Host)  │      │  (Ephemeral)    │
+└─────────────────┘      └─────────────────┘      └─────────────────┘
+                                                          │
+                                                          ▼
+                                                  ┌─────────────────┐
+                                                  │  Job Executes   │
+                                                  │  in Isolation   │
+                                                  └─────────────────┘
+```
+
+**How It Works:**
+
+1. The runner pulls the specified Docker image (e.g., `node:20`, `python:3.12`)
+2. A new container is created from that image
+3. The job's scripts execute inside the container
+4. Upon completion, the container is destroyed
+
+**When to Use:**
+- Projects requiring specific runtime versions or dependencies
+- Teams needing reproducible builds across different environments
+- Microservices architectures with varying technology stacks
+- Security-conscious environments requiring job isolation
+
+**When NOT to Use:**
+- Jobs requiring direct hardware access (GPU, USB devices)
+- Windows-native applications (limited Windows container support)
+- Environments where Docker installation is prohibited
+- Jobs requiring persistent state between runs
+
+**Pipeline Configuration:**
+
+```yaml
+run_tests:
+  image: node:20-alpine
+  stage: test
+  script:
+    - npm ci
+    - npm test
+
+build_python_service:
+  image: python:3.12-slim
+  stage: build
+  script:
+    - pip install -r requirements.txt
+    - python setup.py build
+```
+
+#### Docker Machine Executor (Autoscaling)
+
+The **Docker Machine executor** extends the Docker executor with **autoscaling capabilities**. It dynamically provisions and terminates cloud VMs (AWS EC2, GCP Compute Engine, Azure VMs) based on job demand.
+
+```
+┌─────────────────┐      ┌─────────────────┐      ┌─────────────────────────┐
+│  GitLab Server  │─────▶│  GitLab Runner  │─────▶│  Cloud Provider API     │
+│  (Job Queue)    │      │  (Orchestrator) │      │  (AWS/GCP/Azure)        │
+└─────────────────┘      └─────────────────┘      └───────────┬─────────────┘
+                                                              │ Provisions
+                                                              ▼
+                                              ┌───────────────────────────────┐
+                                              │  VM 1    VM 2    VM 3   ...   │
+                                              │  (Docker containers per VM)   │
+                                              └───────────────────────────────┘
+```
+
+**When to Use:**
+- Variable workloads with peak and off-peak hours
+- Cost optimization through on-demand infrastructure
+- Large organizations with hundreds of concurrent pipelines
+- Projects requiring burst capacity for release cycles
+
+**When NOT to Use:**
+- Small teams with predictable, low-volume pipelines
+- Environments with strict on-premises requirements
+- Latency-sensitive jobs (VM provisioning adds startup time)
+- Organizations without cloud infrastructure expertise
+
+**Note:** Docker Machine is in maintenance mode. GitLab recommends the **Instance executor** or **Kubernetes executor** for new autoscaling deployments.
+
+#### Kubernetes Executor
+
+The **Kubernetes executor** runs each job as a pod in a Kubernetes cluster, leveraging container orchestration for scalability, resource management, and high availability.
+
+```
+┌─────────────────┐      ┌─────────────────┐      ┌─────────────────────────┐
+│  GitLab Server  │─────▶│  GitLab Runner  │─────▶│  Kubernetes API Server  │
+│  (Job Queue)    │      │  (In-Cluster)   │      │                         │
+└─────────────────┘      └─────────────────┘      └───────────┬─────────────┘
+                                                              │ Creates Pod
+                                                              ▼
+                                              ┌───────────────────────────────┐
+                                              │         Job Pod               │
+                                              │  ┌─────────┐  ┌─────────┐    │
+                                              │  │ Build   │  │ Helper  │    │
+                                              │  │Container│  │Container│    │
+                                              │  └─────────┘  └─────────┘    │
+                                              └───────────────────────────────┘
+```
+
+**When to Use:**
+- Organizations already running Kubernetes infrastructure
+- Workloads requiring dynamic scaling and resource limits
+- Multi-tenant environments with namespace isolation
+- Cloud-native applications deployed to Kubernetes
+
+**When NOT to Use:**
+- Teams without Kubernetes expertise
+- Simple projects that don't justify orchestration overhead
+- Jobs requiring Docker-in-Docker (complex configuration required)
+- Environments with no existing Kubernetes cluster
+
+**Pipeline Configuration:**
+
+```yaml
+variables:
+  KUBERNETES_CPU_REQUEST: "500m"
+  KUBERNETES_MEMORY_REQUEST: "1Gi"
+
+build_job:
+  image: golang:1.21
+  tags:
+    - kubernetes
+  script:
+    - go build -o app .
+```
+
+#### VirtualBox Executor
+
+The **VirtualBox executor** runs jobs inside VirtualBox virtual machines, providing complete OS-level isolation with full system access.
+
+**When to Use:**
+- Testing across multiple operating systems (Windows, Linux, macOS)
+- Jobs requiring kernel-level access or system modifications
+- Legacy applications incompatible with containerization
+- Security testing requiring complete environment isolation
+
+**When NOT to Use:**
+- High-throughput pipelines (VM startup is slow)
+- Resource-constrained environments
+- Cloud deployments (VirtualBox requires local hypervisor)
+- Stateless, containerizable workloads
+
+#### Parallels Executor
+
+The **Parallels executor** is similar to VirtualBox but uses Parallels Desktop, primarily for **macOS environments**. It creates isolated macOS VMs for each job.
+
+**When to Use:**
+- iOS/macOS application development and testing
+- Xcode builds requiring full macOS environment
+- Apple silicon (M1/M2/M3) native builds
+- macOS-specific toolchain requirements
+
+**When NOT to Use:**
+- Non-Apple platforms
+- Linux or Windows workloads
+- Environments without Parallels licensing
+- Cost-sensitive projects (requires macOS hardware + Parallels license)
+
+#### SSH Executor
+
+The **SSH executor** connects to a remote machine via SSH and executes job commands there. The runner itself doesn't run the job—it delegates execution to another host.
+
+```
+┌─────────────────┐      ┌─────────────────┐  SSH  ┌─────────────────┐
+│  GitLab Server  │─────▶│  GitLab Runner  │──────▶│  Remote Server  │
+│  (Job Queue)    │      │  (SSH Client)   │       │  (Job Execution)│
+└─────────────────┘      └─────────────────┘       └─────────────────┘
+```
+
+**When to Use:**
+- Deploying to specific servers that cannot run runners directly
+- Legacy infrastructure requiring remote command execution
+- Environments with strict firewall rules (outbound SSH only)
+- Integration with existing server infrastructure
+
+**When NOT to Use:**
+- Build jobs (no isolation between concurrent jobs)
+- Sensitive workloads (shared server state)
+- High-concurrency pipelines
+- Environments requiring reproducible builds
+
+#### Instance Executor
+
+The **Instance executor** (formerly "Docker Autoscaler") is GitLab's recommended replacement for Docker Machine. It provisions cloud VMs on-demand and runs jobs using Docker containers within those VMs.
+
+**When to Use:**
+- New autoscaling deployments replacing Docker Machine
+- Cost-optimized cloud-native CI/CD
+- Organizations using AWS, GCP, or Azure
+- Workloads requiring both isolation and scalability
+
+**When NOT to Use:**
+- On-premises environments without cloud access
+- Small teams with fixed runner capacity
+- Jobs requiring specialized hardware
+
+#### Custom Executor
+
+The **Custom executor** allows defining your own execution logic through user-provided scripts. GitLab invokes your scripts at specific lifecycle stages (prepare, run, cleanup).
+
+**When to Use:**
+- Exotic environments not covered by built-in executors
+- Integration with proprietary orchestration systems
+- LXC/LXD containers, Libvirt VMs, or custom sandboxes
+- Specialized compliance or security requirements
+
+**When NOT to Use:**
+- Standard use cases covered by Docker or Kubernetes
+- Teams without capacity to maintain custom scripts
+- Environments requiring GitLab support assistance
+
+---
+
+### Executor Comparison Matrix
+
+The following table provides a comprehensive comparison of all GitLab executors:
+
+| Executor | Isolation | Startup Speed | Scalability | Complexity | Best For |
+|----------|-----------|---------------|-------------|------------|----------|
+| **Shell** | None | Instant | Manual | Low | Simple projects, legacy systems |
+| **Docker** | Container | Fast (~seconds) | Manual | Low-Medium | Most CI/CD workloads |
+| **Docker Machine** | Container + VM | Slow (~minutes) | Auto | High | Variable workloads (deprecated) |
+| **Kubernetes** | Pod | Fast (~seconds) | Auto | High | Cloud-native, K8s environments |
+| **VirtualBox** | Full VM | Slow (~minutes) | Manual | Medium | Cross-OS testing |
+| **Parallels** | Full VM | Slow (~minutes) | Manual | Medium | macOS/iOS development |
+| **SSH** | None | Instant | Manual | Low | Remote deployments |
+| **Instance** | Container + VM | Medium | Auto | Medium-High | Modern autoscaling |
+| **Custom** | User-defined | User-defined | User-defined | High | Specialized requirements |
+
+### Detailed Pros and Cons
+
+| Executor | Pros | Cons |
+|----------|------|------|
+| **Shell** | Zero overhead, instant startup, simple configuration, full system access | No isolation, dependency conflicts, manual tool management, security risks |
+| **Docker** | Reproducible builds, version isolation, vast image ecosystem, fast startup | Requires Docker installation, limited hardware access, storage overhead |
+| **Docker Machine** | Autoscaling, cost optimization, cloud integration | Deprecated, slow VM provisioning, complex configuration, cloud lock-in |
+| **Kubernetes** | Native K8s integration, auto-scaling, resource quotas, namespace isolation | Requires K8s expertise, complex DinD setup, cluster overhead |
+| **VirtualBox** | Full OS isolation, system-level testing, snapshot support | Slow startup, resource intensive, requires local hypervisor |
+| **Parallels** | Native macOS support, Apple silicon compatibility | macOS only, licensing costs, limited to Apple hardware |
+| **SSH** | Simple remote execution, no runner on target | No isolation, shared state, manual server management |
+| **Instance** | Modern autoscaling, GitLab-supported, cloud-native | Cloud dependency, provisioning latency, configuration complexity |
+| **Custom** | Ultimate flexibility, any environment supported | Maintenance burden, no GitLab support, scripting expertise required |
+
+### Executor Selection Guide
+
+Use this decision matrix to select the appropriate executor:
+
+```
+                              ┌─────────────────────────┐
+                              │ Do you need autoscaling?│
+                              └───────────┬─────────────┘
+                                          │
+                         ┌────────────────┴────────────────┐
+                         │ Yes                             │ No
+                         ▼                                 ▼
+              ┌─────────────────────┐          ┌─────────────────────┐
+              │ Have Kubernetes?    │          │ Need OS isolation?  │
+              └──────────┬──────────┘          └──────────┬──────────┘
+                         │                                │
+              ┌──────────┴──────────┐          ┌──────────┴──────────┐
+              │ Yes          │ No   │          │ Yes          │ No   │
+              ▼              ▼      │          ▼              ▼
+        ┌──────────┐  ┌──────────┐  │    ┌──────────┐  ┌──────────┐
+        │Kubernetes│  │ Instance │  │    │VirtualBox│  │ Docker?  │
+        │ Executor │  │ Executor │  │    │/Parallels│  │          │
+        └──────────┘  └──────────┘  │    └──────────┘  └────┬─────┘
+                                    │                       │
+                                    │              ┌────────┴────────┐
+                                    │              │ Yes       │ No  │
+                                    │              ▼           ▼
+                                    │        ┌──────────┐ ┌──────────┐
+                                    │        │  Docker  │ │  Shell   │
+                                    │        │ Executor │ │ Executor │
+                                    │        └──────────┘ └──────────┘
+                                    │
+                                    └─────────────────────────────────┘
+```
+
+**Recommendation:** For most teams, the **Docker executor** provides the optimal balance of isolation, speed, and simplicity. Organizations with Kubernetes infrastructure should leverage the **Kubernetes executor**, while those requiring autoscaling without K8s should consider the **Instance executor**.
