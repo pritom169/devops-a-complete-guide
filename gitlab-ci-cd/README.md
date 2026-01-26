@@ -1075,3 +1075,19 @@ The **VirtualBox executor** runs jobs inside VirtualBox virtual machines, provid
 - Resource-constrained environments
 - Cloud deployments (VirtualBox requires local hypervisor)
 - Stateless, containerizable workloads
+
+#### Parallels Executor
+
+The **Parallels executor** is similar to VirtualBox but uses Parallels Desktop, primarily for **macOS environments**. It creates isolated macOS VMs for each job.
+
+**When to Use:**
+- iOS/macOS application development and testing
+- Xcode builds requiring full macOS environment
+- Apple silicon (M1/M2/M3) native builds
+- macOS-specific toolchain requirements
+
+**When NOT to Use:**
+- Non-Apple platforms
+- Linux or Windows workloads
+- Environments without Parallels licensing
+- Cost-sensitive projects (requires macOS hardware + Parallels license)
