@@ -1308,3 +1308,15 @@ This confirms the job runs inside a Docker container provisioned by Docker Machi
 ```
 Using effective pull policy of [always] for container ruby:3.1
 ```
+
+#### Job Execution Sequence
+
+The hosted runner follows a defined sequence during job execution:
+
+| Phase | Action |
+|-------|--------|
+| **Image Pull** | Downloads the specified Docker image from the registry |
+| **Environment Preparation** | Configures the container with required environment variables |
+| **Source Clone** | Clones the repository at the target commit SHA |
+| **Script Execution** | Runs `before_script`, `script`, and `after_script` commands |
+| **Cleanup** | Removes temporary files, clears project directory, and deletes file-based variables |
