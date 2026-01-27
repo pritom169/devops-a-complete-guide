@@ -1248,3 +1248,14 @@ flowchart LR
     Runner -->|"5) Update job output<br/>& status"| GitLab
 ```
 
+**Workflow Steps:**
+
+| Step | Action | Description |
+|------|--------|-------------|
+| **1** | Request & Return Jobs | Runner polls GitLab server for pending jobs; GitLab returns matching jobs based on tags and executor compatibility |
+| **2** | Compile & Send Payload | Runner compiles the job configuration and sends the execution payload to the configured executor |
+| **3** | Clone & Download | Executor clones the repository at the correct commit SHA and downloads artifacts from previous stages |
+| **4** | Execute & Return | Executor runs `before_script`, `script`, and `after_script` commands, then returns output and exit status to the runner |
+| **5** | Update Status | Runner streams logs and reports final job status (success/failed/canceled) back to GitLab server |
+
+
