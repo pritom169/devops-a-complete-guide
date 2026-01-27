@@ -1258,4 +1258,9 @@ flowchart LR
 | **4** | Execute & Return | Executor runs `before_script`, `script`, and `after_script` commands, then returns output and exit status to the runner |
 | **5** | Update Status | Runner streams logs and reports final job status (success/failed/canceled) back to GitLab server |
 
+**Key Characteristics:**
 
+- **Asynchronous polling**: Runners continuously poll the GitLab server (default: every 3 seconds) for available jobs rather than receiving push notifications
+- **Stateless execution**: Each job starts with a fresh environment; no state persists between jobs unless explicitly passed via artifacts or cache
+- **Fail-fast behavior**: If a job fails, subsequent jobs in dependent stages are skipped (unless configured otherwise with `allow_failure`)
+- **Parallel execution**: Jobs within the same stage run concurrently across available runners, maximizing pipeline throughput
