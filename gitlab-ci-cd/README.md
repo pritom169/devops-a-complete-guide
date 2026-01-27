@@ -1295,3 +1295,16 @@ Running with gitlab-runner 18.7.0~pre.433.g3a5f2314 (3a5f2314)
   on green-2.saas-linux-small-amd64.runners-manager.gitlab.com/default ns46NMmJT, system ID: s_85d7af184313
 ```
 
+#### Executor and Image Information
+
+The subsequent log entries display the executor type and container image:
+
+```
+Preparing the "docker+machine" executor
+```
+
+This confirms the job runs inside a Docker container provisioned by Docker Machine. The specific image is also logged:
+
+```
+Using effective pull policy of [always] for container ruby:3.1
+```
