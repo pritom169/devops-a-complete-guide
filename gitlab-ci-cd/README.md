@@ -1269,4 +1269,15 @@ flowchart LR
 
 With an understanding of job execution workflow, identifying which runners and executors are assigned to specific jobs becomes relevant for debugging and optimization.
 
+#### Default Runner Assignment
+
+GitLab CI/CD automatically assigns **hosted runners** to execute CI/CD jobs when no self-hosted runners are configured. These runners are fully managed by GitLab and utilize **Docker Machine Executors** for job isolation and scalability.
+
+| Characteristic | Description |
+|----------------|-------------|
+| **Management** | Maintained and operated by GitLab |
+| **Executor Type** | Docker Machine (autoscaling) |
+| **Availability** | Shared across all GitLab.com projects |
+| **Configuration** | No setup required—enabled by default |
+
 
