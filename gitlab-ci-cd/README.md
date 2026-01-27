@@ -1280,4 +1280,18 @@ GitLab CI/CD automatically assigns **hosted runners** to execute CI/CD jobs when
 | **Availability** | Shared across all GitLab.com projects |
 | **Configuration** | No setup required—enabled by default |
 
+#### Viewing Runner Information
+
+To inspect which runner executed a specific job:
+
+1. Navigate to **CI/CD → Pipelines** in the GitLab project
+2. Select the pipeline run
+3. Click on an individual job to view its execution logs
+
+The runner details appear at the top of the log output:
+
+```
+Running with gitlab-runner 18.7.0~pre.433.g3a5f2314 (3a5f2314)
+  on green-2.saas-linux-small-amd64.runners-manager.gitlab.com/default ns46NMmJT, system ID: s_85d7af184313
+```
 
