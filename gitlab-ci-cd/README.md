@@ -1224,3 +1224,27 @@ Deploying a self-hosted GitLab Runner involves three phases:
 | **2. Registration** | Register the runner with your GitLab instance by obtaining a registration token from **Settings → CI/CD → Runners** and running `gitlab-runner register`. This establishes trust between the runner and GitLab server. |
 | **3. Configuration** | Configure the runner's executor type, concurrency limits, caching, and other options in `/etc/gitlab-runner/config.toml`. |
 
+For detailed installation instructions, see the [GitLab Runner Installation Documentation](https://docs.gitlab.com/runner/install/).
+
+### Job Execution Workflow
+
+Understanding the complete job execution workflow provides insight into how GitLab CI/CD orchestrates pipelines from code commit to deployment completion.
+
+```mermaid
+flowchart LR
+    GitLab[("GitLab<br/>(e.g. GitLab.com)")]
+    Runner["RUNNER"]
+    Executor["EXECUTOR"]
+
+    Runner -->|"1) Request new jobs"| GitLab
+    GitLab -->|"1) Return jobs"| Runner
+    
+    Runner -->|"2) Compile & send<br/>job payload"| Executor
+    
+    GitLab -->|"3) Clone sources /<br/>download artifacts"| Executor
+    
+    Executor -->|"4) Return job output<br/>& status"| Runner
+    
+    Runner -->|"5) Update job output<br/>& status"| GitLab
+```
+
