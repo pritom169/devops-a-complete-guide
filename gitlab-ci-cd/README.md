@@ -1264,3 +1264,9 @@ flowchart LR
 - **Stateless execution**: Each job starts with a fresh environment; no state persists between jobs unless explicitly passed via artifacts or cache
 - **Fail-fast behavior**: If a job fails, subsequent jobs in dependent stages are skipped (unless configured otherwise with `allow_failure`)
 - **Parallel execution**: Jobs within the same stage run concurrently across available runners, maximizing pipeline throughput
+
+### GitLab Hosted Runners
+
+With an understanding of job execution workflow, identifying which runners and executors are assigned to specific jobs becomes relevant for debugging and optimization.
+
+
