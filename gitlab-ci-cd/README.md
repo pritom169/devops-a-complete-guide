@@ -1333,3 +1333,15 @@ To view available runners for a project:
 2. Expand the **Runners** section
 3. Review the available runner categories: Instance Runners, Group Runners, and Project Runners
 
+#### Instance Runners
+
+**Instance runners** (also called shared runners) operate at the GitLab instance level and are available to all projects within that instance. On GitLab.com, these are the hosted runners maintained by GitLab.
+
+| Characteristic | Description |
+|----------------|-------------|
+| **Scope** | Available to all projects on the GitLab instance |
+| **Management** | Administered by GitLab (SaaS) or instance administrators (self-managed) |
+| **Use Case** | General-purpose CI/CD workloads without specialized requirements |
+| **Configuration** | No project-level setup required—enabled by default |
+
+**Key Benefit:** Instance runners abstract infrastructure management from developers. Pipeline authors define *what* commands to execute without concern for *which* specific runner executes them. GitLab automatically assigns available runners based on executor compatibility and tag matching.
