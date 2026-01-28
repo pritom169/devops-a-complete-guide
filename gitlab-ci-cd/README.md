@@ -1515,3 +1515,21 @@ $ npm version
 | **Match Production** | Align CI/CD images with production runtime versions to catch compatibility issues early |
 | **Leverage Caching** | Configure Docker layer caching to speed up image pulls across pipeline runs |
 
+#### Image Configuration Hierarchy
+
+GitLab resolves Docker images using the following precedence:
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  1. Job-level image (highest priority)                                  │
+│     image: python:3.12 in job definition                                │
+├─────────────────────────────────────────────────────────────────────────┤
+│  2. Global pipeline image                                               │
+│     image: node:23-alpine at root level                                 │
+├─────────────────────────────────────────────────────────────────────────┤
+│  3. Runner default image (lowest priority)                              │
+│     Configured in runner's config.toml                                  │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+This hierarchy enables flexible configuration where common cases use the global image while specialized jobs override as needed.
