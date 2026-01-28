@@ -1362,3 +1362,19 @@ To view available runners for a project:
 - Organizations wanting to share runner capacity without instance-wide exposure
 - Projects with shared dependencies or toolchains within a group
 
+#### Project Runners
+
+**Project runners** are dedicated runners registered to a specific project. They execute jobs exclusively for that project and are not shared with other projects.
+
+| Characteristic | Description |
+|----------------|-------------|
+| **Scope** | Dedicated to a single project |
+| **Management** | Administered by project maintainers or owners |
+| **Use Case** | Specialized environments, security-sensitive workloads, or performance-critical pipelines |
+| **Configuration** | Registered via **Project Settings → CI/CD → Runners** |
+
+**When to Use Project Runners:**
+- Projects requiring specialized hardware (GPUs, high memory, specific architectures)
+- Security-sensitive pipelines handling credentials or proprietary code
+- Workloads requiring guaranteed capacity without contention from other projects
+- Compliance requirements mandating dedicated infrastructure
