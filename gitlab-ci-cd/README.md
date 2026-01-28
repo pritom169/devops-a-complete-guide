@@ -1468,3 +1468,13 @@ build_python_docs:
     - mkdocs build
 ```
 
+#### Verifying Image Usage
+
+The job execution logs confirm which Docker image is being used. The executor reports the image at the beginning of each job:
+
+```
+Using Docker executor with image node:23-alpine ...
+```
+
+This verification is useful for debugging environment-related issues and confirming that the expected image is being pulled.
+
