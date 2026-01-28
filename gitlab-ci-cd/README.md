@@ -1345,3 +1345,20 @@ To view available runners for a project:
 | **Configuration** | No project-level setup required—enabled by default |
 
 **Key Benefit:** Instance runners abstract infrastructure management from developers. Pipeline authors define *what* commands to execute without concern for *which* specific runner executes them. GitLab automatically assigns available runners based on executor compatibility and tag matching.
+
+#### Group Runners
+
+**Group runners** are registered at the group level and available to all projects within that group and its subgroups. They provide a middle ground between instance-wide sharing and project-specific dedication.
+
+| Characteristic | Description |
+|----------------|-------------|
+| **Scope** | Available to all projects within a specific group hierarchy |
+| **Management** | Administered by group owners or maintainers |
+| **Use Case** | Shared resources for related projects (e.g., team, department, or product line) |
+| **Configuration** | Registered via **Group Settings → CI/CD → Runners** |
+
+**When to Use Group Runners:**
+- Teams with multiple related repositories requiring consistent build environments
+- Organizations wanting to share runner capacity without instance-wide exposure
+- Projects with shared dependencies or toolchains within a group
+
