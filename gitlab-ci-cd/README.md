@@ -1505,3 +1505,13 @@ $ npm version
 }
 ```
 
+#### Image Selection Best Practices
+
+| Practice | Description |
+|----------|-------------|
+| **Use Specific Tags** | Avoid `latest` tags; pin to specific versions (e.g., `node:23.11.1-alpine`) for reproducibility |
+| **Prefer Alpine Variants** | Alpine-based images are smaller, reducing pull times and storage requirements |
+| **Use Official Images** | Prefer official Docker Hub images or verified publishers for security |
+| **Match Production** | Align CI/CD images with production runtime versions to catch compatibility issues early |
+| **Leverage Caching** | Configure Docker layer caching to speed up image pulls across pipeline runs |
+
