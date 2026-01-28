@@ -1378,3 +1378,22 @@ To view available runners for a project:
 - Security-sensitive pipelines handling credentials or proprietary code
 - Workloads requiring guaranteed capacity without contention from other projects
 - Compliance requirements mandating dedicated infrastructure
+
+### Runner Scope Hierarchy
+
+Runners in GitLab follow a hierarchical scope model that determines their availability:
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         Instance Runners                                │
+│                   (Available to ALL projects)                           │
+│  ┌───────────────────────────────────────────────────────────────────┐  │
+│  │                        Group Runners                              │  │
+│  │              (Available to projects in the group)                 │  │
+│  │  ┌─────────────────────────────────────────────────────────────┐  │  │
+│  │  │                    Project Runners                          │  │  │
+│  │  │              (Dedicated to a single project)                │  │  │
+│  │  └─────────────────────────────────────────────────────────────┘  │  │
+│  └───────────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────┘
+```
