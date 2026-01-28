@@ -1440,3 +1440,31 @@ stages:
 | **Documentation** | Serves as self-documenting configuration—image requirements are visible in the pipeline code |
 | **Consistency** | Ensures all jobs execute in identical environments |
 
+#### Job-Level Image Override
+
+Individual jobs can specify their own images, overriding the global default when different environments are required:
+
+```yaml
+image: node:23-alpine  # Global default
+
+run_unit_tests:
+  stage: test
+  script:
+    - npm ci
+    - npm test
+
+run_lint_tests:
+  stage: test
+  image: node:20-alpine  # Override for compatibility testing
+  script:
+    - npm ci
+    - npm run lint
+
+build_python_docs:
+  stage: build
+  image: python:3.12-slim  # Different runtime entirely
+  script:
+    - pip install mkdocs
+    - mkdocs build
+```
+
