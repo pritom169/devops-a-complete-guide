@@ -1325,3 +1325,11 @@ The hosted runner follows a defined sequence during job execution:
 
 GitLab provides a centralized interface for viewing and managing runners at various scopes. Understanding how to access runner information enables effective pipeline debugging and resource allocation.
 
+#### Accessing Runner Configuration
+
+To view available runners for a project:
+
+1. Navigate to **Settings → CI/CD** in the GitLab project
+2. Expand the **Runners** section
+3. Review the available runner categories: Instance Runners, Group Runners, and Project Runners
+
