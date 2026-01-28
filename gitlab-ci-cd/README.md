@@ -1397,3 +1397,15 @@ Runners in GitLab follow a hierarchical scope model that determines their availa
 │  └───────────────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
+
+#### Runner Selection Priority
+
+When a job is queued, GitLab assigns runners based on the following priority:
+
+| Priority | Runner Type | Condition |
+|----------|-------------|-----------|
+| **1** | Project Runners | Checked first; assigned if available and tags match |
+| **2** | Group Runners | Checked if no project runner is available |
+| **3** | Instance Runners | Used as fallback when no specific runners are available |
+
+**Tag Matching:** Jobs specifying `tags` in their configuration are only assigned to runners with matching tags. This enables targeting specific runner capabilities (e.g., `docker`, `gpu`, `macos`).
