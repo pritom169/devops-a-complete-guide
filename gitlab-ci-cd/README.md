@@ -1478,3 +1478,30 @@ Using Docker executor with image node:23-alpine ...
 
 This verification is useful for debugging environment-related issues and confirming that the expected image is being pulled.
 
+#### Practical Example: Node.js Environment
+
+The following configuration demonstrates a Node.js pipeline with the `npm version` command to verify the runtime environment:
+
+```yaml
+run_lint_tests:
+  stage: test
+  before_script:
+    - echo "Preparing test data..."
+  script:
+    - echo "Running lint tests in $MICRO_SERVICE_NAME..."
+    - npm version
+  after_script:
+    - echo "Clearing temporary files..."
+```
+
+The `npm version` command outputs detailed environment information, confirming the Node.js and npm versions available in the container:
+
+```
+$ npm version
+{
+  npm: '10.9.2',
+  node: '23.11.1',
+  ...
+}
+```
+
