@@ -1320,3 +1320,8 @@ The hosted runner follows a defined sequence during job execution:
 | **Source Clone** | Clones the repository at the target commit SHA |
 | **Script Execution** | Runs `before_script`, `script`, and `after_script` commands |
 | **Cleanup** | Removes temporary files, clears project directory, and deletes file-based variables |
+
+### Viewing and Managing Runners
+
+GitLab provides a centralized interface for viewing and managing runners at various scopes. Understanding how to access runner information enables effective pipeline debugging and resource allocation.
+
