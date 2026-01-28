@@ -1409,3 +1409,34 @@ When a job is queued, GitLab assigns runners based on the following priority:
 | **3** | Instance Runners | Used as fallback when no specific runners are available |
 
 **Tag Matching:** Jobs specifying `tags` in their configuration are only assigned to runners with matching tags. This enables targeting specific runner capabilities (e.g., `docker`, `gpu`, `macos`).
+
+### Configuring Docker Images
+
+A key advantage of Docker-based executors is the ability to leverage pre-built container images with required tools and dependencies already installed. This eliminates manual dependency management on runner hosts and ensures consistent, reproducible build environments.
+
+#### Global Image Configuration
+
+The `image` keyword at the root level of `.gitlab-ci.yml` defines the default Docker image for all jobs in the pipeline:
+
+```yaml
+image: node:23-alpine
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
+      when: never
+    - when: always
+
+stages:
+  - test
+  - build
+  - deploy
+```
+
+| Configuration Aspect | Description |
+|----------------------|-------------|
+| **Scope** | Applies to all jobs unless overridden at the job level |
+| **Image Source** | Docker Hub (default), GitLab Container Registry, or any accessible registry |
+| **Documentation** | Serves as self-documenting configuration—image requirements are visible in the pipeline code |
+| **Consistency** | Ensures all jobs execute in identical environments |
+
