@@ -743,4 +743,51 @@ Beyond environment-specific configuration, CI/CD variables serve as a mechanism 
 | **Improved Readability** | Descriptive variable names convey intent better than raw values |
 | **Easier Maintenance** | Version upgrades, path changes, or URL updates require minimal edits |
 
+**Defining Variables in `.gitlab-ci.yml`:**
 
+Variables can be defined at multiple scopes within the pipeline configuration:
+
+```yaml
+# Global variables - available to all jobs
+variables:
+  DOCKER_REGISTRY: "registry.gitlab.com/mycompany"
+  IMAGE_NAME: "shopping-cart"
+  NODE_VERSION: "20"
+
+stages:
+  - test
+  - build
+  - deploy
+
+run_tests:
+  stage: test
+  image: node:$NODE_VERSION
+  script:
+    - npm ci
+    - npm test
+
+build_image:
+  stage: build
+  script:
+    - docker build -t $DOCKER_REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHA .
+    - docker push $DOCKER_REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHA
+
+deploy_staging:
+  stage: deploy
+  # Job-level variables - override or extend global variables
+  variables:
+    ENVIRONMENT: "staging"
+    REPLICAS: "2"
+  script:
+    - echo "Deploying $IMAGE_NAME to $ENVIRONMENT with $REPLICAS replicas..."
+    - kubectl set image deployment/$IMAGE_NAME app=$DOCKER_REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHA
+
+deploy_production:
+  stage: deploy
+  variables:
+    ENVIRONMENT: "production"
+    REPLICAS: "5"
+  script:
+    - echo "Deploying $IMAGE_NAME to $ENVIRONMENT with $REPLICAS replicas..."
+    - kubectl set image deployment/$IMAGE_NAME app=$DOCKER_REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHA
+```
