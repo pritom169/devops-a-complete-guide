@@ -664,3 +664,69 @@ run_lint_tests:
     - echo "Clearing temporary files..."
 # Rest of the codes
 ```
+
+#### File-Type Variables
+
+GitLab CI/CD supports **file-type variables**, which store multi-line content as temporary files during pipeline execution. Unlike standard variables that inject values directly into the environment, file variables create actual files on the runner's filesystem and expose the file path through the variable name.
+
+**Use Cases:**
+
+| Scenario | Description |
+|----------|-------------|
+| **Configuration Files** | Store application config (YAML, JSON, properties) without committing to the repository |
+| **Certificates & Keys** | Inject TLS certificates, SSH keys, or signing credentials securely |
+| **Kubernetes Manifests** | Provide deployment-specific manifests or Helm values files |
+| **Cloud Provider Credentials** | Store service account JSON files (GCP, AWS) for authentication |
+| **Environment-Specific Settings** | Maintain different configurations for staging, production, etc. |
+
+**Creating a File Variable:**
+
+1. Navigate to **Settings > CI/CD** in your project
+2. Expand the **Variables** section
+3. Click **Add variable**
+4. In the **Type** dropdown, select **File**
+5. Set the **Key** (e.g., `PROPERTIES_FILE`)
+6. Enter the multi-line content as the **Value**
+7. Configure visibility and protection settings as needed
+
+**Example Configuration:**
+
+Variable key: `PROPERTIES_FILE`
+
+Variable value:
+```properties
+environment=test-2.myapp.com
+microservice-name=shopping-cart
+db-connection-pool=10
+feature-flags-enabled=true
+```
+
+**Pipeline Usage:**
+
+```yaml
+deploy_image:
+  stage: deploy
+  only:
+    - main
+  script:
+    - echo "Deploying to $DEPLOYMENT_ENVIRONMENT using configuration file..."
+    - echo "Configuration file path: $PROPERTIES_FILE"
+    - cat $PROPERTIES_FILE
+    - source $PROPERTIES_FILE  # Load as environment variables (if shell-compatible format)
+```
+
+**How It Works:**
+
+When the pipeline executes, GitLab:
+1. Creates a temporary file on the runner with the variable's content
+2. Sets `$PROPERTIES_FILE` to the absolute path of that file (e.g., `/builds/tmp/PROPERTIES_FILE`)
+3. The file remains available for the duration of the job
+4. The file is automatically cleaned up after job completion
+
+**Best Practices:**
+
+- Use file variables for any content exceeding a single line
+- Prefer file variables over base64-encoded strings for readability
+- Mark sensitive files (credentials, keys) as **Masked** and **Protected**
+- Use consistent naming conventions (e.g., `*_FILE` suffix) to distinguish file variables from standard variables
+
