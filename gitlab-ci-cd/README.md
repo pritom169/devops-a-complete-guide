@@ -734,4 +734,13 @@ When the pipeline executes, GitLab:
 
 Beyond environment-specific configuration, CI/CD variables serve as a mechanism for reducing duplication and centralizing commonly used values within pipeline definitions. By defining variables once and referencing them throughout the configuration, pipelines become more maintainable and less error-prone.
 
+**Benefits:**
+
+| Benefit | Description |
+|---------|-------------|
+| **Single Source of Truth** | Update a value in one place rather than multiple job definitions |
+| **Reduced Human Error** | Eliminates typos and inconsistencies from copy-paste operations |
+| **Improved Readability** | Descriptive variable names convey intent better than raw values |
+| **Easier Maintenance** | Version upgrades, path changes, or URL updates require minimal edits |
+
 
