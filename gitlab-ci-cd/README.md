@@ -730,3 +730,8 @@ When the pipeline executes, GitLab:
 - Mark sensitive files (credentials, keys) as **Masked** and **Protected**
 - Use consistent naming conventions (e.g., `*_FILE` suffix) to distinguish file variables from standard variables
 
+### Pipeline-Level Variables for Code Reuse
+
+Beyond environment-specific configuration, CI/CD variables serve as a mechanism for reducing duplication and centralizing commonly used values within pipeline definitions. By defining variables once and referencing them throughout the configuration, pipelines become more maintainable and less error-prone.
+
+
