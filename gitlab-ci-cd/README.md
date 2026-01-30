@@ -791,3 +791,8 @@ deploy_production:
     - echo "Deploying $IMAGE_NAME to $ENVIRONMENT with $REPLICAS replicas..."
     - kubectl set image deployment/$IMAGE_NAME app=$DOCKER_REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHA
 ```
+
+### GitLab Runners
+
+Throughout this guide, pipelines have executed various jobs—but where exactly does this execution occur? Understanding GitLab's execution architecture is essential for optimizing pipeline performance and troubleshooting issues.
+
