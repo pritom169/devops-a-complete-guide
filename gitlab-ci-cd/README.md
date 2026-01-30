@@ -908,3 +908,22 @@ The **shell executor** is the simplest execution model. The GitLab Runner acts a
 
 This approach mirrors how Jenkins traditionally executes jobs—directly on the build agent's operating system.
 
+#### Limitations of Shell Executors
+
+While simple to configure, shell executors introduce significant operational challenges:
+
+| Challenge | Description |
+|-----------|-------------|
+| **Dependency Management** | Every tool required by jobs (npm, docker, python, etc.) must be pre-installed on the runner host |
+| **Version Conflicts** | Different projects may require incompatible tool versions (e.g., Node.js 18 vs. Node.js 20) |
+| **Environment Drift** | Manual tool installations lead to inconsistencies across runners |
+| **Migration Overhead** | Provisioning new runners requires reinstalling and validating all dependencies |
+| **Security Isolation** | Jobs execute with the runner's system privileges, risking cross-project contamination |
+
+**Example Conflict Scenario:**
+
+A shared runner hosts multiple microservices:
+- **Service A** requires Node.js 18 LTS for compatibility with legacy dependencies
+- **Service B** requires Node.js 20 for modern ECMAScript features
+
+With a shell executor, only one Node.js version can be installed globally, forcing teams to implement workarounds (version managers, separate runners) or accept broken builds.
