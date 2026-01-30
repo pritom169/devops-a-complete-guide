@@ -878,3 +878,16 @@ A GitLab Runner is a lightweight agent application installed on a machine separa
 
 An **executor** determines the environment in which a GitLab Runner executes CI/CD jobs. Understanding executors is crucial for designing efficient pipelines and managing runner infrastructure.
 
+#### Real-World Pipeline Scenario
+
+Consider a typical CI/CD workflow for a Node.js microservice:
+
+| Stage | Action | Required Tool |
+|-------|--------|---------------|
+| **Test** | Run unit and integration tests | `npm test` |
+| **Build** | Create Docker image | `docker build` |
+| **Push** | Upload image to registry | `docker push` |
+| **Deploy** | Update application on server | `ssh` / `kubectl` |
+
+Each of these commands executes directly on an operating system—Linux, Windows, or macOS. The question becomes: *where* and *how* do these commands run?
+
