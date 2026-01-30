@@ -845,3 +845,12 @@ GitLab operates on a **server-runner architecture** that separates pipeline orch
 4. The server matches jobs to runners based on **tags**, **executor type**, and **availability**
 5. The assigned runner pulls the repository, executes the job, and reports results
 6. Upon completion, the server updates the pipeline status and stores artifacts
+
+#### GitLab Deployment Models
+
+Understanding who manages the GitLab infrastructure is essential for planning CI/CD operations. GitLab offers two primary deployment models:
+
+| Model | Description | Runner Management |
+|-------|-------------|-------------------|
+| **GitLab.com (SaaS)** | Fully managed GitLab instance hosted at `gitlab.com`. Infrastructure, upgrades, and maintenance are handled by GitLab engineers. | GitLab provides shared runners; self-hosted runners optional |
+| **Self-Managed** | GitLab instance deployed on your own infrastructure (on-premises or cloud). Your team manages the entire stack. | You must provision and manage your own runners |
