@@ -873,3 +873,8 @@ A GitLab Runner is a lightweight agent application installed on a machine separa
 - Available to all users and projects on the platform
 - Support multiple executor types (Docker, Kubernetes)
 - Subject to usage quotas based on subscription tier
+
+### GitLab Executors
+
+An **executor** determines the environment in which a GitLab Runner executes CI/CD jobs. Understanding executors is crucial for designing efficient pipelines and managing runner infrastructure.
+
