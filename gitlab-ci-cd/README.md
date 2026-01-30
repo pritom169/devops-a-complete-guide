@@ -796,3 +796,26 @@ deploy_production:
 
 Throughout this guide, pipelines have executed various jobs—but where exactly does this execution occur? Understanding GitLab's execution architecture is essential for optimizing pipeline performance and troubleshooting issues.
 
+#### GitLab Architecture Overview
+
+GitLab operates on a **server-runner architecture** that separates pipeline orchestration from job execution:
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          GitLab Server                                  │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐         │
+│  │ Pipeline Config │  │ Job Scheduler   │  │ Results Storage │         │
+│  │ (.gitlab-ci.yml)│  │ & Orchestration │  │ & Artifacts     │         │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘         │
+└──────────────────────────────┬──────────────────────────────────────────┘
+                               │ Assigns jobs
+                               ▼
+        ┌──────────────────────┼──────────────────────┐
+        │                      │                      │
+        ▼                      ▼                      ▼
+┌───────────────┐      ┌───────────────┐      ┌───────────────┐
+│   Runner 1    │      │   Runner 2    │      │   Runner N    │
+│  (Linux/Docker)│      │  (Windows)    │      │  (macOS)      │
+└───────────────┘      └───────────────┘      └───────────────┘
+```
+
