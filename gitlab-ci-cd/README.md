@@ -854,3 +854,22 @@ Understanding who manages the GitLab infrastructure is essential for planning CI
 |-------|-------------|-------------------|
 | **GitLab.com (SaaS)** | Fully managed GitLab instance hosted at `gitlab.com`. Infrastructure, upgrades, and maintenance are handled by GitLab engineers. | GitLab provides shared runners; self-hosted runners optional |
 | **Self-Managed** | GitLab instance deployed on your own infrastructure (on-premises or cloud). Your team manages the entire stack. | You must provision and manage your own runners |
+
+#### Understanding GitLab Runners
+
+A GitLab Runner is a lightweight agent application installed on a machine separate from the GitLab server. Runners are responsible for executing CI/CD jobs and can be deployed on various platforms (Linux, Windows, macOS, Kubernetes).
+
+**Runner Types:**
+
+| Type | Scope | Use Case |
+|------|-------|----------|
+| **Instance Runners** | Available to all projects within a GitLab instance | Shared compute resources for gitlab.com users |
+| **Group Runners** | Available to all projects within a specific group | Shared runners for team or department projects |
+| **Project Runners** | Dedicated to a single project | Specialized environments or security-sensitive workloads |
+
+**Instance Runners on GitLab.com:**
+
+- Pre-configured and managed by GitLab—no setup required
+- Available to all users and projects on the platform
+- Support multiple executor types (Docker, Kubernetes)
+- Subject to usage quotas based on subscription tier
