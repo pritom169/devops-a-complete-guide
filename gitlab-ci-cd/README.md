@@ -891,3 +891,20 @@ Consider a typical CI/CD workflow for a Node.js microservice:
 
 Each of these commands executes directly on an operating system—Linux, Windows, or macOS. The question becomes: *where* and *how* do these commands run?
 
+#### Shell Executor
+
+The **shell executor** is the simplest execution model. The GitLab Runner acts as a mediator:
+
+```
+┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
+│  GitLab Server  │─────▶│  GitLab Runner  │─────▶│  Host OS Shell  │
+│  (Job Queue)    │      │  (Mediator)     │      │  (bash/cmd/pwsh)│
+└─────────────────┘      └─────────────────┘      └─────────────────┘
+```
+
+1. The runner fetches pending jobs from the GitLab server
+2. Jobs execute directly in the shell of the host operating system
+3. Commands have full access to tools installed on the runner machine
+
+This approach mirrors how Jenkins traditionally executes jobs—directly on the build agent's operating system.
+
