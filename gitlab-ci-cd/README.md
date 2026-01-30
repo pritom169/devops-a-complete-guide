@@ -819,3 +819,21 @@ GitLab operates on a **server-runner architecture** that separates pipeline orch
 └───────────────┘      └───────────────┘      └───────────────┘
 ```
 
+**GitLab Server Responsibilities:**
+
+| Component | Function |
+|-----------|----------|
+| **Pipeline Configuration** | Parses `.gitlab-ci.yml` and validates pipeline structure |
+| **Job Scheduler** | Determines job execution order based on stages, dependencies, and rules |
+| **Runner Coordinator** | Assigns pending jobs to available runners based on tags and capabilities |
+| **Results Aggregation** | Collects job logs, artifacts, and status from runners |
+
+**GitLab Runner Responsibilities:**
+
+| Component | Function |
+|-----------|----------|
+| **Job Execution** | Runs the actual commands defined in job scripts |
+| **Environment Provisioning** | Creates isolated execution environments (containers, VMs, or shell) |
+| **Artifact Handling** | Uploads build artifacts and caches back to the GitLab server |
+| **Status Reporting** | Sends real-time logs and job status updates to the server |
+it
