@@ -836,4 +836,12 @@ GitLab operates on a **server-runner architecture** that separates pipeline orch
 | **Environment Provisioning** | Creates isolated execution environments (containers, VMs, or shell) |
 | **Artifact Handling** | Uploads build artifacts and caches back to the GitLab server |
 | **Status Reporting** | Sends real-time logs and job status updates to the server |
-it
+
+#### How Job Assignment Works
+
+1. A developer pushes code, triggering a pipeline
+2. The GitLab server parses the pipeline configuration and creates pending jobs
+3. Registered runners periodically poll the server for available jobs
+4. The server matches jobs to runners based on **tags**, **executor type**, and **availability**
+5. The assigned runner pulls the repository, executes the job, and reports results
+6. Upon completion, the server updates the pipeline status and stores artifacts
