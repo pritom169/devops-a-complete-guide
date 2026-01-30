@@ -1213,3 +1213,14 @@ Use this decision matrix to select the appropriate executor:
 ```
 
 **Recommendation:** For most teams, the **Docker executor** provides the optimal balance of isolation, speed, and simplicity. Organizations with Kubernetes infrastructure should leverage the **Kubernetes executor**, while those requiring autoscaling without K8s should consider the **Instance executor**.
+
+### Setting Up a GitLab Runner
+
+Deploying a self-hosted GitLab Runner involves three phases:
+
+| Phase | Description |
+|-------|-------------|
+| **1. Installation** | Install the GitLab Runner application on a dedicated machine (Linux, Windows, macOS, or as a Docker container). The runner must be on a separate machine from the GitLab server. |
+| **2. Registration** | Register the runner with your GitLab instance by obtaining a registration token from **Settings → CI/CD → Runners** and running `gitlab-runner register`. This establishes trust between the runner and GitLab server. |
+| **3. Configuration** | Configure the runner's executor type, concurrency limits, caching, and other options in `/etc/gitlab-runner/config.toml`. |
+
